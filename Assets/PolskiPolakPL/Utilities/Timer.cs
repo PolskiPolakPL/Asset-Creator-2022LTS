@@ -1,5 +1,5 @@
 using System; 
-namespace PolskiPolakPL.Utils.Timer
+namespace PolskiPolakPL.Utils
 {
     /// <summary>
     /// Timer class from tutorial extended by PolskiPolakPL. Tutorial link: 
@@ -21,7 +21,7 @@ namespace PolskiPolakPL.Utils.Timer
 
 
 
-        private bool isLooping = false;
+        private bool isLooping = true;
 
         /// <summary>
         /// Public getter of 'isLooping' boolean.
@@ -37,7 +37,7 @@ namespace PolskiPolakPL.Utils.Timer
         /// <summary>
         /// Timer Action Event invoked at the end of counting time.
         /// </summary>
-        public event Action OnTimerEnd;
+        public event Action OnTimerElapsed;
 
 
 
@@ -90,7 +90,7 @@ namespace PolskiPolakPL.Utils.Timer
             if(RemaningSeconds > 0)
                 return;
             RemaningSeconds = 0;
-            OnTimerEnd?.Invoke();
+            OnTimerElapsed?.Invoke();
         }
     }
 }
