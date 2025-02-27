@@ -4,17 +4,18 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("PlayerScript Movement")]
-    [SerializeField] float playerSpeed = 5f;
-    
+    [SerializeField] float playerSpeed = 3.5f;
+
     [Header("PlayerScript Jump")]
+    public bool CanJump = true;
     [SerializeField] float jumpHeight = 1.0f;
-    [SerializeField] private float gravityValue = Physics.gravity.y;
-    [SerializeField] Vector3 playerVelocity;
+    private float gravityValue = Physics.gravity.y;
+    private Vector3 playerVelocity;
     private bool groundedPlayer;
     
     [Header("PlayerScript Look")]
     [SerializeField] Camera playerCamera;
-    [SerializeField] float mouseSensitivity = 1f;
+    [SerializeField] float mouseSensitivity = 100f;
     private float xRotation = 0f;
 
 
@@ -34,9 +35,10 @@ public class PlayerMovement : MonoBehaviour
         {
             playerVelocity.y = 0f;
         }
+
         PlayerMove();
         PlayerLook();
-        if (Input.GetButtonDown("Jump") && groundedPlayer)
+        if (Input.GetButtonDown("Jump") && groundedPlayer && CanJump)
             PlayerJump();
 
         playerVelocity.y += gravityValue * Time.deltaTime;
@@ -72,5 +74,4 @@ public class PlayerMovement : MonoBehaviour
     {
         playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
     }
-
 }
