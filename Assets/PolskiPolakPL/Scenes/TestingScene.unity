@@ -427,6 +427,7 @@ GameObject:
   m_Component:
   - component: {fileID: 821014662}
   - component: {fileID: 821014664}
+  - component: {fileID: 821014666}
   - component: {fileID: 821014665}
   m_Layer: 0
   m_Name: Player
@@ -493,8 +494,22 @@ MonoBehaviour:
   playerSpeed: 3.5
   CanJump: 1
   jumpHeight: 0.5
-  playerCamera: {fileID: 963194227}
+--- !u!114 &821014666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821014661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76d788ee37bba914d9e9342a8cfa2f36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
   mouseSensitivity: 1
+  invertYAxis: 0
+  invertXAxis: 0
 --- !u!1 &822277964
 GameObject:
   m_ObjectHideFlags: 0

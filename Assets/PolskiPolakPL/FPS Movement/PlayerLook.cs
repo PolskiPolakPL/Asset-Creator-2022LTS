@@ -5,6 +5,8 @@ public class PlayerLook : MonoBehaviour
 
     [SerializeField] Camera playerCamera;
     [SerializeField] float mouseSensitivity = 1f;
+    public bool invertYAxis = false;
+    public bool invertXAxis = false;
     private float xRotation = 0f;
 
     void Awake()
@@ -22,7 +24,11 @@ public class PlayerLook : MonoBehaviour
     {
         // Read mouse input
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        if(invertXAxis)
+            mouseX = -mouseX;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+        if (invertYAxis)
+            mouseY = -mouseY;
 
         // Rotate the player's body left and right
         transform.Rotate(Vector3.up * mouseX);
