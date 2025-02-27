@@ -6,16 +6,28 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController controller;
 
 
-    [Header("PlayerScript Movement")]
-    [SerializeField] float playerSpeed = 3.5f;
+    [Header("Movement")]
+    [SerializeField] float baseSpeed = 2.5f;
 
-    [Header("PlayerScript Jump")]
+
+    [Header("Sprint")]
+    public bool CanRun = true;
+    [SerializeField] KeyCode runningKey = KeyCode.LeftShift;
+    [SerializeField] float runningSpeed = 5;
+
+
+    [Header("Jump")]
     public bool CanJump = true;
+    [SerializeField] KeyCode jumpKey = KeyCode.Space;
     [SerializeField] float jumpHeight = 1.0f;
-    private float gravityValue = Physics.gravity.y;
+
     private Vector3 playerVelocity;
+    private float gravityValue = Physics.gravity.y;
     private bool groundedPlayer;
 
+
+    [Header("Crouch")]
+    public bool CanCrouch;
 
 
     private void Start()
@@ -33,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         PlayerMove();
-        if (Input.GetButtonDown("Jump") && groundedPlayer && CanJump)
+        if (Input.GetKey(jumpKey))
             PlayerJump();
 
         playerVelocity.y += gravityValue * Time.deltaTime;
@@ -45,12 +57,24 @@ public class PlayerMovement : MonoBehaviour
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
 
+        float speed = GetMovementSpeed();
+
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
-        controller.Move(playerSpeed * Time.deltaTime * move);
+        controller.Move(speed * Time.deltaTime * move);
     }
 
     void PlayerJump()
     {
+        if (!groundedPlayer || !CanJump)
+            return;
         playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+    }
+
+    float GetMovementSpeed()
+    {
+        if (Input.GetKey(runningKey) && CanRun)
+            return runningSpeed;
+        else
+            return baseSpeed;
     }
 }
