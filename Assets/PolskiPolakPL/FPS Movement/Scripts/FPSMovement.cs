@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour
+public class FPSMovement : MonoBehaviour
 {
     private CharacterController controller;
 

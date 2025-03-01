@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerLook : MonoBehaviour
+public class FPSLook : MonoBehaviour
 {
 
     [SerializeField] Camera playerCamera;
