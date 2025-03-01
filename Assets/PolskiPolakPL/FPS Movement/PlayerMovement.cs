@@ -26,11 +26,6 @@ public class PlayerMovement : MonoBehaviour
     private bool groundedPlayer;
 
 
-    [Header("Crouch")]
-    public bool CanCrouch;
-    [SerializeField] KeyCode crouchKey = KeyCode.LeftControl;
-
-
     private void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -46,8 +41,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         PlayerMove();
-        if (Input.GetKey(crouchKey))
-            Crouch();
 
         if (Input.GetKey(jumpKey))
             PlayerJump();
@@ -80,10 +73,5 @@ public class PlayerMovement : MonoBehaviour
             return runningSpeed;
         else
             return baseSpeed;
-    }
-
-    void Crouch()
-    {
-
     }
 }

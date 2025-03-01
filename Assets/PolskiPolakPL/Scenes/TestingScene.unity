@@ -603,8 +603,6 @@ MonoBehaviour:
   CanJump: 1
   jumpKey: 32
   jumpHeight: 0.5
-  CanCrouch: 0
-  crouchKey: 306
 --- !u!114 &821014666
 MonoBehaviour:
   m_ObjectHideFlags: 0
