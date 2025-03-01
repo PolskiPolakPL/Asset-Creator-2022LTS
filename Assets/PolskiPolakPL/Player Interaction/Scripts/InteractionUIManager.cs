@@ -1,10 +1,10 @@
 using UnityEngine;
 using TMPro;
 
-public class HUDManager : MonoBehaviour
+public class InteractionUIManager : MonoBehaviour
 {
     //Singleton statement
-    public static HUDManager Instance;
+    public static InteractionUIManager Instance;
     private void Awake()
     {
         if (Instance && Instance != this)
@@ -20,7 +20,7 @@ public class HUDManager : MonoBehaviour
 
     public void EnableInteractionText(string text)
     {
-        interactionMessage.text = text + " (F)";
+        interactionMessage.text = "[E]" + text;
         interactionMessage.gameObject.SetActive(true);
     }
     public void DisableInteractionText()

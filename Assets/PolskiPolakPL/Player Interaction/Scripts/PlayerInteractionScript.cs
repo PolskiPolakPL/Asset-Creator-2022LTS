@@ -6,6 +6,7 @@ public class PlayerInteractionScript : MonoBehaviour
 {
     [SerializeField] Transform cameraT;
     [SerializeField] float playerReach = 2;
+    public KeyCode interactionKey = KeyCode.E;
 
     Interactable currentInteractable;
     Interactable newInteractable;
@@ -23,7 +24,7 @@ public class PlayerInteractionScript : MonoBehaviour
     void Update()
     {
         CheckInteraction();
-        if (Input.GetKeyDown(KeyCode.F) && currentInteractable)
+        if (Input.GetKeyDown(interactionKey) && currentInteractable)
         {
             currentInteractable.Interact();
         }
@@ -58,8 +59,8 @@ public class PlayerInteractionScript : MonoBehaviour
     {
         currentInteractable = newInteractable;
         currentInteractable.EnableOutline();
-        if (HUDManager.Instance)
-            HUDManager.Instance.EnableInteractionText(currentInteractable.message);
+        if (InteractionUIManager.Instance)
+            InteractionUIManager.Instance.EnableInteractionText(currentInteractable.message);
 
     }
     void DisableCurrentInteractable()
@@ -68,8 +69,8 @@ public class PlayerInteractionScript : MonoBehaviour
             return;
         currentInteractable.DisableOutline();
         currentInteractable = null;
-        if (HUDManager.Instance)
-            HUDManager.Instance.DisableInteractionText();
+        if (InteractionUIManager.Instance)
+            InteractionUIManager.Instance.DisableInteractionText();
     }
 }
 
