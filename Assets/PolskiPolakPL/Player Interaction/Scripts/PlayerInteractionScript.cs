@@ -65,12 +65,12 @@ public class PlayerInteractionScript : MonoBehaviour
     }
     void DisableCurrentInteractable()
     {
+        if (InteractionUIManager.Instance)
+            InteractionUIManager.Instance.DisableInteractionText();
         if (!currentInteractable)
             return;
         currentInteractable.DisableOutline();
         currentInteractable = null;
-        if (InteractionUIManager.Instance)
-            InteractionUIManager.Instance.DisableInteractionText();
     }
 }
 
