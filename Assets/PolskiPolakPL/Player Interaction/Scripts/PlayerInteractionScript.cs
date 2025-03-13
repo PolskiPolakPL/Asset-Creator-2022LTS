@@ -1,6 +1,9 @@
 using UnityEngine;
 
-
+/// <summary>
+/// Interaction System made with this
+/// <seealso href="https://youtu.be/b7Yf6BFx6js">tutorial</seealso>
+/// </summary>
 public class PlayerInteractionScript : MonoBehaviour
 {
     [SerializeField] Transform cameraT;
