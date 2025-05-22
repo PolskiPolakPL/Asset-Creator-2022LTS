@@ -61,14 +61,14 @@ public class VitalsMetric
         //if new value is different
         if (newIntVal != Current)
         {
-            if (notifyFillEvent)
-                CheckForFilledEvent(newIntVal);
             Current = newIntVal;
             OnValueChange?.Invoke();
+            if (notifyFillEvent)
+                CheckForFilledEvent(newIntVal);
         }
 
         //Invoke OnGainEvent
-        OnGain.Invoke();
+        OnGain?.Invoke();
     }
 
     /// <summary>
@@ -79,16 +79,16 @@ public class VitalsMetric
     public void Loose(float amount, bool notifyEmptyEvent = true)
     {
         //calculates new value
-        float val = Current - amount;
-        val = Mathf.Max(val, Min);
+        float newVal = Current - amount;
+        newVal = Mathf.Max(newVal, Min);
 
         //if new value is different
-        if (val != Current)
+        if (newVal != Current)
         {
-            if (notifyEmptyEvent)
-                CheckForEmptyEvent(Current);
-            Current = val;
+            Current = newVal;
             OnValueChange?.Invoke();
+            if (notifyEmptyEvent)
+                CheckForEmptyEvent(newVal);
         }
 
         //Invoke OnLooseEvent
@@ -123,15 +123,15 @@ public class VitalsMetric
     public void LooseWithoutNotify(float amount, bool notifyEmptyEvent = true)
     {
         //calculates new value
-        float val = Current - amount;
-        val = Mathf.Max(val, Max);
+        float newVal = Current - amount;
+        newVal = Mathf.Max(newVal, Max);
 
         //if new value is different
-        if (val != Current)
+        if (newVal != Current)
         {
             if (notifyEmptyEvent)
                 CheckForEmptyEvent(Current);
-            Current = val;
+            Current = newVal;
         }
     }
 
