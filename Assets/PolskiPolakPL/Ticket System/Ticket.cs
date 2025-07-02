@@ -4,7 +4,7 @@ using UnityEngine;
 public class Ticket
 {
 
-    private static List<Ticket> allTickets = new List<Ticket>();
+    public static List<Ticket> allTickets = new List<Ticket>();
 
     public int groupId { get; private set; }
     public string name { get; private set; }
@@ -62,6 +62,8 @@ public class Ticket
 
     public void SetMinValue(int minValue)
     {
+        if(minValue < 0)
+            minValue = 0;
         this.minValue = minValue;
         if(value < minValue)
             value = minValue;
@@ -90,6 +92,8 @@ public class Ticket
     public void LooseTicket()
     {
         value--;
+        if (value < 0)
+            value = 0;
     }
     public void LooseTicket(int amount)
     {
@@ -112,7 +116,6 @@ public class Ticket
 
     public static Ticket GetRandomTicket(List<Ticket> tickets)
     {
-        tickets.Sort();
         Ticket randomTicket = null;
 
         int poolSize = Ticket.CoutAllTickets(tickets);
@@ -133,7 +136,7 @@ public class Ticket
     public static float GetProbability(Ticket ticket)
     {
         List<Ticket> pool = Ticket.GetTicketsInGroup(ticket.groupId);
-        int poolSize = Ticket.CoutAllTickets(pool);
+        float poolSize = Ticket.CoutAllTickets(pool);
         float prob = Mathf.Floor(((float)ticket.value / poolSize) * 10000) / 100;
 
         return prob;
