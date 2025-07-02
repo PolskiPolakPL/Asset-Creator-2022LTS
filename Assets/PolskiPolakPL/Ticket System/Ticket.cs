@@ -4,7 +4,7 @@ using UnityEngine;
 public class Ticket
 {
 
-    static List<Ticket> allTickets = new List<Ticket>();
+    private static List<Ticket> allTickets = new List<Ticket>();
 
     public int groupId { get; private set; }
     public string name { get; private set; }
@@ -18,7 +18,7 @@ public class Ticket
         this.name = name;
         minValue = 0;
         value = 1;
-        TicketsManager.TicketsList.Add(this);
+        Ticket.allTickets.Add(this);
     }
     public Ticket(int groupId, string name, int minValue)
     {
@@ -26,7 +26,7 @@ public class Ticket
         this.name = name;
         this.minValue = minValue;
         value = minValue;
-        TicketsManager.TicketsList.Add(this);
+        Ticket.allTickets.Add(this);
     }
     public Ticket(int groupId, string name, int minValue, int value)
     {
@@ -36,13 +36,13 @@ public class Ticket
         if(value<minValue)
             value = minValue;
         this.value = value;
-        TicketsManager.TicketsList.Add(this);
+        Ticket.allTickets.Add(this);
     }
 
     ~Ticket()
     {
-        if(TicketsManager.TicketsList.Count>0 && TicketsManager.TicketsList.Contains(this))
-            TicketsManager.TicketsList.Remove(this);
+        if(Ticket.allTickets.Count>0 && Ticket.allTickets.Contains(this))
+            Ticket.allTickets.Remove(this);
     }
 
     public void ChangeName(string newName)
@@ -115,7 +115,7 @@ public class Ticket
         tickets.Sort();
         Ticket randomTicket = null;
 
-        int poolSize = TicketsManager.CoutAllTickets(tickets);
+        int poolSize = Ticket.CoutAllTickets(tickets);
         int randomInt = UnityEngine.Random.Range(1, poolSize);
 
         foreach (Ticket ticket in tickets)
@@ -132,8 +132,8 @@ public class Ticket
 
     public static float GetProbability(Ticket ticket)
     {
-        List<Ticket> pool = TicketsManager.GetTicketsInGroup(ticket.groupId);
-        int poolSize = TicketsManager.CoutAllTickets(pool);
+        List<Ticket> pool = Ticket.GetTicketsInGroup(ticket.groupId);
+        int poolSize = Ticket.CoutAllTickets(pool);
         float prob = Mathf.Floor(((float)ticket.value / poolSize) * 10000) / 100;
 
         return prob;
