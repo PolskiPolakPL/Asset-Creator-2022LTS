@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c2b153c48c556e8488955618569ba84d
+guid: a66feef3d2e12414aae28e93cc9be9ac
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,83 +7,128 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Baked Bricks
-    second: {fileID: 2100000, guid: 55d9f57ab310f4a44826ccedf1622c7f, type: 2}
+      name: Church Body
+    second: {fileID: 2100000, guid: 1176989c23815e546a7cabc491745949, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Baked Tiles
-    second: {fileID: 2100000, guid: e3ee6e6ae2cc9384985ccf9c7b93bec6, type: 2}
+      name: Church Chimney
+    second: {fileID: 2100000, guid: fb216faa664f4854aafbc3f2f5fee392, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Building Window Frame
-    second: {fileID: 2100000, guid: f2ffa93dace3f044f99b7c9372fb2375, type: 2}
+      name: Church Roof
+    second: {fileID: 2100000, guid: 6e18ac96551cfe84999cfa68b6d31eb1, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Chimney Bake
-    second: {fileID: 2100000, guid: 7e709546e3383ee489e11df8886acc21, type: 2}
+      name: Church Tower Bricks
+    second: {fileID: 2100000, guid: 9293296ae4859034780437b62806baf1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Church Tower Concrete
+    second: {fileID: 2100000, guid: 5564e8e796f9fa042aed6e11b452d1a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Church Window Frame
+    second: {fileID: 2100000, guid: bbf30f5daac129d498376a283b37d70d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ClockFace
+    second: {fileID: 2100000, guid: acff7ae3da534e543aa586529a9744d6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Oxidised Copper
+    second: {fileID: 2100000, guid: 5001953f4a4039c4995ad03767804ab1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Red Bricks
+    second: {fileID: 2100000, guid: 51e1419a98b225a459c12ec380de045b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Steel
-    second: {fileID: 2100000, guid: ce14f66b029d2e749a70ce53633ad129, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Stone
-    second: {fileID: 2100000, guid: bf9a395c54ab2e149a45783ea05ec7b6, type: 2}
+    second: {fileID: 2100000, guid: bd85c19f81712474fbf9dcc268aa8340, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Window
-    second: {fileID: 2100000, guid: 0cf1d90f078806b4c9f2e45030249037, type: 2}
+    second: {fileID: 2100000, guid: f151cea89f3b32946b17c0e3527b521b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Wood
-    second: {fileID: 2100000, guid: d6ae506f612bbd94c90d176eff83d510, type: 2}
+    second: {fileID: 2100000, guid: 51e1419a98b225a459c12ec380de045b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Wood2
-    second: {fileID: 2100000, guid: c832b5c54189fcf4993df49ce4158ade, type: 2}
+    second: {fileID: 2100000, guid: be9a9e641aef4ed4293b467a75a2bf79, type: 2}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
-      name: Bricks Color
-    second: {fileID: 2800000, guid: a123ccb173da68d4fbd4a14f5e127777, type: 3}
+      name: Body Bricks Color
+    second: {fileID: 2800000, guid: 929f3c0c6fc4f0a46851e762a1a26043, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
-      name: Bricks Normal
-    second: {fileID: 2800000, guid: dd545103f96ff244ea8e6e7f1a94bb87, type: 3}
+      name: Body Bricks Normal
+    second: {fileID: 2800000, guid: a8a61f435ac46764caea73e606d3d68a, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
-      name: Chimney Color
-    second: {fileID: 2800000, guid: 1801628166c3dd549805f6e2890b9453, type: 3}
+      name: Church Chimney Color
+    second: {fileID: 2800000, guid: 2f6dfaf3d1c0f4041bd3fa31cf80a249, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
-      name: Chimney Normal
-    second: {fileID: 2800000, guid: d10b7522c25f0664c96ac4b7a214dc70, type: 3}
+      name: Church Chimney Normal
+    second: {fileID: 2800000, guid: 9b64e366d98086d46aa13f841cd57ce3, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
-      name: Tiles Color
-    second: {fileID: 2800000, guid: ece0fb7bc71970841a9ebb70a8e0cf3c, type: 3}
+      name: Church Window Color
+    second: {fileID: 2800000, guid: 5ede2de3469e067419831dcd258116c9, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
-      name: Tiles Normal
-    second: {fileID: 2800000, guid: 3be8781f7d1148b48870e34af4d96bdc, type: 3}
+      name: Clockface
+    second: {fileID: 2800000, guid: 8293aa5a1494430449f5647f4ab7bc83, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
-      name: Window Frame
-    second: {fileID: 2800000, guid: 731ed0d1216703f49ac375d5058bd846, type: 3}
+      name: Roof Color
+    second: {fileID: 2800000, guid: bc4de3d52c81f164cb6a33121402f87e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Roof Normal
+    second: {fileID: 2800000, guid: 8b70f2020939d5343a93727f79cebf94, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Tower Bricks Color
+    second: {fileID: 2800000, guid: 604d6811215ec214e81be0be1b31ae09, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Tower Bricks Normal
+    second: {fileID: 2800000, guid: a018295dff877c748a1935ff8c90a30d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Tower Concrete Color
+    second: {fileID: 2800000, guid: 35267d2df91732345b486acb503b910a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Tower Concrete Normal
+    second: {fileID: 2800000, guid: d1f8feee89341c446b045dba7db3f21f, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
