@@ -11,7 +11,7 @@ public class DefaultState : BaseState
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            stateManager.SwitchState(stateManager.BuildingState);
+            stateManager.SwitchState(stateManager.BuildState);
         }
     }
 

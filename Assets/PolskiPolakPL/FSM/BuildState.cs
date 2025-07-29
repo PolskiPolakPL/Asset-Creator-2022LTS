@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BuildingState : BaseState
+public class BuildState : BaseState
 {
     public override void EnterState(BuilderStateManager stateManager)
     {

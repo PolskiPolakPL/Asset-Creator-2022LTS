@@ -1,4 +1,6 @@
 // Blueprint for other states
+using UnityEngine;
+
 public abstract class BaseState
 {
     public abstract void EnterState(BuilderStateManager stateManager);

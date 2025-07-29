@@ -6,7 +6,7 @@ public class BuilderStateManager : MonoBehaviour
     //FSM Classes
     BaseState _CurrentState;
     public DefaultState DefaultState = new DefaultState();
-    public BuildingState BuildingState = new BuildingState();
+    public BuildState BuildState = new BuildState();
 
     private void Start()
     {
@@ -23,5 +23,18 @@ public class BuilderStateManager : MonoBehaviour
         _CurrentState.ExitState(this);
         _CurrentState = newState;
         newState.EnterState(this);
+    }
+
+    public void SwitchState(int stateID)
+    {
+        switch (stateID)
+        {
+            case 0:
+                SwitchState(DefaultState); break;
+                case 1:
+                SwitchState(BuildState); break;
+            default:
+                SwitchState(DefaultState); break;
+        }
     }
 }
