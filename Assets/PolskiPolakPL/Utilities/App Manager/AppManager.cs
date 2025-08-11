@@ -5,7 +5,10 @@ public class AppManager : MonoBehaviour
 {
     public static AppManager Instance { get; private set; }
 
-    public static string GameVersion { get; private set; }
+    public static string gameVersion { get; private set; }
+    public static DeviceType deviceType { get; private set; }
+    public static bool isTouchSupported { get; private set; }
+
     private void Awake()
     {
         if (Instance && Instance != this)
@@ -13,7 +16,14 @@ public class AppManager : MonoBehaviour
         else
             Instance = this;
 
-        GameVersion = Application.version;
+        Initialize();
+    }
+
+    void Initialize()
+    {
+        deviceType = SystemInfo.deviceType;
+        isTouchSupported = Input.touchSupported;
+        gameVersion = Application.version;
         SetFPSLimit(startingFPS);
     }
 
@@ -58,6 +68,11 @@ public class AppManager : MonoBehaviour
             return;
         }
         Application.targetFrameRate = Mathf.RoundToInt(value);
+    }
+
+    public int GetFPSLimit()
+    {
+        return Application.targetFrameRate;
     }
 
     public void ExitGame()

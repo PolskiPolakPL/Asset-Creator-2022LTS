@@ -8,7 +8,7 @@ public class GameVersionText : MonoBehaviour
     void Start()
     {
         versionTextField = GetComponent<TMP_Text>();
-        versionTextField.text = $"Game Version: {AppManager.GameVersion}";
+        versionTextField.text = $"Game Version: {AppManager.gameVersion}";
     }
 
     // Update is called once per frame
