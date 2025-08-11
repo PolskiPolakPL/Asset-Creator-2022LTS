@@ -14,10 +14,12 @@ public class AppManager : MonoBehaviour
             Instance = this;
 
         GameVersion = Application.version;
+        SetFPSLimit(startingFPS);
     }
 
     [Min(1)]
-    [SerializeField] int minFPSCount = 60;
+    [SerializeField] int minFPSCount = 30;
+    [SerializeField] int startingFPS = 60;
 
     public void SetCursorLockState(int lockStateID)
     {
