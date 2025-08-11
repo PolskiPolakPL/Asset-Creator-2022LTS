@@ -1,19 +1,23 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AppManager : MonoBehaviour
 {
     public static AppManager Instance { get; private set; }
+
+    public static string GameVersion { get; private set; }
     private void Awake()
     {
         if (Instance && Instance != this)
             Destroy(this);
         else
             Instance = this;
+
+        GameVersion = Application.version;
     }
 
     [Min(1)]
     [SerializeField] int minFPSCount = 60;
-
 
     public void SetCursorLockState(int lockStateID)
     {
@@ -54,5 +58,13 @@ public class AppManager : MonoBehaviour
         Application.targetFrameRate = Mathf.RoundToInt(value);
     }
 
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 
+    public void LoadScene(int sceneID)
+    {
+        SceneManager.LoadScene(sceneID);
+    }
 }

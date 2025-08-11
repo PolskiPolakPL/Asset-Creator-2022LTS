@@ -26,14 +26,12 @@ public class FPSCounter : MonoBehaviour
     void MeasureFPS()
     {
         currentFPS = Mathf.RoundToInt(1/Time.deltaTime);
-        Debug.Log(currentFPS);
     }
 
     void RefreshCounter()
     {
         MeasureFPS();
-        fpsTextField.text = currentFPS.ToString();
-        Debug.Log(currentFPS.ToString());
+        fpsTextField.text = $"{currentFPS} FPS";
     }
 
     private void OnDestroy()
