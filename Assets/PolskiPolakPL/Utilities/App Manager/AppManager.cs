@@ -84,4 +84,47 @@ public class AppManager : MonoBehaviour
     {
         SceneManager.LoadScene(sceneID);
     }
+    public void SetVSync(bool isOn)
+    {
+        if (isOn)
+            QualitySettings.vSyncCount = 1;
+        else
+            QualitySettings.vSyncCount = 0;
+    }
+
+    public void SetAntiAliasing(int aaMode)
+    {
+        switch (aaMode)
+        {
+            case 0:
+                {
+                    QualitySettings.antiAliasing = 0;
+                }
+                break;
+
+            case 1:
+                {
+                    QualitySettings.antiAliasing = 2;
+                }
+                break;
+
+            case 2:
+                {
+                    QualitySettings.antiAliasing = 4;
+                }
+                break;
+
+            case 3:
+                {
+                    QualitySettings.antiAliasing = 8;
+                }
+                break;
+
+            default:
+                {
+                    Debug.LogWarning($"AntiAliasing = {aaMode} is invalid! Use 0,1,2 or 3. Higher the mode, the more precise AA");
+                }
+                break;
+        }
+    }
 }

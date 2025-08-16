@@ -2,7 +2,7 @@
 using TMPro;
 using System.Collections.Generic;
 
-public class DisplayResolution : MonoBehaviour
+public class DisplayResolutionScript : MonoBehaviour
 {
 
     [SerializeField] TMP_Dropdown resolutionDropdown;
