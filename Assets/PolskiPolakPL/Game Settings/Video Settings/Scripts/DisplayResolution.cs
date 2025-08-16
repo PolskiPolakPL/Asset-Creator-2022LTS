@@ -6,6 +6,7 @@ public class DisplayResolution : MonoBehaviour
 {
 
     [SerializeField] TMP_Dropdown resolutionDropdown;
+    [HideInInspector] public int CurrentResIndex = 0;
     Resolution[] resolutions;
 
     private void Awake()
@@ -17,6 +18,7 @@ public class DisplayResolution : MonoBehaviour
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        CurrentResIndex = resolutionIndex;
     }
 
     private void SetUpResolutionDropdown()
@@ -27,12 +29,12 @@ public class DisplayResolution : MonoBehaviour
         resolutionsList = InvertResolutionList(resolutionsList);
 
         List<string> optionsList = GetResolutionOptions(resolutionsList);
-        int currentResolutionIndex = GetCurrentResolutionIndex(resolutionsList);
+        CurrentResIndex = GetCurrentResolutionIndex(resolutionsList);
 
         //Setting up resolution dropdown
         resolutionDropdown.ClearOptions();
         resolutionDropdown.AddOptions(optionsList);
-        resolutionDropdown.SetValueWithoutNotify(currentResolutionIndex);
+        resolutionDropdown.SetValueWithoutNotify(CurrentResIndex);
         resolutionDropdown.RefreshShownValue();
         resolutions = resolutionsList.ToArray();
     }
