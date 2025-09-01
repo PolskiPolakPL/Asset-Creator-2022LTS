@@ -17,8 +17,8 @@ public class PopupScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerMovement = GameManager.Instance.Player.GetComponent<FPSMovement>();
-        playerLook = GameManager.Instance.Player.GetComponent<FPSLook>();
+        playerMovement = GameManager.Instance.PlayerGO.GetComponent<FPSMovement>();
+        playerLook = GameManager.Instance.PlayerGO.GetComponent<FPSLook>();
     }
 
     public void ShowPopup()

@@ -5,7 +5,6 @@ public class Ticket
 {
 
     public static List<Ticket> allTickets = new List<Ticket>();
-
     public int groupId { get; private set; }
     public string name { get; private set; }
     public int value { get; private set; }
