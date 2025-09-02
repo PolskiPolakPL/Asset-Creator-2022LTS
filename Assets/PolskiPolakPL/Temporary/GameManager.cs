@@ -1,6 +1,8 @@
 using UnityEngine;
 using PolskiPolakPL.Utils;
 using TMPro;
+using System.Collections.Generic;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,20 +15,20 @@ public class GameManager : MonoBehaviour
         else
             Instance = this;
     }
-
-    public GameObject PlayerGO;
+    [SerializeField] List<PlayerScript> playersList;
+    [SerializeField] PlayerScript taggedPlayer;
 
     [SerializeField] float lobbyTime = 10;
     [SerializeField] float endgameTime = 5;
     [SerializeField] KeyCode skipStateKey = KeyCode.Tab;
     [SerializeField] TMP_Text messageTextField;
 
-
     Timer lobbyTimer;
     Timer endgameTimer;
     Timer uiTimer;
     public static GameState gameState { get; private set; } = GameState.LOBBY;
-    private bool gameStateChanged = false;
+    public event Action<GameState> OnGameStateChanged;
+
     string logMessage = "";
     private void Start()
     {
@@ -92,7 +94,7 @@ public class GameManager : MonoBehaviour
 
     private void HandleInGameState()
     {
-        logMessage = $"[{gameState}] Current Tagged Player: {PlayerGO.name}";
+        logMessage = $"[{gameState}] Current Tagged Player: {taggedPlayer.gameObject.name}";
         if (Input.GetKeyDown(skipStateKey))
         {
             GameManager.Instance.ChangeState(GameState.END_GAME);
@@ -111,7 +113,62 @@ public class GameManager : MonoBehaviour
 
     public void ChangeState(GameState newState)
     {
+        switch (newState)
+        {
+            case GameState.LOBBY:
+                {
+
+                }
+                break;
+
+            case GameState.IN_GAME:
+                {
+                    taggedPlayer = GetRandomPlayer(playersList);
+                }
+                break;
+
+            case GameState.END_GAME:
+                {
+                    foreach(PlayerScript player in playersList)
+                    {
+                        if(player == taggedPlayer)
+                        {
+                            player.ticket.SetValue(player.ticket.minValue);
+                        }
+                        else
+                        {
+                            player.ticket.Add(1);
+                        }
+                        Debug.Log($"{player.name} has now {player.ticket.value} tickets");
+                    }
+                }
+                break;
+
+            default: { Debug.LogWarning("ANOTHER GAME STATE?!?!?!?!"); } break;
+        }
         GameManager.gameState = newState;
+        OnGameStateChanged?.Invoke(newState);
+    }
+
+    private PlayerScript GetRandomPlayer(List<PlayerScript> playersList)
+    {
+        PlayerScript choosenPlayer = playersList[0];
+        int poolSize = 0;
+        foreach(PlayerScript player in playersList)
+        {
+            poolSize += player.ticket.value;
+        }
+        int randomVal = UnityEngine.Random.Range(1, poolSize);
+        foreach(PlayerScript player in playersList)
+        {
+            randomVal -= player.ticket.value;
+            if (randomVal <= 0)
+            {
+                choosenPlayer = player;
+                break;
+            }
+        }
+        return choosenPlayer;
     }
 
     void StartGame()
