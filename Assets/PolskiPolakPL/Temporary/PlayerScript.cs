@@ -6,7 +6,7 @@ public class PlayerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ticket = new RandomTicket("TagTicket");
+        ticket = new RandomTicket("TagTicket",10,10);
         Debug.Log($"{gameObject.name}'s current '{ticket.name}' tickets = {ticket.value}");
     }
 }

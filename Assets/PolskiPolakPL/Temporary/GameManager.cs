@@ -18,18 +18,24 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<PlayerScript> playersList;
     [SerializeField] PlayerScript taggedPlayer;
 
+    [Header("Game States")]
     [SerializeField] float lobbyTime = 10;
     [SerializeField] float endgameTime = 5;
     [SerializeField] KeyCode skipStateKey = KeyCode.Tab;
+    public static GameState gameState { get; private set; } = GameState.LOBBY;
+    public event Action<GameState> OnGameStateChanged;
+
+    [Header("UI")]
     [SerializeField] TMP_Text messageTextField;
+    [SerializeField] TMP_Text playersListTextField;
+    string logMessage = "";
+
+    int poolSize = 0;
 
     Timer lobbyTimer;
     Timer endgameTimer;
     Timer uiTimer;
-    public static GameState gameState { get; private set; } = GameState.LOBBY;
-    public event Action<GameState> OnGameStateChanged;
 
-    string logMessage = "";
     private void Start()
     {
         Application.targetFrameRate = 120;
@@ -117,7 +123,8 @@ public class GameManager : MonoBehaviour
         {
             case GameState.LOBBY:
                 {
-
+                    if (playersListTextField)
+                        UpdatePlayersList();
                 }
                 break;
 
@@ -137,7 +144,7 @@ public class GameManager : MonoBehaviour
                         }
                         else
                         {
-                            player.ticket.Add(1);
+                            player.ticket.Add(10);
                         }
                         Debug.Log($"{player.name} has now {player.ticket.value} tickets");
                     }
@@ -146,18 +153,35 @@ public class GameManager : MonoBehaviour
 
             default: { Debug.LogWarning("ANOTHER GAME STATE?!?!?!?!"); } break;
         }
+        UpdatePlayersList();
         GameManager.gameState = newState;
         OnGameStateChanged?.Invoke(newState);
+    }
+
+    void UpdatePlayersList()
+    {
+        poolSize = GetPoolSize();
+        playersListTextField.text = "";
+        foreach (PlayerScript player in playersList)
+        {
+            playersListTextField.text += $"{player.name} ({Mathf.RoundToInt(((float)player.ticket.value / (float)poolSize) * 100)}%)\n";
+        }
+    }
+
+    private int GetPoolSize()
+    {
+        int pool = 0;
+        foreach(PlayerScript player in playersList)
+        {
+            pool += player.ticket.value;
+        }
+        return pool;
     }
 
     private PlayerScript GetRandomPlayer(List<PlayerScript> playersList)
     {
         PlayerScript choosenPlayer = playersList[0];
-        int poolSize = 0;
-        foreach(PlayerScript player in playersList)
-        {
-            poolSize += player.ticket.value;
-        }
+        poolSize = GetPoolSize();
         int randomVal = UnityEngine.Random.Range(1, poolSize);
         foreach(PlayerScript player in playersList)
         {
