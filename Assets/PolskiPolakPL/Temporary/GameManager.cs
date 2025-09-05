@@ -19,8 +19,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] PlayerScript taggedPlayer;
 
     [Header("Game States")]
-    [SerializeField] float lobbyTime = 10;
-    [SerializeField] float endgameTime = 5;
+    [SerializeField] float lobbyTime = 3;
+    [SerializeField] float gameTime = 5;
     [SerializeField] KeyCode skipStateKey = KeyCode.Tab;
     public static GameState gameState { get; private set; } = GameState.LOBBY;
     public event Action<GameState> OnGameStateEnter;
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     int poolSize = 0;
 
     Timer lobbyTimer;
-    Timer endgameTimer;
+    Timer gameTimer;
     Timer uiTimer;
 
     private void Start()
@@ -43,10 +43,12 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 120;
         lobbyTimer = new Timer(lobbyTime);
         lobbyTimer.OnTimerElapsed += StartGame;
-        endgameTimer = new Timer(endgameTime);
-        endgameTimer.OnTimerElapsed += ResetGame;
-        uiTimer = new Timer(1);
+        gameTimer = new Timer(gameTime);
+        gameTimer.OnTimerElapsed += ResetGame;
+        uiTimer = new Timer(.1f);
         uiTimer.OnTimerElapsed += UpdateUIText;
+        uiTimer.Tick(.1f);
+        UpdatePlayersList();
     }
 
     private void UpdateUIText()
@@ -60,7 +62,7 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         lobbyTimer.OnTimerElapsed -= StartGame;
-        endgameTimer.OnTimerElapsed -= ResetGame;
+        gameTimer.OnTimerElapsed -= ResetGame;
     }
 
     private void Update()
@@ -78,14 +80,6 @@ public class GameManager : MonoBehaviour
                     HandleInGameState();
                 }
                 break;
-
-            case GameState.END_GAME:
-                {
-                    HandleEndGameState();
-                }
-                break;
-
-            default: { Debug.LogWarning("ANOTHER GAME STATE?!?!?!?!"); }break;
         }
         uiTimer.Tick(Time.deltaTime);
         OnGameStateUpdate?.Invoke(gameState);
@@ -93,7 +87,7 @@ public class GameManager : MonoBehaviour
 
     private void HandleLobbyState()
     {
-        logMessage = $"[{gameState}] Game starts in: {(int)lobbyTimer.RemaningSeconds}s";
+        logMessage = $"[{gameState}] Game starts in: {Mathf.RoundToInt(lobbyTimer.RemaningSeconds)}s";
         if (Input.GetKeyDown(skipStateKey))
         {
             GameManager.Instance.ChangeState(GameState.IN_GAME);
@@ -103,21 +97,13 @@ public class GameManager : MonoBehaviour
 
     private void HandleInGameState()
     {
-        logMessage = $"[{gameState}] Current Tagged Player: {taggedPlayer.gameObject.name}";
-        if (Input.GetKeyDown(skipStateKey))
-        {
-            GameManager.Instance.ChangeState(GameState.END_GAME);
-        }
-    }
-
-    private void HandleEndGameState()
-    {
-        logMessage = $"[{gameState}] Game resets in: {(int)endgameTimer.RemaningSeconds}s";
+        logMessage = $"[{gameState}] Current Tagged Player: {taggedPlayer.gameObject.name}\n" +
+            $"Game ends in: {Mathf.RoundToInt(gameTimer.RemaningSeconds)}s";
         if (Input.GetKeyDown(skipStateKey))
         {
             GameManager.Instance.ChangeState(GameState.LOBBY);
         }
-        endgameTimer.Tick(Time.deltaTime);
+        gameTimer.Tick(Time.deltaTime);
     }
 
     public void ChangeState(GameState newState)
@@ -127,37 +113,37 @@ public class GameManager : MonoBehaviour
         {
             case GameState.LOBBY:
                 {
-                    if (playersListTextField)
-                        UpdatePlayersList();
-                }
-                break;
-
-            case GameState.IN_GAME:
-                {
-                    taggedPlayer = GetRandomPlayer(playersList);
-                }
-                break;
-
-            case GameState.END_GAME:
-                {
                     foreach(PlayerScript player in playersList)
                     {
                         if(player == taggedPlayer)
                         {
                             player.ticket.SetValue(player.ticket.minValue);
                         }
+                        else if (player.ticket.value > Mathf.Ceil(Mathf.Pow(playersList.Count,-2)))
+                        {
+                            player.ticket.Add(2);
+                        }
+                        else if (player.ticket.value > Mathf.RoundToInt(playersList.Count/2))
+                        {
+                            player.ticket.Add(3);
+                        }
                         else
                         {
-                            player.ticket.Add(10);
+                            player.ticket.Add(1);
                         }
                         Debug.Log($"{player.name} has now {player.ticket.value} tickets");
                     }
+                    UpdatePlayersList();
                 }
                 break;
 
-            default: { Debug.LogWarning("ANOTHER GAME STATE?!?!?!?!"); } break;
+            case GameState.IN_GAME:
+                {
+                    taggedPlayer = GetRandomPlayer(playersList);
+                    UpdatePlayersList();
+                }
+                break;
         }
-        UpdatePlayersList();
         GameManager.gameState = newState;
         OnGameStateEnter?.Invoke(newState);
     }
@@ -168,7 +154,7 @@ public class GameManager : MonoBehaviour
         playersListTextField.text = "";
         foreach (PlayerScript player in playersList)
         {
-            playersListTextField.text += $"{player.name} ({Mathf.RoundToInt(((float)player.ticket.value / (float)poolSize) * 100)}%)\n";
+            playersListTextField.text += $"[{player.tagTimes}] {player.name} ({Mathf.RoundToInt(((float)player.ticket.value / (float)poolSize) * 100)}%)\n";
         }
     }
 
@@ -193,6 +179,7 @@ public class GameManager : MonoBehaviour
             if (randomVal <= 0)
             {
                 choosenPlayer = player;
+                player.tagTimes++;
                 break;
             }
         }
@@ -201,18 +188,17 @@ public class GameManager : MonoBehaviour
 
     void StartGame()
     {
-        GameManager.Instance.ChangeState(GameState.IN_GAME);
+        ChangeState(GameState.IN_GAME);
     }
 
-    void ResetGame()
+    private void ResetGame()
     {
-        GameManager.Instance.ChangeState(GameState.LOBBY);
+        ChangeState(GameState.LOBBY);
     }
 }
 
 public enum GameState
 {
     LOBBY,
-    IN_GAME,
-    END_GAME
+    IN_GAME
 }

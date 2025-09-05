@@ -105,8 +105,8 @@ namespace PolskiPolakPL.Utils
         /// Method used to move time one tick. Recommended use in <c>Update()</c> or <c>FixedUpdate()</c> methods.
         /// </summary>
         /// <param name="deltaTime">time difference between ticks</param>
-        /// <param name="invokeEvent">Controlls if Timer invokes <c>OnTimerChanged</c> Action. Deafault = <c>false</c></param>
-        public void Tick(float deltaTime, bool invokeEvent = false)
+        /// <param name="invokeEvent">Controlls if Timer invokes <c>OnTimerChanged</c> Action. Deafault = <c>true</c></param>
+        public void Tick(float deltaTime, bool invokeEvent = true)
         {
             if(RemaningSeconds == 0)
             {
