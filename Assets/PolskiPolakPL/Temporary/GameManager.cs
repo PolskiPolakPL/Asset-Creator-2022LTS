@@ -23,7 +23,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] float endgameTime = 5;
     [SerializeField] KeyCode skipStateKey = KeyCode.Tab;
     public static GameState gameState { get; private set; } = GameState.LOBBY;
-    public event Action<GameState> OnGameStateChanged;
+    public event Action<GameState> OnGameStateEnter;
+    public event Action<GameState> OnGameStateUpdate;
+    public event Action<GameState> OnGameStateExit;
 
     [Header("UI")]
     [SerializeField] TMP_Text messageTextField;
@@ -86,6 +88,7 @@ public class GameManager : MonoBehaviour
             default: { Debug.LogWarning("ANOTHER GAME STATE?!?!?!?!"); }break;
         }
         uiTimer.Tick(Time.deltaTime);
+        OnGameStateUpdate?.Invoke(gameState);
     }
 
     private void HandleLobbyState()
@@ -119,6 +122,7 @@ public class GameManager : MonoBehaviour
 
     public void ChangeState(GameState newState)
     {
+        OnGameStateExit?.Invoke(gameState);
         switch (newState)
         {
             case GameState.LOBBY:
@@ -155,7 +159,7 @@ public class GameManager : MonoBehaviour
         }
         UpdatePlayersList();
         GameManager.gameState = newState;
-        OnGameStateChanged?.Invoke(newState);
+        OnGameStateEnter?.Invoke(newState);
     }
 
     void UpdatePlayersList()
