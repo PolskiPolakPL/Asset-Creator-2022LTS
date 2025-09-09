@@ -4,10 +4,10 @@ using TMPro;
 using System.Collections.Generic;
 using System;
 
-public class GameManager : MonoBehaviour
+public class TagGameManager : MonoBehaviour
 {
     //Singleton
-    public static GameManager Instance;
+    public static TagGameManager Instance;
     private void Awake()
     {
         if (Instance && Instance != this)
@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
         logMessage = $"[{gameState}] Game starts in: {Mathf.RoundToInt(lobbyTimer.RemaningSeconds)}s";
         if (Input.GetKeyDown(skipStateKey))
         {
-            GameManager.Instance.ChangeState(GameState.IN_GAME);
+            ChangeState(GameState.IN_GAME);
         }
         lobbyTimer.Tick(Time.deltaTime);
     }
@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
             $"Game ends in: {Mathf.RoundToInt(gameTimer.RemaningSeconds)}s";
         if (Input.GetKeyDown(skipStateKey))
         {
-            GameManager.Instance.ChangeState(GameState.LOBBY);
+            ChangeState(GameState.LOBBY);
         }
         gameTimer.Tick(Time.deltaTime);
     }
@@ -113,26 +113,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.LOBBY:
                 {
-                    foreach(PlayerScript player in playersList)
-                    {
-                        if(player == taggedPlayer)
-                        {
-                            player.ticket.SetValue(player.ticket.minValue);
-                        }
-                        else if (player.ticket.value > Mathf.Ceil(Mathf.Pow(playersList.Count,-2)))
-                        {
-                            player.ticket.Add(2);
-                        }
-                        else if (player.ticket.value > Mathf.RoundToInt(playersList.Count/2))
-                        {
-                            player.ticket.Add(3);
-                        }
-                        else
-                        {
-                            player.ticket.Add(1);
-                        }
-                        Debug.Log($"{player.name} has now {player.ticket.value} tickets");
-                    }
+                    EvaluateTickets();
                     UpdatePlayersList();
                 }
                 break;
@@ -144,17 +125,47 @@ public class GameManager : MonoBehaviour
                 }
                 break;
         }
-        GameManager.gameState = newState;
+        gameState = newState;
         OnGameStateEnter?.Invoke(newState);
+    }
+
+    private void EvaluateTickets()
+    {
+        int playerMisses;
+        int playerCount = playersList.Count;
+        foreach (PlayerScript player in playersList)
+        {
+            if (player == taggedPlayer)
+            {
+                player.ticket.SetValue(player.ticket.minValue);
+                player.ticket.misses = 0;
+            }
+            else
+            {
+                player.ticket.misses++;
+                playerMisses = player.ticket.misses;
+                if (playerCount > 10 && playerMisses > Mathf.RoundToInt(playerCount / 2))
+                {
+                    player.ticket.Add(2);
+                }
+                else
+                {
+                    player.ticket.Add(1);
+                }
+            }
+            Debug.Log($"{player.name} has now {player.ticket.value} tickets");
+        }
     }
 
     void UpdatePlayersList()
     {
         poolSize = GetPoolSize();
         playersListTextField.text = "";
+        int chancePercent;
         foreach (PlayerScript player in playersList)
         {
-            playersListTextField.text += $"[{player.tagTimes}] {player.name} ({Mathf.RoundToInt(((float)player.ticket.value / (float)poolSize) * 100)}%)\n";
+            chancePercent = Mathf.RoundToInt(((float)player.ticket.value / (float)poolSize) * 100);
+            playersListTextField.text += $"[{player.tagTimes}] {player.name} ({chancePercent}%)\n";
         }
     }
 

@@ -8,6 +8,10 @@ public class RandomTicket
     public int minValue { get; private set; }
     public int maxValue { get; private set; }
     /// <summary>
+    /// A public Int value for tracking how many times ticket was missed.
+    /// </summary>
+    public int misses = 0;
+    /// <summary>
     /// Creates new 'RandomTicket' object.
     /// </summary>
     /// <param name="name">Name of the ticket.</param>
