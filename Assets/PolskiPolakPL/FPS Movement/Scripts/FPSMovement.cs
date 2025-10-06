@@ -24,6 +24,7 @@ public class FPSMovement : MonoBehaviour
     private Vector3 playerVelocity;
     private float gravityValue = Physics.gravity.y;
     private bool groundedPlayer;
+    public bool canControl = true;
 
 
     private void Start()
@@ -40,13 +41,21 @@ public class FPSMovement : MonoBehaviour
             playerVelocity.y = 0f;
         }
 
-        PlayerMove();
+        if (canControl)
+        {
+            PlayerMove();
 
-        if (Input.GetKey(jumpKey))
-            PlayerJump();
+            if (Input.GetKey(jumpKey))
+                PlayerJump();
+        }
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
+    }
+
+    public void EnableControl(bool enable)
+    {
+        canControl = enable;
     }
 
     void PlayerMove()

@@ -774,6 +774,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1311002420324156997, guid: cf4c9a7175aad6c4686e69cad3d19249, type: 3}
   m_PrefabInstance: {fileID: 6492361425631435409}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &960009792 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 561964788792601247, guid: cf4c9a7175aad6c4686e69cad3d19249, type: 3}
+  m_PrefabInstance: {fileID: 6492361425631435409}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960009791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66040309f6cdd6442bc1e1c2cbd3a6b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &966653641
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,6 +1060,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 960009791}
+  OnPlayerFreeze:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 960009792}
+        m_TargetAssemblyTypeName: FPSMovement, Assembly-CSharp
+        m_MethodName: EnableControl
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnPlayerUnfreeze:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 960009792}
+        m_TargetAssemblyTypeName: FPSMovement, Assembly-CSharp
+        m_MethodName: EnableControl
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1001 &6492361425631435409
 PrefabInstance:
   m_ObjectHideFlags: 0
