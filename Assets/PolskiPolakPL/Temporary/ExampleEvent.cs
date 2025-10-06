@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ExampleEvent : MonoBehaviour
 {
-    [SerializeField] List<GameObject> objectsToAppear = new List<GameObject>();
+    public List<GameObject> objectsToAppear = new List<GameObject>();
     public void TriggerEvent()
     {
         Debug.Log("Random Event Triggered!");

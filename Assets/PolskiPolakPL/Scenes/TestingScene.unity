@@ -1077,6 +1077,18 @@ MonoBehaviour:
   OnEnter:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 2098416832}
+        m_TargetAssemblyTypeName: RandomEventManager, Assembly-CSharp
+        m_MethodName: ActivateRandomEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1119815633}
         m_TargetAssemblyTypeName: RandomEvent, Assembly-CSharp
         m_MethodName: Appear
@@ -1091,19 +1103,7 @@ MonoBehaviour:
         m_CallState: 2
   OnStay:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1119815633}
-        m_TargetAssemblyTypeName: RandomEvent, Assembly-CSharp
-        m_MethodName: ChangeColor
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnExit:
     m_PersistentCalls:
       m_Calls:
@@ -1754,6 +1754,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2098416831}
+  - component: {fileID: 2098416832}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -1776,6 +1777,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1483287142}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2098416832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2098416830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7efa15b54bd1f04d9753c4c8fbb542e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  redCubeTickets: 60
+  blueCubeTickets: 30
+  noCubeTickets: 10
+  exampleEventScript: {fileID: 1119815633}
 --- !u!1001 &6492361425631435409
 PrefabInstance:
   m_ObjectHideFlags: 0

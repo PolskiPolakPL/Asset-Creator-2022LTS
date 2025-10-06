@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    public RandomTicket ticket;
+    public RandomTicket tagTicket;
     public int tagTimes = 0;
     // Start is called before the first frame update
     void Awake()
     {
-        ticket = new RandomTicket("TagTicket",1,0);
-        Debug.Log($"{gameObject.name}'s current '{ticket.name}' tickets = {ticket.value}");
+        tagTicket = new RandomTicket(1,0);
+        Debug.Log($"{gameObject.name}'s current '{tagTicket.name}' tickets = {tagTicket.Weight}");
     }
 }

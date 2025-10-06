@@ -137,23 +137,23 @@ public class TagGameManager : MonoBehaviour
         {
             if (player == taggedPlayer)
             {
-                player.ticket.SetValue(player.ticket.minValue);
-                player.ticket.misses = 0;
+                player.tagTicket.SetWeight(player.tagTicket.MinWeight);
+                player.tagTicket.misses = 0;
             }
             else
             {
-                player.ticket.misses++;
-                playerMisses = player.ticket.misses;
+                player.tagTicket.misses++;
+                playerMisses = player.tagTicket.misses;
                 if (playerCount > 10 && playerMisses > Mathf.RoundToInt(playerCount / 2))
                 {
-                    player.ticket.Add(2);
+                    player.tagTicket.Add(2);
                 }
                 else
                 {
-                    player.ticket.Add(1);
+                    player.tagTicket.Add(1);
                 }
             }
-            Debug.Log($"{player.name} has now {player.ticket.value} tickets");
+            Debug.Log($"{player.name} has now {player.tagTicket.Weight} tickets");
         }
     }
 
@@ -164,7 +164,7 @@ public class TagGameManager : MonoBehaviour
         int chancePercent;
         foreach (PlayerScript player in playersList)
         {
-            chancePercent = Mathf.RoundToInt(((float)player.ticket.value / (float)poolSize) * 100);
+            chancePercent = Mathf.RoundToInt(((float)player.tagTicket.Weight / (float)poolSize) * 100);
             playersListTextField.text += $"[{player.tagTimes}] {player.name} ({chancePercent}%)\n";
         }
     }
@@ -174,7 +174,7 @@ public class TagGameManager : MonoBehaviour
         int pool = 0;
         foreach(PlayerScript player in playersList)
         {
-            pool += player.ticket.value;
+            pool += player.tagTicket.Weight;
         }
         return pool;
     }
@@ -186,7 +186,7 @@ public class TagGameManager : MonoBehaviour
         int randomVal = UnityEngine.Random.Range(1, poolSize);
         foreach(PlayerScript player in playersList)
         {
-            randomVal -= player.ticket.value;
+            randomVal -= player.tagTicket.Weight;
             if (randomVal <= 0)
             {
                 choosenPlayer = player;
