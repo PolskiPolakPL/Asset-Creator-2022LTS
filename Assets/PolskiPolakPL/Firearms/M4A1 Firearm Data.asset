@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3525edcd67e54a4085daf85aff5f20e, type: 3}
+  m_Name: M4A1 Firearm Data
+  m_EditorClassIdentifier: 
+  damage: 0
+  criticalDamage: 0
+  magSize: 30
+  fireCooldown: 0
+  farRange: 0
+  midRange: 0
+  nearRange: 0
+  farAccuracy: 0
+  midAccuracy: 0
+  nearAccuracy: 0
+  farPenetration: 0
+  midPenetration: 0
+  nearPenetration: 0
