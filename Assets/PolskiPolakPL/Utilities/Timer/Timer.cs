@@ -2,7 +2,7 @@ using System;
 namespace PolskiPolakPL.Utils
 {
     /// <summary>
-    /// Timer class from tutorial extended by PolskiPolakPL. You can find original tutorial
+    /// Timer class from tutorial, extended by PolskiPolakPL. You can find original tutorial
     /// <seealso href="https://youtu.be/pRjTM3pzqDw">here</seealso>
     /// </summary>
     public class Timer
@@ -37,7 +37,7 @@ namespace PolskiPolakPL.Utils
         /// <summary>
         /// Timer Action event invoked at the end of counting time.
         /// </summary>
-        public event Action OnTimerElapsed;
+        public event Action OnTimerEnd;
 
 
 
@@ -126,7 +126,7 @@ namespace PolskiPolakPL.Utils
             if(RemaningSeconds > 0)
                 return;
             RemaningSeconds = 0;
-            OnTimerElapsed?.Invoke();
+            OnTimerEnd?.Invoke();
         }
     }
 }

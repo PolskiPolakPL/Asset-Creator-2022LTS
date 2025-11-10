@@ -23,10 +23,10 @@ public class ExampleTimerScript : MonoBehaviour
         
 
         // Subscribe your methods to right Actions.
-        defaultTimer.OnTimerElapsed += ExampleMethod;
+        defaultTimer.OnTimerEnd += ExampleMethod;
         defaultTimer.OnTimerTick += SeeTick;
 
-        secondTimer.OnTimerElapsed += ExampleMethod2;
+        secondTimer.OnTimerEnd += ExampleMethod2;
         secondTimer.OnTimerTick += SeeTick;
 
         // If you want an evet to occour at start, you have to skip first elapse
