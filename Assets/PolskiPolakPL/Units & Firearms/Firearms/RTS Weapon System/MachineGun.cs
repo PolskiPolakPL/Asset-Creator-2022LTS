@@ -10,9 +10,9 @@ public class MachineGun : BaseGun
     // Start is called before the first frame update
     void Start()
     {
-        fireTimer = new Timer(firearmData.fireCooldown);
+        fireTimer = new Timer(firearmData.FireCooldown);
         fireTimer.OnTimerElapsed += ChamberNextBullet;
-        currentAmmo = firearmData.magSize;
+        currentAmmo = firearmData.MagSize;
     }
 
     // Update is called once per frame
@@ -36,7 +36,7 @@ public class MachineGun : BaseGun
     public override void Reload()
     {
         Debug.Log($"[{this.name}] RELOADING!");
-        currentAmmo = firearmData.magSize;
+        currentAmmo = firearmData.MagSize;
     }
 
     public override void Shoot()
