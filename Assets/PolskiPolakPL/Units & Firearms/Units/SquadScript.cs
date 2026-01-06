@@ -6,25 +6,38 @@ public class SquadScript : MonoBehaviour
 {
     [SerializeField] GameObject unitPrefab;
     [SerializeField] SquadData squadData;
-    [SerializeField] int xOffset = 1;
-    [SerializeField] int zOffset = 1;
-    // Start is called before the first frame update
-    void Start()
+
+    [SerializeField] float squadUnitsOffset = 1;
+    int currentSquadSize = 0;
+
+    private void Awake()
     {
-        int xPos = 0, zPos = 0;
-        GameObject unit;
-        while(transform.childCount < squadData.SquadSize)
+        InitiateNewSquad(squadData.SquadSize, squadUnitsOffset);
+    }
+
+    void InitiateNewSquad(int numberOfUnits, float unitsOffset)
+    {
+        GameObject newUnit;
+        //clearing children in transform
+        foreach (Transform child in transform)
         {
-            unit = Instantiate(unitPrefab, transform);
-            unit.transform.localPosition = new Vector3 (xPos, 0, zPos);
-            xPos += xOffset;
-            zPos += zOffset;
+            Debug.Log($"{child.name} was removed from {transform.name}");
+            Destroy(child.gameObject);
+        }
+        //initializing new units
+        for (int i = 0; i < numberOfUnits; i++)
+        {
+            newUnit = Instantiate(unitPrefab, transform);
+            if (i > 0)
+            {
+                float angle = 2 * Mathf.PI * (i - 1) / (numberOfUnits - 1);
+                float x = Mathf.Cos(angle) * unitsOffset;
+                float z = Mathf.Sin(angle) * unitsOffset;
+                newUnit.transform.localPosition = new Vector3(x, 0, z);
+            }
+            else
+                newUnit.transform.localPosition = Vector3.zero;
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
