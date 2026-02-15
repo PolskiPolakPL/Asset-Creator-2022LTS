@@ -1,17 +1,17 @@
 using UnityEngine;
 
-public class VitalMericExample : MonoBehaviour
+public class PlayerVitals : MonoBehaviour
 {
     [SerializeField] float maxHP;
     [SerializeField] float maxStamina;
     [SerializeField] float maxSanity;
 
 
-    VitalsMetric Health;
-    VitalsMetric Stamina;
-    VitalsMetric Sanity;
+    Condition Health;
+    Condition Stamina;
+    Condition Sanity;
 
-    VitalsMetric targetMetric;
+    Condition targetMetric;
 
     string red = "#FF3030";
     string blue = "#10FFFF";
@@ -19,18 +19,21 @@ public class VitalMericExample : MonoBehaviour
 
     private void Awake()
     {
-        Health = new VitalsMetric(maxHP);
-        Health.OnValueChange += DisplayHP;
+        Health = new Condition(maxHP);
+        Health.OnGained += DisplayHP;
+        Health.OnLost += DisplayHP;
         Health.OnFilled += DisplayFillStat;
         Health.OnDrained += DisplayEmptyStats;
 
-        Stamina = new VitalsMetric(maxStamina);
-        Stamina.OnValueChange += DisplayeStamina;
+        Stamina = new Condition(maxStamina);
+        Stamina.OnGained += DisplayHP;
+        Stamina.OnLost += DisplayHP;
         Stamina.OnFilled += DisplayFillStat;
         Stamina.OnDrained += DisplayEmptyStats;
 
-        Sanity = new VitalsMetric(maxSanity);
-        Sanity.OnValueChange += DisplaySanity;
+        Sanity = new Condition(maxSanity);
+        Sanity.OnGained += DisplayHP;
+        Sanity.OnLost += DisplayHP;
         Sanity.OnFilled += DisplayFillStat;
         Sanity.OnDrained += DisplayEmptyStats;
 
@@ -45,9 +48,10 @@ public class VitalMericExample : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if(Input.GetKeyDown(KeyCode.KeypadPlus))
         {
-            targetMetric.GainWithoutNotify(13);
+            targetMetric.Gain(13);
         }
         if (Input.GetKeyDown(KeyCode.KeypadMinus))
         {
@@ -80,23 +84,23 @@ public class VitalMericExample : MonoBehaviour
     void DisplayPlayerStats()
     {
         
-        Debug.Log($"<b>Health: </b><color={red}>{Health.Current}/{Health.Max}</color>\t" +
-            $"<b>Stamina: </b><color={yellow}>{Stamina.Current}/{Stamina.Max}</color>\t" +
-            $"<b>Sanity: </b><color={blue}>{Sanity.Current}/{Sanity.Max}</color>");
+        Debug.Log($"<b>Health: </b><color={red}>{Health.CurrentVal}/{Health.MaxVal}</color>\t" +
+            $"<b>Stamina: </b><color={yellow}>{Stamina.CurrentVal}/{Stamina.MaxVal}</color>\t" +
+            $"<b>Sanity: </b><color={blue}>{Sanity.CurrentVal}/{Sanity.MaxVal}</color>");
     }
 
     void DisplayeStamina()
     {
-        Debug.Log($"<b>Stamina: </b><color={yellow}>{Stamina.Current}/{Stamina.Max}</color>\t");
+        Debug.Log($"<b>Stamina: </b><color={yellow}>{Stamina.CurrentVal}/{Stamina.MaxVal}</color>\t");
     }
 
     void DisplayHP()
     {
-        Debug.Log($"<b>Health: </b><color={red}>{Health.Current}/{Health.Max}</color>\t");
+        Debug.Log($"<b>Health: </b><color={red}>{Health.CurrentVal}/{Health.MaxVal}</color>\t");
     }
 
     void DisplaySanity()
     {
-        Debug.Log($"<b>Sanity: </b><color={blue}>{Sanity.Current}/{Sanity.Max}</color>");
+        Debug.Log($"<b>Sanity: </b><color={blue}>{Sanity.CurrentVal}/{Sanity.MaxVal}</color>");
     }
 }
