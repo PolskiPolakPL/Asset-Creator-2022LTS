@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Engineers
   m_EditorClassIdentifier: 
   SquadSize: 4
-  HP: 100
+  HP: 80
   MovementSpeed: 3.2
   Sight: 20
   ReactionTime: 1.1

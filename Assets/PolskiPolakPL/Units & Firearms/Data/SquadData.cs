@@ -6,7 +6,6 @@ using UnityEngine;
 public class SquadData : ScriptableObject
 {
     [Min(1)] public int SquadSize = 1;
-    public int HP = 100;
     public float MovementSpeed = 3.2f;
     public float Sight = 20;
     public float ReactionTime = 1.1f;
