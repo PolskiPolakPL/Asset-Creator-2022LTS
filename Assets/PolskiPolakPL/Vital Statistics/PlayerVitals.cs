@@ -3,8 +3,11 @@ using UnityEngine;
 public class PlayerVitals : MonoBehaviour
 {
     [SerializeField] float maxHP;
+    [SerializeField] ConditionBar HPBar;
     [SerializeField] float maxStamina;
+    [SerializeField] ConditionBar StaminaBar;
     [SerializeField] float maxSanity;
+    [SerializeField] ConditionBar SanityBar;
 
 
     Condition Health;
@@ -20,22 +23,13 @@ public class PlayerVitals : MonoBehaviour
     private void Awake()
     {
         Health = new Condition(maxHP);
-        Health.OnGained += DisplayHP;
-        Health.OnLost += DisplayHP;
-        Health.OnFilled += DisplayFillStat;
-        Health.OnDrained += DisplayEmptyStats;
+        HPBar.AttachCondition(Health);
 
         Stamina = new Condition(maxStamina);
-        Stamina.OnGained += DisplayHP;
-        Stamina.OnLost += DisplayHP;
-        Stamina.OnFilled += DisplayFillStat;
-        Stamina.OnDrained += DisplayEmptyStats;
+        StaminaBar.AttachCondition(Stamina);
 
         Sanity = new Condition(maxSanity);
-        Sanity.OnGained += DisplayHP;
-        Sanity.OnLost += DisplayHP;
-        Sanity.OnFilled += DisplayFillStat;
-        Sanity.OnDrained += DisplayEmptyStats;
+        SanityBar.AttachCondition(Sanity);
 
     }
     // Start is called before the first frame update
@@ -60,26 +54,20 @@ public class PlayerVitals : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Keypad1))
         {
             targetMetric = Health;
+            Debug.Log($"Switched to Health");
         }
         if (Input.GetKeyDown(KeyCode.Keypad2))
         {
             targetMetric = Stamina;
+            Debug.Log($"Switched to Stamina");
         }
         if (Input.GetKeyDown(KeyCode.Keypad3))
         {
             targetMetric = Sanity;
+            Debug.Log($"Switched to Sanity");
         }
     }
 
-    void DisplayFillStat()
-    {
-        Debug.Log("Metric Full!");
-    }
-
-    void DisplayEmptyStats()
-    {
-        Debug.Log("Metric Depleated!");
-    }
 
     void DisplayPlayerStats()
     {
