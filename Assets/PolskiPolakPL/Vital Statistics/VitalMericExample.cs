@@ -21,18 +21,18 @@ public class VitalMericExample : MonoBehaviour
     {
         Health = new VitalsMetric(maxHP);
         Health.OnValueChange += DisplayHP;
-        Health.OnFill += DisplayFillStat;
-        Health.OnEmpty += DisplayEmptyStats;
+        Health.OnFilled += DisplayFillStat;
+        Health.OnDrained += DisplayEmptyStats;
 
         Stamina = new VitalsMetric(maxStamina);
         Stamina.OnValueChange += DisplayeStamina;
-        Stamina.OnFill += DisplayFillStat;
-        Stamina.OnEmpty += DisplayEmptyStats;
+        Stamina.OnFilled += DisplayFillStat;
+        Stamina.OnDrained += DisplayEmptyStats;
 
         Sanity = new VitalsMetric(maxSanity);
         Sanity.OnValueChange += DisplaySanity;
-        Sanity.OnFill += DisplayFillStat;
-        Sanity.OnEmpty += DisplayEmptyStats;
+        Sanity.OnFilled += DisplayFillStat;
+        Sanity.OnDrained += DisplayEmptyStats;
 
     }
     // Start is called before the first frame update
@@ -47,7 +47,7 @@ public class VitalMericExample : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.KeypadPlus))
         {
-            targetMetric.Gain(13);
+            targetMetric.GainWithoutNotify(13);
         }
         if (Input.GetKeyDown(KeyCode.KeypadMinus))
         {

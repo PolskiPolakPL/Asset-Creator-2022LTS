@@ -10,11 +10,11 @@ public class VitalsMetric
     public float Current { get; private set; }
 
     //Events
-    public event Action OnEmpty;
-    public event Action OnFill;
-    public event Action OnGain;
-    public event Action OnLoose;
-    public event Action OnValueChange;
+    public event Action OnDrained;
+    public event Action OnFilled;
+    public event Action OnGained;
+    public event Action OnLost;
+    public event Action OnValueChanged;
 
     #endregion
 
@@ -46,112 +46,52 @@ public class VitalsMetric
     #endregion
 
     #region Public Methods
+    /// <summary>
+    /// Increases current stat within it's limits.
+    /// </summary>
+    /// <param name="amount">How much you add to stat</param>
+    /// <param name="notifyOnFilledEvent">Fire <c>OnFilled</c> event when Max value reached?</param>
+    public void Gain(float amount, bool notifyOnFilledEvent = true)
+    {
+        GainWithoutNotify(amount);
+        OnGained?.Invoke();
+        if (Current == Min && notifyOnFilledEvent)
+            OnFilled?.Invoke();
+    }
+
+    /// <summary>
+    /// Decreases current stat within it's limits.
+    /// </summary>
+    /// <param name="amount">how much you subtract from stat</param>
+    /// <param name="notifyOnDrainedEvent">Fire <c>OnDrained</c> event when Min value Reached?</param>
+    public void Loose(float amount, bool notifyOnDrainedEvent = true)
+    {
+        LooseWithoutNotify(amount);
+        OnLost?.Invoke();
+        if(Current==Min && notifyOnDrainedEvent)
+            OnDrained?.Invoke();
+    }
 
     /// <summary>
     /// Increases current stat value within the limits.
     /// </summary>
     /// <param name="amount">increase amount</param>
-    /// <param name="notifyFillEvent">Should method invoke <c>OnFill Action</c> when the metric gets filled. True on default</param>
-    public void Gain(float amount, bool notifyFillEvent = true)
+    public void GainWithoutNotify(float amount)
     {
         //calculates new value
         float newIntVal = Current + amount;
-        newIntVal = Mathf.Min(newIntVal, Max);
-
-        //if new value is different
-        if (newIntVal != Current)
-        {
-            Current = newIntVal;
-            OnValueChange?.Invoke();
-            if (notifyFillEvent)
-                CheckForFilledEvent(newIntVal);
-        }
-
-        //Invoke OnGainEvent
-        OnGain?.Invoke();
-    }
-
-    /// <summary>
-    /// Decreases current stat value within the limits.
-    /// </summary>
-    /// <param name="amount">decrease amount</param>
-    /// <param name="notifyEmptyEvent">Should method invoke <c>OnEmpty Action</c> when the metric gets depleted. True on default</param>
-    public void Loose(float amount, bool notifyEmptyEvent = true)
-    {
-        //calculates new value
-        float newVal = Current - amount;
-        newVal = Mathf.Max(newVal, Min);
-
-        //if new value is different
-        if (newVal != Current)
-        {
-            Current = newVal;
-            OnValueChange?.Invoke();
-            if (notifyEmptyEvent)
-                CheckForEmptyEvent(newVal);
-        }
-
-        //Invoke OnLooseEvent
-        OnLoose?.Invoke();
-    }
-
-    /// <summary>
-    /// Increases current stat value within the limits. Doesn't invove <c>OnValueChange</c> nor <c>OnGain</c> Action.
-    /// </summary>
-    /// <param name="amount">increase amount</param>
-    /// <param name="notifyFillEvent">Should method invoke <c>OnFill Action</c> when the metric gets filled. True on default</param>
-    public void GainWithoutNotify(float amount, bool notifyFillEvent = true)
-    {
-        //calculates new value
-        float newIntVal = Current + amount;
-        newIntVal = Mathf.Min(newIntVal, Max);
-
-        //if new value is different
-        if (newIntVal != Current)
-        {
-            if (notifyFillEvent)
-                CheckForFilledEvent(newIntVal);
-            Current = newIntVal;
-        }
+        Current = Mathf.Min(newIntVal, Max);
     }
 
     /// <summary>
     /// Decreases current stat value within the limits. Doesn't invove <c>OnValueChange</c> nor <c>OnGain</c> Action.
     /// </summary>
     /// <param name="amount">decrease amount</param>
-    /// <param name="notifyEmptyEvent">Should method invoke <c>OnEmpty Action</c> when the metric gets depleted. True on default</param>
-    public void LooseWithoutNotify(float amount, bool notifyEmptyEvent = true)
+    public void LooseWithoutNotify(float amount)
     {
         //calculates new value
         float newVal = Current - amount;
-        newVal = Mathf.Max(newVal, Max);
-
-        //if new value is different
-        if (newVal != Current)
-        {
-            if (notifyEmptyEvent)
-                CheckForEmptyEvent(Current);
-            Current = newVal;
-        }
-    }
-
-    #endregion
-
-    #region Private Methods
-
-    //float
-    private void CheckForFilledEvent(float val)
-    {
-        if (val < Max)
-            return;
-        OnFill?.Invoke();
-    }
-
-    private void CheckForEmptyEvent(float val)
-    {
-        if (val > Min)
-            return;
-        OnEmpty?.Invoke();
+        Current = Mathf.Max(newVal, Max);
     }
 
     #endregion
