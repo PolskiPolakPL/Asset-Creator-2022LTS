@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerVitals : MonoBehaviour
+public class PlayerVitals : MonoBehaviour, IDamagable
 {
     [SerializeField] float maxHP;
     [SerializeField] ConditionBar HPBar;
@@ -10,7 +10,7 @@ public class PlayerVitals : MonoBehaviour
     [SerializeField] ConditionBar SanityBar;
 
 
-    Condition Health;
+    public Condition Health { get; private set; }
     Condition Stamina;
     Condition Sanity;
 
@@ -24,6 +24,7 @@ public class PlayerVitals : MonoBehaviour
     {
         Health = new Condition(maxHP);
         HPBar.AttachCondition(Health);
+        Health.OnDrained += Die;
 
         Stamina = new Condition(maxStamina);
         StaminaBar.AttachCondition(Stamina);
@@ -90,5 +91,15 @@ public class PlayerVitals : MonoBehaviour
     void DisplaySanity()
     {
         Debug.Log($"<b>Sanity: </b><color={blue}>{Sanity.CurrentVal}/{Sanity.MaxVal}</color>");
+    }
+
+    public void TakeDamage(float amount)
+    {
+        Health.Loose( amount );
+    }
+
+    void Die()
+    {
+        Debug.Log($"<color={red}>YOU ARE DEAD!</color>");
     }
 }
