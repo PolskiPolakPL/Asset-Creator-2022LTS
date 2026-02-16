@@ -50,7 +50,7 @@ public class Condition
 
     #region Public Methods
 
-    public void SetMaxValue(int value)
+    public void SetMaxValue(float value)
     {
         if (value > MinVal)
         {
@@ -62,7 +62,7 @@ public class Condition
             Debug.LogWarning("New MAX value must be above current MIN value.");
     }
 
-    public void SetMinValue(int value)
+    public void SetMinValue(float value)
     {
         if (value < MaxVal)
         {
@@ -74,7 +74,7 @@ public class Condition
             Debug.LogWarning("New MIN value must below current MAX value.");
     }
 
-    public void SetCurrentValue(int value)
+    public void SetCurrentValue(float value)
     {
         CurrentVal=value;
         OnCurrentValChanged?.Invoke();
@@ -118,9 +118,7 @@ public class Condition
     /// <param name="amount">increase amount</param>
     public void GainWithoutNotify(float amount)
     {
-        //calculates new value
-        float newIntVal = CurrentVal + amount;
-        CurrentVal = Mathf.Min(newIntVal, MaxVal);
+        CurrentVal = Mathf.Min(CurrentVal + amount, MaxVal);
     }
 
     /// <summary>
@@ -130,8 +128,7 @@ public class Condition
     public void LooseWithoutNotify(float amount)
     {
         //calculates new value
-        float newVal = CurrentVal - amount;
-        CurrentVal = Mathf.Max(newVal, MinVal);
+        CurrentVal = Mathf.Max(CurrentVal - amount, MinVal);
     }
 
     #endregion
