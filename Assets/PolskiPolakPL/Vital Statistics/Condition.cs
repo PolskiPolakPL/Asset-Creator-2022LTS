@@ -95,7 +95,7 @@ public class Condition
     {
         GainWithoutNotify(amount);
         OnGained?.Invoke();
-        if (CurrentVal == MinVal && notifyOnFilledEvent)
+        if (CurrentVal>=MaxVal && notifyOnFilledEvent)
             OnFilled?.Invoke();
     }
 
@@ -108,7 +108,7 @@ public class Condition
     {
         LooseWithoutNotify(amount);
         OnLost?.Invoke();
-        if(CurrentVal==MinVal && notifyOnDrainedEvent)
+        if(CurrentVal<=MinVal && notifyOnDrainedEvent)
             OnDrained?.Invoke();
     }
 

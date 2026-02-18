@@ -9,10 +9,9 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     [SerializeField] float maxSanity;
     [SerializeField] ConditionBar SanityBar;
 
-
     public Condition Health { get; private set; }
-    Condition Stamina;
-    Condition Sanity;
+    public Condition Stamina { get; private set; }
+    public Condition Sanity { get; private set; }
 
     Condition targetMetric;
 
@@ -68,7 +67,6 @@ public class PlayerVitals : MonoBehaviour, IDamagable
             Debug.Log($"Switched to Sanity");
         }
     }
-
 
     void DisplayPlayerStats()
     {
