@@ -18,6 +18,7 @@ public class FPSMovement : MonoBehaviour
 
     [Header("Stamina")]
     [SerializeField] PlayerVitals playerVitals;
+    Condition stamina;
     [SerializeField] float drainSpeed = 5;
     [SerializeField] float regenSpeed = 3;
 
@@ -35,8 +36,9 @@ public class FPSMovement : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
-        playerVitals.Stamina.OnDrained += DisableRunning;
-        playerVitals.Stamina.OnFilled += EnableRunning;
+        stamina = playerVitals.Stamina;
+        stamina.OnDrained += DisableRunning;
+        stamina.OnFilled += EnableRunning;
     }
 
     private void Update()
@@ -62,9 +64,9 @@ public class FPSMovement : MonoBehaviour
         float moveZ = Input.GetAxis("Vertical");
 
         if (CheckSprinting())
-            DrainStamina();
+            stamina.Drain(drainSpeed);
         else
-            RegenStamina();
+            stamina.Regen(regenSpeed);
         float speed = SetMovementSpeed();
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
@@ -84,16 +86,6 @@ public class FPSMovement : MonoBehaviour
             return runningSpeed;
         else
             return baseSpeed;
-    }
-
-    void DrainStamina()
-    {
-        playerVitals.Stamina.Loose(drainSpeed * Time.deltaTime);
-    }
-
-    void RegenStamina()
-    {
-        playerVitals.Stamina.Gain(regenSpeed * Time.deltaTime);
     }
 
     bool CheckSprinting()

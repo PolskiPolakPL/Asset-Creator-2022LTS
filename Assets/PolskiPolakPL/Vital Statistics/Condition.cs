@@ -151,4 +151,14 @@ public class Condition
         return CurrentVal >= threshold;
     }
 
+    public void Drain(float drainSpeed)
+    {
+        Loose(drainSpeed * Time.deltaTime);
+    }
+
+    public void Regen(float regenSpeed)
+    {
+        Gain(regenSpeed * Time.deltaTime);
+    }
+
 }
