@@ -15,9 +15,7 @@ public class PlayerVitals : MonoBehaviour, IDamagable
 
     Condition targetMetric;
 
-    string red = "#FF3030";
-    string blue = "#10FFFF";
-    string yellow = "#FFFF10";
+    string red = "#FF1010";
 
     private void Awake()
     {
@@ -35,22 +33,37 @@ public class PlayerVitals : MonoBehaviour, IDamagable
     // Start is called before the first frame update
     void Start()
     {
-        targetMetric = Health;
-        DisplayPlayerStats();
+        targetMetric = Sanity;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if(Input.GetKeyDown(KeyCode.KeypadPlus))
+        HandleDebug();
+    }
+
+    void HandleDebug()
+    {
+        if (Input.GetKeyDown(KeyCode.KeypadPlus))
         {
-            targetMetric.Gain(13);
+            targetMetric.Gain(7);
         }
         if (Input.GetKeyDown(KeyCode.KeypadMinus))
         {
-            targetMetric.Loose(13);
+            targetMetric.Loose(7);
         }
+
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            targetMetric.SetCurrentValue(targetMetric.MinVal);
+        }
+
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            targetMetric.SetCurrentValue(targetMetric.MaxVal);
+        }
+
         if (Input.GetKeyDown(KeyCode.Keypad1))
         {
             targetMetric = Health;
@@ -68,29 +81,6 @@ public class PlayerVitals : MonoBehaviour, IDamagable
         }
     }
 
-    void DisplayPlayerStats()
-    {
-        
-        Debug.Log($"<b>Health: </b><color={red}>{Health.CurrentVal}/{Health.MaxVal}</color>\t" +
-            $"<b>Stamina: </b><color={yellow}>{Stamina.CurrentVal}/{Stamina.MaxVal}</color>\t" +
-            $"<b>Sanity: </b><color={blue}>{Sanity.CurrentVal}/{Sanity.MaxVal}</color>");
-    }
-
-    void DisplayeStamina()
-    {
-        Debug.Log($"<b>Stamina: </b><color={yellow}>{Stamina.CurrentVal}/{Stamina.MaxVal}</color>\t");
-    }
-
-    void DisplayHP()
-    {
-        Debug.Log($"<b>Health: </b><color={red}>{Health.CurrentVal}/{Health.MaxVal}</color>\t");
-    }
-
-    void DisplaySanity()
-    {
-        Debug.Log($"<b>Sanity: </b><color={blue}>{Sanity.CurrentVal}/{Sanity.MaxVal}</color>");
-    }
-
     public void TakeDamage(float amount)
     {
         Health.Loose( amount );
@@ -98,6 +88,6 @@ public class PlayerVitals : MonoBehaviour, IDamagable
 
     void Die()
     {
-        Debug.Log($"<color={red}>YOU ARE DEAD!</color>");
+        Debug.Log($"<color={red}><b>YOU ARE DEAD!</b></color>");
     }
 }

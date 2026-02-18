@@ -10,6 +10,8 @@ public class Condition
     public float MaxVal { get; private set; }
     public float CurrentVal { get; private set; }
 
+    public float PrevValue;
+
     //Events
     public event Action OnDrained;
     public event Action OnFilled;
@@ -23,13 +25,13 @@ public class Condition
 
     #region Constructors
 
-
     //float
     public Condition(float maxValue)
     {
         MinVal = 0;
         MaxVal = maxValue;
         CurrentVal = maxValue;
+        PrevValue = CurrentVal;
     }
 
     public Condition(float minValue, float maxValue)
@@ -37,6 +39,7 @@ public class Condition
         MinVal = minValue;
         MaxVal = maxValue;
         CurrentVal = maxValue;
+        PrevValue = CurrentVal;
     }
 
     public Condition(float minValue, float maxValue, float startingValue)
@@ -44,6 +47,7 @@ public class Condition
         MinVal = minValue;
         MaxVal = maxValue;
         CurrentVal = startingValue;
+        PrevValue = CurrentVal;
     }
 
     #endregion
@@ -132,5 +136,19 @@ public class Condition
     }
 
     #endregion
+
+    public bool CheckBelowValue(float threshold)
+    {
+        if (PrevValue < threshold)
+            return false;
+        return CurrentVal < threshold;
+    }
+
+    public bool CheckAboveVal(float threshold)
+    {
+        if (PrevValue >= threshold)
+            return false;
+        return CurrentVal >= threshold;
+    }
 
 }
