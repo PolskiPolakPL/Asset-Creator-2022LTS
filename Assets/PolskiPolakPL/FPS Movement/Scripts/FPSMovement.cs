@@ -17,8 +17,9 @@ public class FPSMovement : MonoBehaviour
 
 
     [Header("Stamina")]
-    [SerializeField] PlayerVitals playerVitals;
     Condition stamina;
+    [SerializeField] ConditionBar conditionBar;
+    [SerializeField] float maxStamina = 60;
     [SerializeField] float drainSpeed = 5;
     [SerializeField] float regenSpeed = 3;
 
@@ -32,16 +33,20 @@ public class FPSMovement : MonoBehaviour
     private float gravityValue = Physics.gravity.y;
     private bool groundedPlayer;
 
-
-    private void Start()
+    private void Awake()
     {
-        controller = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked;
-        stamina = playerVitals.Stamina;
+        stamina = new Condition(maxStamina);
         stamina.OnDrained += DisableRunning;
         stamina.OnDrained += DisableJumping;
         stamina.OnFilled += EnableRunning;
         stamina.OnFilled += EnableJumping;
+    }
+    private void Start()
+    {
+        controller = GetComponent<CharacterController>();
+        Cursor.lockState = CursorLockMode.Locked;
+        if (conditionBar)
+            conditionBar.AttachCondition(stamina);
     }
 
     private void Update()

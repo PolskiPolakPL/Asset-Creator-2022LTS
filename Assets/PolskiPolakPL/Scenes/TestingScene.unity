@@ -1771,10 +1771,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 100
   HPBar: {fileID: 1515042820}
-  maxStamina: 60
-  StaminaBar: {fileID: 618795333}
-  maxSanity: 100
-  SanityBar: {fileID: 74526883}
 --- !u!114 &960009800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1787,7 +1783,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ee9dd9c47916f4991989fdb2e0d4fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vitals: {fileID: 960009799}
+  maxSanity: 100
+  conditionBar: {fileID: 74526883}
   saneVal: 75
   paranoidVal: 50
   insaneVal: 15
@@ -1877,7 +1874,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6ecfb8b6bf48314b84eec25788ceaf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 37
+  damage: 7
 --- !u!1 &1050253244
 GameObject:
   m_ObjectHideFlags: 0
@@ -3246,6 +3243,10 @@ PrefabInstance:
       propertyPath: regenSpeed
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 561964788792601247, guid: cf4c9a7175aad6c4686e69cad3d19249, type: 3}
+      propertyPath: conditionBar
+      value: 
+      objectReference: {fileID: 618795333}
     - target: {fileID: 561964788792601247, guid: cf4c9a7175aad6c4686e69cad3d19249, type: 3}
       propertyPath: playerVitals
       value: 

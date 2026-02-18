@@ -3,18 +3,19 @@ using UnityEngine;
 
 public class SanitySystem : MonoBehaviour
 {
-    [SerializeField] PlayerVitals vitals;
     Condition sanity;
     SanityState currentState;
+    [SerializeField] float maxSanity = 100;
+    [SerializeField] ConditionBar conditionBar;
     [SerializeField] float saneVal;
     [SerializeField] float paranoidVal;
     [SerializeField] float insaneVal;
 
     [SerializeField] TMP_Text sanityTextField;
 
-    private void Start()
+    private void Awake()
     {
-        sanity = vitals.Sanity;
+        sanity = new Condition(maxSanity);
 
         sanity.OnGained += HandleSanityGain;
         sanity.OnGained += DisplayCurrentState;
@@ -25,15 +26,25 @@ public class SanitySystem : MonoBehaviour
         sanity.OnCurrentValChanged += HandleSanityGain;
         sanity.OnCurrentValChanged += HandleSanityLoss;
         sanity.OnCurrentValChanged += DisplayCurrentState;
+    }
+
+    private void Start()
+    {
+        if (conditionBar)
+            conditionBar.AttachCondition(sanity);
         DisplayCurrentState();
+    }
+    private void Update()
+    {
+        HandleDebug();
     }
 
     void DisplayCurrentState()
     {
         if (sanityTextField)
-            sanityTextField.text = $"{currentState} ({sanity.CurrentVal}%)";
+            sanityTextField.text = $"{currentState} \t ({sanity.CurrentVal}%)";
         else
-            Debug.Log($"Current State: {currentState} ({sanity.CurrentVal}%)");
+            Debug.Log($"Current State: {currentState} \t ({sanity.CurrentVal}%)");
     }
 
 
@@ -97,6 +108,28 @@ public class SanitySystem : MonoBehaviour
     void SetSanityState(SanityState newState)
     {
         currentState = newState;
+    }
+
+    void HandleDebug()
+    {
+        if (Input.GetKeyDown(KeyCode.KeypadPlus))
+        {
+            sanity.Gain(3);
+        }
+        if (Input.GetKeyDown(KeyCode.KeypadMinus))
+        {
+            sanity.Loose(3);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            sanity.SetCurrentValue(sanity.MinVal);
+        }
+
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            sanity.SetCurrentValue(sanity.MaxVal);
+        }
     }
 
 }
