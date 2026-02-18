@@ -24,6 +24,7 @@ public class FPSMovement : MonoBehaviour
 
     [Header("Jump")]
     public bool CanJump = true;
+    [SerializeField] float jumpCost;
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
     [SerializeField] float jumpHeight = 1.0f;
 
@@ -38,7 +39,9 @@ public class FPSMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         stamina = playerVitals.Stamina;
         stamina.OnDrained += DisableRunning;
+        stamina.OnDrained += DisableJumping;
         stamina.OnFilled += EnableRunning;
+        stamina.OnFilled += EnableJumping;
     }
 
     private void Update()
@@ -78,6 +81,7 @@ public class FPSMovement : MonoBehaviour
         if (!groundedPlayer || !CanJump)
             return;
         playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+        stamina.Loose(jumpCost);
     }
 
     float SetMovementSpeed()
@@ -101,5 +105,15 @@ public class FPSMovement : MonoBehaviour
     void EnableRunning()
     {
         CanSprint = true;
+    }
+
+    void DisableJumping()
+    {
+        CanJump = false;
+    }
+
+    void EnableJumping()
+    {
+        CanJump = true;
     }
 }
