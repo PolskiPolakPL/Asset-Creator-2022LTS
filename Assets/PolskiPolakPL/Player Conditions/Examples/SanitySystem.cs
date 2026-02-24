@@ -6,13 +6,16 @@ public class SanitySystem : MonoBehaviour
     public Condition sanity {  get; private set; }
     SanityState currentState;
     [SerializeField] float maxSanity = 100;
+    [SerializeField] float regenSpeed = 1;
     [SerializeField] ConditionBar conditionBar;
     [SerializeField] float saneVal;
     [SerializeField] float paranoidVal;
     [SerializeField] float insaneVal;
-
+    [HideInInspector] public bool CanRegenerate = true;
     [SerializeField] TMP_Text sanityTextField;
 
+    Camera cam;
+    float normalFoV;
     private void Awake()
     {
         sanity = new Condition(maxSanity);
@@ -33,18 +36,22 @@ public class SanitySystem : MonoBehaviour
         if (conditionBar)
             conditionBar.AttachCondition(sanity);
         DisplayCurrentState();
+        cam = Camera.main;
+        normalFoV = cam.fieldOfView;
     }
     private void Update()
     {
-        HandleDebug();
+        if(CanRegenerate)
+            sanity.Regen(regenSpeed);
     }
 
     void DisplayCurrentState()
     {
+        float displayValue = Mathf.Round(sanity.CurrentVal * 100) / 100;
         if (sanityTextField)
-            sanityTextField.text = $"{currentState} \t ({sanity.CurrentVal}%)";
+            sanityTextField.text = $"{currentState} \t ({displayValue}%)";
         else
-            Debug.Log($"Current State: {currentState} \t ({sanity.CurrentVal}%)");
+            Debug.Log($"Current State: {currentState} \t ({displayValue}%)");
     }
 
 
@@ -58,6 +65,7 @@ public class SanitySystem : MonoBehaviour
         {
             SetSanityState(SanityState.MAD);
             sanity.PrevValue = sanity.CurrentVal;
+            cam.fieldOfView = normalFoV/3;
             return;
         }
 
@@ -66,6 +74,7 @@ public class SanitySystem : MonoBehaviour
         {
             SetSanityState(SanityState.INSANE);
             sanity.PrevValue = sanity.CurrentVal;
+            cam.fieldOfView = normalFoV/2;
             return;
         }
 
@@ -74,6 +83,7 @@ public class SanitySystem : MonoBehaviour
         {
             SetSanityState(SanityState.PARANOID);
             sanity.PrevValue = sanity.CurrentVal;
+            cam.fieldOfView = normalFoV*2/3;
             return;
         }
     }
@@ -85,6 +95,7 @@ public class SanitySystem : MonoBehaviour
         {
             SetSanityState(SanityState.SANE);
             sanity.PrevValue = sanity.CurrentVal;
+            cam.fieldOfView = normalFoV;
             return;
         }
 
@@ -93,6 +104,7 @@ public class SanitySystem : MonoBehaviour
         {
             SetSanityState (SanityState.PARANOID);
             sanity.PrevValue = sanity.CurrentVal;
+            cam.fieldOfView = normalFoV * 2 / 3;
             return;
         }
 
@@ -101,6 +113,7 @@ public class SanitySystem : MonoBehaviour
         {
             SetSanityState(SanityState.INSANE);
             sanity.PrevValue = sanity.CurrentVal;
+            cam.fieldOfView = normalFoV / 2;
             return;
         }
     }
@@ -108,28 +121,6 @@ public class SanitySystem : MonoBehaviour
     void SetSanityState(SanityState newState)
     {
         currentState = newState;
-    }
-
-    void HandleDebug()
-    {
-        if (Input.GetKeyDown(KeyCode.KeypadPlus))
-        {
-            sanity.Gain(3);
-        }
-        if (Input.GetKeyDown(KeyCode.KeypadMinus))
-        {
-            sanity.Loose(3);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad0))
-        {
-            sanity.SetCurrentValue(sanity.MinVal);
-        }
-
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
-        {
-            sanity.SetCurrentValue(sanity.MaxVal);
-        }
     }
 
 }

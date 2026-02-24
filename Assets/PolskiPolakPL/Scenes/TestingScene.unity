@@ -209,6 +209,7 @@ GameObject:
   - component: {fileID: 57786113}
   - component: {fileID: 57786112}
   - component: {fileID: 57786111}
+  - component: {fileID: 57786114}
   m_Layer: 0
   m_Name: Watcher (2)
   m_TagString: Untagged
@@ -225,7 +226,7 @@ Transform:
   m_GameObject: {fileID: 57786109}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.151, y: 1.105, z: 6.114}
+  m_LocalPosition: {x: -6.506, y: 1.105, z: 6.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -286,6 +287,23 @@ MonoBehaviour:
   target: {fileID: 821014662}
   targetOffset: {x: 0, y: 1.4, z: 0}
   rotationDelay: 1
+--- !u!114 &57786114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57786109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5af9c6ed8451d96458339d6677e9ac5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 960009791}
+  sanityDamage: 5
+  damageDistance: 5
+  sanityDrainAmount: 1
+  drainDistance: 10
 --- !u!1 &72056587
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,6 +1188,7 @@ GameObject:
   - component: {fileID: 468075982}
   - component: {fileID: 468075983}
   - component: {fileID: 468075984}
+  - component: {fileID: 468075985}
   m_Layer: 0
   m_Name: Watcher
   m_TagString: Untagged
@@ -1186,7 +1205,7 @@ Transform:
   m_GameObject: {fileID: 468075980}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.849, y: 1.105, z: 7.413}
+  m_LocalPosition: {x: -3.831, y: 1.105, z: -3.763}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1247,6 +1266,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.4, y: 0.4, z: 0.4}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &468075985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468075980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5af9c6ed8451d96458339d6677e9ac5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 960009791}
+  sanityDamage: 5
+  damageDistance: 5
+  sanityDrainAmount: 1
+  drainDistance: 10
 --- !u!1 &550264469
 GameObject:
   m_ObjectHideFlags: 0
@@ -2019,10 +2055,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSanity: 100
+  regenSpeed: 1
   conditionBar: {fileID: 74526883}
   saneVal: 75
   paranoidVal: 50
   insaneVal: 15
+  CanRegenerate: 0
   sanityTextField: {fileID: 383489022}
 --- !u!1 &966653641
 GameObject:
@@ -2690,6 +2728,7 @@ GameObject:
   - component: {fileID: 1597978385}
   - component: {fileID: 1597978384}
   - component: {fileID: 1597978383}
+  - component: {fileID: 1597978386}
   m_Layer: 0
   m_Name: Watcher (1)
   m_TagString: Untagged
@@ -2706,7 +2745,7 @@ Transform:
   m_GameObject: {fileID: 1597978381}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.784, y: 1.105, z: 3.205}
+  m_LocalPosition: {x: -3.66, y: 1.105, z: 7.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2767,6 +2806,23 @@ MonoBehaviour:
   target: {fileID: 821014662}
   targetOffset: {x: 0, y: 1.4, z: 0}
   rotationDelay: 1
+--- !u!114 &1597978386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1597978381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5af9c6ed8451d96458339d6677e9ac5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 960009791}
+  sanityDamage: 5
+  damageDistance: 5
+  sanityDrainAmount: 1
+  drainDistance: 10
 --- !u!1 &1613958596
 GameObject:
   m_ObjectHideFlags: 0
@@ -4269,9 +4325,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2063166313344517883, guid: cf4c9a7175aad6c4686e69cad3d19249, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2063166313344517883, guid: cf4c9a7175aad6c4686e69cad3d19249, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3602340091708178116, guid: cf4c9a7175aad6c4686e69cad3d19249, type: 3}
+      propertyPath: field of view
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 5590196941109326862, guid: cf4c9a7175aad6c4686e69cad3d19249, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -3.63
       objectReference: {fileID: 0}
     - target: {fileID: 5590196941109326862, guid: cf4c9a7175aad6c4686e69cad3d19249, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4279,7 +4347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5590196941109326862, guid: cf4c9a7175aad6c4686e69cad3d19249, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -7.53
       objectReference: {fileID: 0}
     - target: {fileID: 5590196941109326862, guid: cf4c9a7175aad6c4686e69cad3d19249, type: 3}
       propertyPath: m_LocalRotation.w
