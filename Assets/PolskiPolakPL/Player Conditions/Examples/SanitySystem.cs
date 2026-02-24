@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SanitySystem : MonoBehaviour
 {
-    Condition sanity;
+    public Condition sanity {  get; private set; }
     SanityState currentState;
     [SerializeField] float maxSanity = 100;
     [SerializeField] ConditionBar conditionBar;
