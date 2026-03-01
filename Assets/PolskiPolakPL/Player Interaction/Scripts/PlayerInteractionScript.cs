@@ -36,12 +36,11 @@ public class PlayerInteractionScript : MonoBehaviour
     {
         ray = new Ray(cameraT.position, cameraT.forward);
         Debug.DrawRay(cameraT.position, cameraT.forward * playerReach,Color.blue);
-        if (!Physics.Raycast(ray, out hit, playerReach) || !(hit.collider.tag == "Interactable"))
+        if (!Physics.Raycast(ray, out hit, playerReach) || !(hit.collider.TryGetComponent<Interactable>(out newInteractable)))
         {
             DisableCurrentInteractable();
             return;
         }
-        newInteractable = hit.collider.GetComponent<Interactable>();
         if(currentInteractable && newInteractable != currentInteractable)
         {
             DisableCurrentInteractable();
@@ -62,13 +61,13 @@ public class PlayerInteractionScript : MonoBehaviour
         currentInteractable = newInteractable;
         currentInteractable.EnableOutline();
         if (InteractionUIManager.Instance)
-            InteractionUIManager.Instance.EnableInteractionText(currentInteractable.message);
+            InteractionUIManager.Instance.DisplayInteractionText($"[{interactionKey}] {currentInteractable.message}");
 
     }
     void DisableCurrentInteractable()
     {
         if (InteractionUIManager.Instance)
-            InteractionUIManager.Instance.DisableInteractionText();
+            InteractionUIManager.Instance.HideInteractionText();
         if (!currentInteractable)
             return;
         currentInteractable.DisableOutline();
