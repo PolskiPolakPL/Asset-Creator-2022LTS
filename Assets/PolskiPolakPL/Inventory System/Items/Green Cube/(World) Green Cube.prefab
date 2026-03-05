@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5589081523790395736}
   - component: {fileID: 2183930713327264880}
   m_Layer: 0
-  m_Name: Red Cube
+  m_Name: (World) Green Cube
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3f1146b38b10a4c4a9dba9f547782ff9, type: 2}
+  - {fileID: 2100000, guid: 02a48a6b4e831ab4990e2fde6fdfe143, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
