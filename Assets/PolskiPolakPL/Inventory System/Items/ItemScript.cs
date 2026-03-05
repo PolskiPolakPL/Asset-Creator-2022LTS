@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PickableScript : MonoBehaviour, IPickable
+public class ItemScript : MonoBehaviour, IPickable
 {
     Interactable interactable;
     public ItemData itemSO;
@@ -14,6 +14,7 @@ public class PickableScript : MonoBehaviour, IPickable
 
     public void PickUp()
     {
+        InventoryScript.Instance.AddItem(itemSO);
         Destroy(gameObject);
     }
 

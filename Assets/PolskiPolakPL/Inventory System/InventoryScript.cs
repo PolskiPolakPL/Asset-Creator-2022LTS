@@ -1,24 +1,23 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryScript : MonoBehaviour
 {
+    public static InventoryScript Instance {  get; private set; }
+
+
     [SerializeField][Min(1)] int itemArraySize = 1;
     public GameObject playerHotbarGO;
     List<ItemSlot> itemSlots = new List<ItemSlot>();
 
-    [SerializeField] List<ItemData> debugItemData = new List<ItemData>();
-
     private void Awake()
     {
-        itemSlots.AddRange(playerHotbarGO.GetComponentsInChildren<ItemSlot>());
-    }
+        if(Instance && Instance!=this)
+            Destroy(gameObject);
+        else
+            Instance = this;
 
-    private void Start()
-    {
-        foreach(ItemData item in debugItemData)
-            AddItem(item);
+        itemSlots.AddRange(playerHotbarGO.GetComponentsInChildren<ItemSlot>());
     }
 
     public bool AddItem(ItemData item)
