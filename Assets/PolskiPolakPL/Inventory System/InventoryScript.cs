@@ -35,6 +35,13 @@ public class InventoryScript : MonoBehaviour
 
     public bool AddItem(ItemData item)
     {
+        //Try putting item in selected slot
+        if(!itemSlots[selectedIndex].HasItem())
+        {
+            itemSlots[selectedIndex].SetItem(item, itemArraySize);
+            return true;
+        }
+        //Try putting item in any slot
         foreach (ItemSlot slot in itemSlots)
         {
             if (!slot.HasItem())
