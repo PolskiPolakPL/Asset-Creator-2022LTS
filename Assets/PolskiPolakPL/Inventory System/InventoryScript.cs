@@ -19,6 +19,7 @@ public class InventoryScript : MonoBehaviour
 
     private void Awake()
     {
+        Application.targetFrameRate = 600;
         if(Instance && Instance!=this)
             Destroy(gameObject);
         else
@@ -35,20 +36,25 @@ public class InventoryScript : MonoBehaviour
 
     public bool AddItem(ItemData item)
     {
+        ItemSlot selectedSlot = itemSlots[selectedIndex];
         //Try putting item in selected slot
-        if(!itemSlots[selectedIndex].HasItem())
+        if (!selectedSlot.HasItem())
         {
-            itemSlots[selectedIndex].SetItem(item, itemArraySize);
+            selectedSlot.SetItem(item, itemArraySize);
+            Instantiate(item.HandPrefab, playerHand.GetChild(selectedIndex));
             return true;
         }
         //Try putting item in any slot
+        int i = 0;
         foreach (ItemSlot slot in itemSlots)
         {
             if (!slot.HasItem())
             {
                 slot.SetItem(item, itemArraySize);
+                Instantiate(item.HandPrefab, playerHand.GetChild(i));
                 return true;
             }
+            i++;
         }
         Debug.Log("Inventory full!");
         return false;
@@ -111,7 +117,11 @@ public class InventoryScript : MonoBehaviour
             return;
 
         ItemData itemData = selectedSlot.GetItemData();
+        // Remove hand item prefab
+        GameObject handPrefab = playerHand.GetChild(selectedIndex).GetChild(0).gameObject;
+        Destroy(handPrefab);
 
+        // Create and throw world item prefab
         GameObject droppedItemGo = Instantiate(itemData.WorldPrefab, playerHand.position, playerHand.rotation);
         droppedItemGo.GetComponent<Rigidbody>().AddForce(playerHand.forward * throwingForce, ForceMode.Impulse);
 

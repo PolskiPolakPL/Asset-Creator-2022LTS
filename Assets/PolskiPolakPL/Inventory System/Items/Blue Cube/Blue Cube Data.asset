@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 9
   WorldPrefab: {fileID: 5612997135575571203, guid: 9a9419e8da7475e499c936aa0b1aeca5, type: 3}
-  HandPrefab: {fileID: 0}
+  HandPrefab: {fileID: 5994858217759550898, guid: b118bf78ce87e174eb9c41813655c2a0, type: 3}
