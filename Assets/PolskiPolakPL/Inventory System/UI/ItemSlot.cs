@@ -4,30 +4,17 @@ using UnityEngine.UI;
 public class ItemSlot : MonoBehaviour
 {
     [SerializeField] ItemData heldItem;
-    RawImage itemRawImage;
-    private void Awake()
-    {
-        if (transform.childCount <= 0)
-        {
-            Debug.LogError($"{gameObject.name} does not have a child object!");
-            return;
-        }
-        if(!transform.GetChild(0).TryGetComponent<RawImage>(out itemRawImage))
-        {
-            Debug.LogError($"{gameObject.name}'s child does not have RawImage component!");
-            return;
-        }
-    }
+    [SerializeField] RawImage itemRawImage;
 
     public ItemData GetItemData()
     {
         return heldItem;
     }
 
-    public void SetItem(ItemData item, int arraySize)
+    public void SetItem(ItemData item)
     {
         heldItem = item;
-        itemRawImage.uvRect = GetUVRectFromItemArray(arraySize);
+        itemRawImage.uvRect = InventorySystem.Instance.GetUVRectFromItemArray(item);
         UpdateSlot();
     }
 

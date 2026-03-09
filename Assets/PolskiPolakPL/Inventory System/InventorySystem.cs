@@ -5,17 +5,17 @@ using UnityEngine.UI;
 public class InventorySystem : MonoBehaviour
 {
     public static InventorySystem Instance {  get; private set; }
-
-    [SerializeField][Min(1)] int itemArraySize = 1;
-    public Transform slotsParent;
-
+    [Header("Player Hand")]
     [SerializeField] Transform playerHand;
-    [SerializeField] float throwingForce;
-    float normalOpacity = .6f;
-    float selectedOpacity = .8f;
+    [SerializeField] float throwingForce = 5;
+    [Header("UI")]
+    [SerializeField] Transform slotsParent;
+    [SerializeField][Range(0,1)] float normalOpacity = .6f;
+    [SerializeField][Range(0, 1)] float selectedOpacity = .8f;
+    [SerializeField] Rect baseUIRect;
 
-    public int selectedIndex { get; private set; } = 0;
-    public List<ItemSlot> itemSlots { get; private set; } = new List<ItemSlot>();
+    int selectedIndex = 0;
+    List<ItemSlot> itemSlots = new List<ItemSlot>();
 
     private void Awake()
     {
@@ -39,8 +39,7 @@ public class InventorySystem : MonoBehaviour
         //Try putting item in selected slot
         if (!selectedSlot.HasItem())
         {
-            selectedSlot.SetItem(item, itemArraySize);
-            Instantiate(item.HandPrefab, playerHand.GetChild(selectedIndex));
+            selectedSlot.SetItem(item);
             return true;
         }
         //Try putting item in any slot
@@ -49,8 +48,7 @@ public class InventorySystem : MonoBehaviour
         {
             if (!slot.HasItem())
             {
-                slot.SetItem(item, itemArraySize);
-                Instantiate(item.HandPrefab, playerHand.GetChild(i));
+                slot.SetItem(item);
                 return true;
             }
             i++;
@@ -83,28 +81,30 @@ public class InventorySystem : MonoBehaviour
         }
 
         //item opacity + item in hand
-        UpdateSelectedItem();
+        UpdateSelectedSlot();
+        SetItemInHand();
     }
 
-    void UpdateSelectedItem()
+    void UpdateSelectedSlot()
     {
         Image bgImage;
         for (int i = 0; i < itemSlots.Count; i++)
         {
             bgImage = itemSlots[i].GetComponent<Image>();
-            if (!bgImage)
-                return;
             if (i == selectedIndex)
-            {
                 bgImage.color = new Color(0, 0, 0, selectedOpacity);
-                playerHand.GetChild(i).gameObject.SetActive(true);
-            }
             else
-            {
                 bgImage.color = new Color(0,0,0,normalOpacity);
-                playerHand.GetChild(i).gameObject.SetActive(false);
-            }
         }
+    }
+
+    void SetItemInHand()
+    {
+        ItemSlot selectedSlot = itemSlots[selectedIndex];
+        foreach (Transform child in playerHand)
+            Destroy(child.gameObject);
+        if (selectedSlot.HasItem())
+            Instantiate(selectedSlot.GetItemData().HandPrefab, playerHand);
     }
 
     void HandleItemDropping()
@@ -117,7 +117,7 @@ public class InventorySystem : MonoBehaviour
 
         ItemData itemData = selectedSlot.GetItemData();
         // Remove hand item prefab
-        GameObject handPrefab = playerHand.GetChild(selectedIndex).GetChild(0).gameObject;
+        GameObject handPrefab = playerHand.GetChild(0).gameObject;
         Destroy(handPrefab);
 
         // Create and throw world item prefab
@@ -126,4 +126,23 @@ public class InventorySystem : MonoBehaviour
 
         selectedSlot.ClearSlot();
     }
+
+    public Rect GetUVRectFromItemArray(ItemData item)
+    {
+        Vector2 arrayPosition = IdToArrayPosition(item);
+        float x = baseUIRect.x * arrayPosition.x;
+        float y = baseUIRect.y * arrayPosition.y;
+        Debug.Log($"X: {x} \t Y: {y}");
+        return new Rect(x, y, baseUIRect.width, baseUIRect.height);
+    }
+
+    Vector2 IdToArrayPosition(ItemData item)
+    {
+        Vector2 arrayPosition;
+        int rowSize = Mathf.RoundToInt(1 / baseUIRect.width);
+        arrayPosition.x = (float)item.ID%rowSize;
+        arrayPosition.y = Mathf.Floor((float)item.ID/rowSize);
+        return arrayPosition;
+    }
+
 }

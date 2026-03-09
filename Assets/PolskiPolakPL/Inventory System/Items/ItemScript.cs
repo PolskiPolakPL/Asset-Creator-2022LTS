@@ -5,7 +5,7 @@ public class ItemScript : MonoBehaviour, IPickable
 {
     Interactable interactable;
     public ItemData itemSO;
-    public event Action<ItemData> OnPickUp;
+    public event Action OnPickUp;
     private void Awake()
     {
         interactable = GetComponent<Interactable>();
@@ -14,7 +14,9 @@ public class ItemScript : MonoBehaviour, IPickable
 
     public void PickUp()
     {
-        InventorySystem.Instance.AddItem(itemSO);
+        if (!InventorySystem.Instance.AddItem(itemSO))
+            return;
+        OnPickUp?.Invoke();
         Destroy(gameObject);
     }
 
