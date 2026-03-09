@@ -14,7 +14,7 @@ public class ItemScript : MonoBehaviour, IPickable
 
     public void PickUp()
     {
-        InventoryScript.Instance.AddItem(itemSO);
+        InventorySystem.Instance.AddItem(itemSO);
         Destroy(gameObject);
     }
 

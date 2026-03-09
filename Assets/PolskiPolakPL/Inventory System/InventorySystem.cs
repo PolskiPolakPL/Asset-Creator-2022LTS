@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryScript : MonoBehaviour
+public class InventorySystem : MonoBehaviour
 {
-    public static InventoryScript Instance {  get; private set; }
+    public static InventorySystem Instance {  get; private set; }
 
     [SerializeField][Min(1)] int itemArraySize = 1;
-    public GameObject playerHotbarGO;
+    public Transform slotsParent;
 
     [SerializeField] Transform playerHand;
     [SerializeField] float throwingForce;
@@ -19,13 +19,12 @@ public class InventoryScript : MonoBehaviour
 
     private void Awake()
     {
-        Application.targetFrameRate = 600;
         if(Instance && Instance!=this)
             Destroy(gameObject);
         else
             Instance = this;
 
-        itemSlots.AddRange(playerHotbarGO.GetComponentsInChildren<ItemSlot>());
+        itemSlots.AddRange(slotsParent.GetComponentsInChildren<ItemSlot>());
     }
 
     private void Update()
