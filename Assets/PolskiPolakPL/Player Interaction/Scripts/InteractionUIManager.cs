@@ -16,19 +16,16 @@ public class InteractionUIManager : MonoBehaviour
             Instance = this;
     }
 
-
-
     //Attributes
     [SerializeField] TMP_Text interactionMessage;
 
-    public void EnableInteractionText(string text)
+    public void DisplayInteractionText(string message)
     {
-        interactionMessage.text = "[E]" + text;
+        interactionMessage.text = message;
         interactionMessage.gameObject.SetActive(true);
     }
-    public void DisableInteractionText()
+    public void HideInteractionText()
     {
         interactionMessage.gameObject.SetActive(false);
     }
-
 }
