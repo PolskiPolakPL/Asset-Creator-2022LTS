@@ -86,7 +86,7 @@ public class BuildingSystem : MonoBehaviour
     #region preview methods
     public void CreatePreview(StructureSO structureData)
     {
-        previewGO = Instantiate(structureData.PreviewPrefab, transform);
+        previewGO = Instantiate(structureData.GhostPrefab, transform);
         SetPreviewMaterial(canPlace);
     }
     public bool HasPreview()
@@ -113,14 +113,8 @@ public class BuildingSystem : MonoBehaviour
     void UpdatePreviewPosition()
     {
         if (!Physics.Raycast(buildRay, out RaycastHit hit, buildRange, buildOnLayer))
-        {
-            DenyPlacement();
             previewGO.transform.position = playerCamT.position + playerCamT.forward * buildRange;
-            return;
-        }
-        // else
         previewGO.transform.position = hit.point;
-        CheckValidPlacement();
     }
     void DestroyPreview()
     {
@@ -193,13 +187,17 @@ public class BuildingSystem : MonoBehaviour
         buildRay = new Ray(playerCamT.position, playerCamT.forward);
         if (HasPreview())
         {
-            UpdatePreviewPosition();
+            HandleStructurePlacement();
         }
         else
         {
             HandleStructureSelection();
         }
-
+    }
+    void HandleStructurePlacement()
+    {
+        UpdatePreviewPosition();
+        CheckValidPlacement();
     }
     void HandleStructureSelection()
     {
