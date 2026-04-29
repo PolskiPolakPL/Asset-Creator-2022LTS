@@ -25,21 +25,17 @@ public class SimpleBuildingSystem : MonoBehaviour
     {
         if (ghostGO)
             UpdatePreviewPosition();
+        else
+            CreatePreview();
 
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (!ghostGO)
-                CreatePreview();
-            else
-                TryPlaceBlock();
+            TryPlaceBlock();
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            if(ghostGO)
-                DestroyPreview();
-            else
-                RemoveBlock();
+            RemoveBlock();
         }
 
     }
@@ -52,9 +48,11 @@ public class SimpleBuildingSystem : MonoBehaviour
             ghostGO.transform.position = playerCamT.position + playerCamT.forward * buildRange;
             return;
         }
-        if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Block"))
+        if(hit.collider.TryGetComponent<BuildingBlockScript>(out BuildingBlockScript blockScr))
         {
-            ghostGO.transform.position = hit.collider.transform.position + hit.normal * 0.5f;
+            Transform targetSnapPoint = blockScr.FindClosestSnapPoint(hit.point);
+            ghostGO.transform.position = targetSnapPoint.position;
+            ghostGO.transform.rotation = targetSnapPoint.localRotation;
             return;
         }
         ghostGO.transform.position = hit.point;
