@@ -8,9 +8,10 @@ public class InventorySystem : MonoBehaviour
     // Singleton Instance
     public static InventorySystem Instance {  get; private set; }
 
-    [Header("Slots Reference")]
+    [Header("Slots Parents")]
     [SerializeField] Transform hotbarSlotsParent;
     [SerializeField] Transform backpackSlotsParent;
+
     // Slots Lists
     List<ItemSlot> hotbarSlots = new List<ItemSlot>();
     List<ItemSlot> backpackSlots = new List<ItemSlot>();
@@ -28,6 +29,7 @@ public class InventorySystem : MonoBehaviour
     public UnityEvent<bool> OnInventoryToggle;
 
     int selectedIndex = 0;
+    ItemSlot selectedSlot;
 
 
     private void Awake()
@@ -109,8 +111,6 @@ public class InventorySystem : MonoBehaviour
     bool TryAddItemToSelectedSlot(ItemData item, int amount, out int remaining)
     {
         remaining = amount;
-
-        ItemSlot selectedSlot = hotbarSlots[selectedIndex];
 
         if (!selectedSlot.HasItem())
             AddAmountToSlot(item, amount, selectedSlot, out remaining);
@@ -200,20 +200,17 @@ public class InventorySystem : MonoBehaviour
 
     void UpdateSelectedSlot()
     {
+        selectedSlot = hotbarSlots[selectedIndex];
         Image bgImage;
-        for (int i = 0; i < hotbarSlots.Count; i++)
+        foreach (ItemSlot slot in hotbarSlots)
         {
-            bgImage = hotbarSlots[i].GetComponent<Image>();
-            if (i == selectedIndex)
-                bgImage.color = new Color(0, 0, 0, selectedOpacity);
-            else
-                bgImage.color = new Color(0,0,0,normalOpacity);
+            bgImage = slot.GetComponent<Image>();
+            bgImage.color = (slot == selectedSlot) ? new Color(0, 0, 0, selectedOpacity) : new Color(0, 0, 0, normalOpacity);
         }
     }
 
     void EquipHandItem()
     {
-        ItemSlot selectedSlot = hotbarSlots[selectedIndex];
         foreach (Transform child in playerHand)
             Destroy(child.gameObject);
         if (selectedSlot.HasItem())
@@ -224,23 +221,35 @@ public class InventorySystem : MonoBehaviour
     {
         if(!Input.GetKeyDown(dropKey))
             return;
-        ItemSlot selectedSlot = hotbarSlots[selectedIndex];
         if (!selectedSlot.HasItem())
             return;
 
-        ItemData itemData = selectedSlot.GetItem();
-        if (!itemData.WorldPrefab)
+        ItemData selectedItem = selectedSlot.GetItem();
+        if (!selectedItem.WorldPrefab)
             return;
 
+        
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            // Drop all items
+            DropItem(selectedItem, selectedSlot.GetAmount());
+            // Remove hand item prefab
+            EquipHandItem();
+            return;
+        }
+        // drop one item
+        DropItem(selectedItem);
+    }
+
+    void DropItem(ItemData item, int dropAmount = 1)
+    {
         // Create and throw world item prefab
-        GameObject droppedItemGO = Instantiate(itemData.WorldPrefab, playerHand.position, playerHand.rotation);
+        GameObject droppedItemGO = Instantiate(item.WorldPrefab, playerHand.position, playerHand.rotation);
         droppedItemGO.GetComponent<Rigidbody>().AddForce(playerHand.forward * throwingForce, ForceMode.Impulse);
-        droppedItemGO.GetComponent<ItemScript>().amount = selectedSlot.GetAmount();
-
-        selectedSlot.ClearSlot();
-
-        // Remove hand item prefab
-        EquipHandItem();
+        // Set dropped amount to match
+        droppedItemGO.GetComponent<ItemScript>().amount = dropAmount;
+        // remove amount from slot
+        selectedSlot.RemoveAmount(dropAmount);
     }
 
 }
