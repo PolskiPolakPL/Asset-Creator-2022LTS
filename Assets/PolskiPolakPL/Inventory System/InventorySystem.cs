@@ -127,22 +127,4 @@ public class InventorySystem : MonoBehaviour
         selectedSlot.ClearSlot();
     }
 
-    public Rect GetUVRectFromItemArray(ItemData item)
-    {
-        Vector2 arrayPosition = IdToArrayPosition(item);
-        float x = baseUIRect.x * arrayPosition.x;
-        float y = baseUIRect.y * arrayPosition.y;
-        Debug.Log($"X: {x} \t Y: {y}");
-        return new Rect(x, y, baseUIRect.width, baseUIRect.height);
-    }
-
-    Vector2 IdToArrayPosition(ItemData item)
-    {
-        Vector2 arrayPosition;
-        int rowSize = Mathf.RoundToInt(1 / baseUIRect.width);
-        arrayPosition.x = (float)item.ID%rowSize;
-        arrayPosition.y = Mathf.Floor((float)item.ID/rowSize);
-        return arrayPosition;
-    }
-
 }
