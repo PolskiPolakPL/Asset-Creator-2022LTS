@@ -4,18 +4,27 @@ using UnityEngine.UI;
 
 public class InventorySystem : MonoBehaviour
 {
+    // Singleton Instance
     public static InventorySystem Instance {  get; private set; }
+
+    [Header("Slots Reference")]
+    [SerializeField] Transform hotbarSlotsParent;
+    [SerializeField] Transform backpackSlotsParent;
+    // Slots Lists
+    List<ItemSlot> hotbarSlots = new List<ItemSlot>();
+    List<ItemSlot> backpackSlots = new List<ItemSlot>();
+    List<ItemSlot> playerInventorySlots = new List<ItemSlot>();
+
     [Header("Player Hand")]
     [SerializeField] Transform playerHand;
     [SerializeField] float throwingForce = 5;
+
     [Header("UI")]
-    [SerializeField] Transform slotsParent;
     [SerializeField][Range(0,1)] float normalOpacity = .6f;
     [SerializeField][Range(0, 1)] float selectedOpacity = .8f;
-    [SerializeField] Rect baseUIRect;
 
     int selectedIndex = 0;
-    List<ItemSlot> itemSlots = new List<ItemSlot>();
+
 
     private void Awake()
     {
@@ -24,7 +33,26 @@ public class InventorySystem : MonoBehaviour
         else
             Instance = this;
 
-        itemSlots.AddRange(slotsParent.GetComponentsInChildren<ItemSlot>());
+        InitializeLists();
+    }
+
+    void InitializeLists()
+    {
+        if(!hotbarSlotsParent && !backpackSlotsParent)
+        {
+            Debug.LogWarning($"[{this}]: None of the slots parent was attached! Attach at least one slot parent.");
+            return;
+        }
+        if (hotbarSlotsParent)
+        {
+            hotbarSlots.AddRange(hotbarSlotsParent.GetComponentsInChildren<ItemSlot>());
+            playerInventorySlots.AddRange(hotbarSlots);
+        }
+        if(backpackSlotsParent)
+        {
+            backpackSlots.AddRange(backpackSlotsParent.GetComponentsInChildren<ItemSlot>());
+            playerInventorySlots.AddRange(backpackSlots);
+        }
     }
 
     private void Update()
@@ -35,7 +63,7 @@ public class InventorySystem : MonoBehaviour
 
     public bool AddItem(ItemData item)
     {
-        ItemSlot selectedSlot = itemSlots[selectedIndex];
+        ItemSlot selectedSlot = hotbarSlots[selectedIndex];
         //Try putting item in selected slot
         if (!selectedSlot.HasItem())
         {
@@ -44,7 +72,7 @@ public class InventorySystem : MonoBehaviour
         }
         //Try putting item in any slot
         int i = 0;
-        foreach (ItemSlot slot in itemSlots)
+        foreach (ItemSlot slot in hotbarSlots)
         {
             if (!slot.HasItem())
             {
@@ -63,18 +91,18 @@ public class InventorySystem : MonoBehaviour
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
             selectedIndex++;
-            selectedIndex %= itemSlots.Count;
+            selectedIndex %= hotbarSlots.Count;
         }
         //scroll up
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
             if (selectedIndex <= 0)
-                selectedIndex = itemSlots.Count - 1;
+                selectedIndex = hotbarSlots.Count - 1;
             else
                 selectedIndex--;
         }
         // 1-X key-binds
-        for (int i = 0; i < itemSlots.Count; i++)
+        for (int i = 0; i < hotbarSlots.Count; i++)
         {
             if (Input.GetKeyDown((i + 1).ToString()))
                 selectedIndex = i;
@@ -88,9 +116,9 @@ public class InventorySystem : MonoBehaviour
     void UpdateSelectedSlot()
     {
         Image bgImage;
-        for (int i = 0; i < itemSlots.Count; i++)
+        for (int i = 0; i < hotbarSlots.Count; i++)
         {
-            bgImage = itemSlots[i].GetComponent<Image>();
+            bgImage = hotbarSlots[i].GetComponent<Image>();
             if (i == selectedIndex)
                 bgImage.color = new Color(0, 0, 0, selectedOpacity);
             else
@@ -100,7 +128,7 @@ public class InventorySystem : MonoBehaviour
 
     void SetItemInHand()
     {
-        ItemSlot selectedSlot = itemSlots[selectedIndex];
+        ItemSlot selectedSlot = hotbarSlots[selectedIndex];
         foreach (Transform child in playerHand)
             Destroy(child.gameObject);
         if (selectedSlot.HasItem())
@@ -111,7 +139,7 @@ public class InventorySystem : MonoBehaviour
     {
         if(!Input.GetKeyDown(KeyCode.G))
             return;
-        ItemSlot selectedSlot = itemSlots[selectedIndex];
+        ItemSlot selectedSlot = hotbarSlots[selectedIndex];
         if (!selectedSlot.HasItem())
             return;
 
