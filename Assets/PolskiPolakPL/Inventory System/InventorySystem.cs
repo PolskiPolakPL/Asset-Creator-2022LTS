@@ -24,12 +24,15 @@ public class InventorySystem : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] GameObject playerInventoryPanel;
+    [SerializeField] RawImage dragIcon;
     [SerializeField][Range(0,1)] float normalOpacity = .6f;
     [SerializeField][Range(0, 1)] float selectedOpacity = .8f;
     public UnityEvent<bool> OnInventoryToggle;
 
     int selectedIndex = 0;
     ItemSlot selectedSlot;
+    ItemSlot draggedSlot;
+    bool isDragging;
 
 
     private void Awake()
@@ -68,9 +71,7 @@ public class InventorySystem : MonoBehaviour
             ToggleInventoryPanel(!playerInventoryPanel.activeInHierarchy);
         }
 
-        //StartDrag
-        //UpdateDragPosition
-        //EndDrag
+        HandleDragInput();
 
         HandleHotbarSelection();
         HandleItemDropping();
@@ -168,6 +169,113 @@ public class InventorySystem : MonoBehaviour
         slot.SetItem(itemToAdd, amountToPlace);
         remaining -= amountToPlace;
     }
+    #endregion
+
+    void HandleDragInput()
+    {
+        //StartDrag
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            StartDrag();
+        }
+        //UpdateDragPosition
+        if(isDragging)
+            UpdateDragPosition();
+        //EndDrag
+        if (Input.GetKeyUp(KeyCode.Mouse0) && isDragging)
+        {
+            EndDrag();
+        }
+    }
+
+    #region Dragging Items
+
+    void StartDrag()
+    {
+        ItemSlot hoveredSlot = GetHoveredSlot();
+
+        if (!hoveredSlot || !hoveredSlot.HasItem())
+            return;
+
+        draggedSlot = hoveredSlot;
+        isDragging = true;
+
+        //Show drag item
+        dragIcon.texture = draggedSlot.GetItem().imageArray;
+        dragIcon.uvRect = draggedSlot.GetItem().UVRect;
+        dragIcon.color = new Color(1, 1, 1, 0.5f);
+        dragIcon.enabled = true;
+    }
+
+    void UpdateDragPosition()
+    {
+        dragIcon.transform.position = Input.mousePosition;
+    }
+
+    void EndDrag()
+    {
+        ItemSlot hovered = GetHoveredSlot();
+        if (!hovered)
+            return;
+        HandleDrop(draggedSlot, hovered);
+        dragIcon.enabled = false;
+        draggedSlot = null;
+        isDragging = false;
+    }
+
+    ItemSlot GetHoveredSlot()
+    {
+        foreach(ItemSlot slot in playerInventorySlots)
+        {
+            if(slot.hovering)
+                return slot;
+        }
+        return null;
+    }
+
+    void HandleDrop(ItemSlot from, ItemSlot target)
+    {
+        if(target == from) return;
+
+        // Stack Items
+        if (TryMergeItems(from, target))
+            return;
+
+        //Swap Items
+        if (target.HasItem())
+        {
+            ItemData tempItem = target.GetItem();
+            int tempAmount = target.GetAmount();
+
+            target.SetItem(from.GetItem(), from.GetAmount());
+            from.SetItem(tempItem, tempAmount);
+            return;
+        }
+
+        // Move Item
+        target.SetItem(from.GetItem(),from.GetAmount());
+        from.ClearSlot();
+    }
+
+    bool TryMergeItems(ItemSlot from, ItemSlot target)
+    {
+        if (!target.HasItem() || target.GetItem() != from.GetItem())
+            return false;
+        int max = target.GetItem().StackSize;
+        int space = max - target.GetAmount();
+
+        if (space <= 0)
+            return false;
+
+        int move = Mathf.Min(space, from.GetAmount());
+        target.SetItem(target.GetItem(), target.GetAmount() + move);
+        from.SetItem(from.GetItem(), from.GetAmount() - move);
+
+        if (from.GetAmount() <= 0)
+            from.ClearSlot();
+        return true;
+    }
+
     #endregion
 
     void HandleHotbarSelection()
