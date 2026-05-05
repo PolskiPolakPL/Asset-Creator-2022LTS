@@ -229,7 +229,7 @@ public class InventorySystem : MonoBehaviour
             return;
 
         
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (!Input.GetKey(KeyCode.LeftShift))
         {
             // Drop all items
             DropItem(selectedItem, selectedSlot.GetAmount());

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Violet Cube Data
   m_EditorClassIdentifier: 
   ID: 10
-  DisplayName: 
+  DisplayName: Violet Cube
   WorldPrefab: {fileID: 5612997135575571203, guid: 316cd1005e3427d4bbbc35162d6a80c6, type: 3}
   HandPrefab: {fileID: 1414836284985739951, guid: c9a8a65739af6ab4f8cae3bbd0876096, type: 3}
   imageArray: {fileID: 2800000, guid: cd61b1d1c4e969041acb0ebd44198afa, type: 3}
