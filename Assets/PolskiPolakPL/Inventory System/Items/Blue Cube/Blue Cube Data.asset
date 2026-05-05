@@ -23,5 +23,5 @@ MonoBehaviour:
     y: 0
     width: 0.1
     height: 0.1
-  StackSize: 0
+  StackSize: 1
   Durability: 0

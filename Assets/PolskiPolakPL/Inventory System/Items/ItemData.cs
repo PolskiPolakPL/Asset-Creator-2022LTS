@@ -12,6 +12,6 @@ public class ItemData : ScriptableObject
     public Texture imageArray;
     public Rect UVRect = new Rect(0,0,0.1f,0.1f);
     [Header("Miscellaneous Stats")]
-    public int StackSize;
+    [Min(1)] public int StackSize = 1;
     public int Durability;
 }

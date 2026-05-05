@@ -20,6 +20,7 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] float throwingForce = 5;
 
     [Header("UI")]
+    [SerializeField] GameObject playerInventoryPanel;
     [SerializeField][Range(0,1)] float normalOpacity = .6f;
     [SerializeField][Range(0, 1)] float selectedOpacity = .8f;
 
@@ -57,33 +58,110 @@ public class InventorySystem : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            ToggleInventoryPanel(playerInventoryPanel.activeInHierarchy);
+        }
         HandleHotbarSelection();
         HandleItemDropping();
     }
 
-    public bool AddItem(ItemData item)
+    void ToggleInventoryPanel(bool toggle)
     {
-        ItemSlot selectedSlot = hotbarSlots[selectedIndex];
+        playerInventoryPanel.SetActive(!toggle);
+    }
+
+    public bool AddItem(ItemData item, int amount = 1)
+    {
         //Try putting item in selected slot
-        if (!selectedSlot.HasItem())
-        {
-            selectedSlot.SetItem(item);
+        if(TryAddItemToSelectedSlot(item, amount, out int remaining))
             return true;
+
+        amount = remaining;
+
+        //Try putting item in any slot with the same item
+        if(TryFillExistingSlots(item, amount, out remaining))
+            return true;
+
+        amount = remaining;
+
+        // Add item to empty Slot
+        if(TryFillEmptySlots(item, amount, out remaining))
+            return true;
+
+        //Inventory full
+        Debug.Log($"Inventory is full! Could not add {remaining} of {item.DisplayName}");
+        return false;
+    }
+    #region Adding item to Inventory
+    bool TryAddItemToSelectedSlot(ItemData item, int amount, out int remaining)
+    {
+        remaining = amount;
+
+        ItemSlot selectedSlot = hotbarSlots[selectedIndex];
+
+        if (!selectedSlot.HasItem())
+            AddAmountToSlot(item, amount, selectedSlot, out remaining);
+
+        else if (selectedSlot.GetItem() == item)
+            IncreaseAountInSlot(amount, selectedSlot, out remaining);
+
+        return (remaining <= 0) ? true : false;
+    }
+
+    bool TryFillExistingSlots(ItemData item, int amount, out int remaining)
+    {
+        remaining = amount;
+        foreach (ItemSlot slot in playerInventorySlots)
+        {
+            if (slot.HasItem() && slot.GetItem() == item)
+            {
+                IncreaseAountInSlot(amount, slot, out remaining);
+                if (remaining <= 0)
+                    return true;
+            }
         }
-        //Try putting item in any slot
-        int i = 0;
-        foreach (ItemSlot slot in hotbarSlots)
+        return false;
+    }
+
+    bool TryFillEmptySlots(ItemData item, int amount, out int remaining)
+    {
+        remaining = amount;
+        foreach (ItemSlot slot in playerInventorySlots)
         {
             if (!slot.HasItem())
             {
-                slot.SetItem(item);
-                return true;
+                AddAmountToSlot(item, amount, slot, out remaining);
+                if (remaining <= 0)
+                    return true;
             }
-            i++;
         }
-        Debug.Log("Inventory full!");
         return false;
     }
+
+    void IncreaseAountInSlot(int amount, ItemSlot slot, out int remaining)
+    {
+        remaining = amount;
+        int currentAmount = slot.GetAmount();
+        int maxStack = slot.GetItem().StackSize;
+        if (currentAmount < maxStack)
+        {
+            int amountToAdd = Mathf.Min(maxStack - currentAmount, remaining);
+
+            slot.SetItem(slot.GetItem(), currentAmount + amountToAdd);
+            remaining -= amountToAdd;
+        }
+    }
+
+    void AddAmountToSlot(ItemData itemToAdd, int amount, ItemSlot slot, out int remaining)
+    {
+        remaining = amount;
+        int amountToPlace = Mathf.Min(itemToAdd.StackSize, amount);
+        slot.SetItem(itemToAdd, amountToPlace);
+        remaining -= amountToPlace;
+    }
+
+    #endregion
 
     void HandleHotbarSelection()
     {
@@ -132,7 +210,7 @@ public class InventorySystem : MonoBehaviour
         foreach (Transform child in playerHand)
             Destroy(child.gameObject);
         if (selectedSlot.HasItem())
-            Instantiate(selectedSlot.GetItemData().HandPrefab, playerHand);
+            Instantiate(selectedSlot.GetItem().HandPrefab, playerHand);
     }
 
     void HandleItemDropping()
@@ -143,7 +221,7 @@ public class InventorySystem : MonoBehaviour
         if (!selectedSlot.HasItem())
             return;
 
-        ItemData itemData = selectedSlot.GetItemData();
+        ItemData itemData = selectedSlot.GetItem();
         // Remove hand item prefab
         GameObject handPrefab = playerHand.GetChild(0).gameObject;
         Destroy(handPrefab);

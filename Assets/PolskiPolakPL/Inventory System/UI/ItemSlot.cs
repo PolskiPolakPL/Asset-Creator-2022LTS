@@ -16,7 +16,7 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] RawImage itemRawImage;
     [SerializeField] TMP_Text amountTextField;
 
-    public ItemData GetItemData()
+    public ItemData GetItem()
     {
         return heldItem;
     }
