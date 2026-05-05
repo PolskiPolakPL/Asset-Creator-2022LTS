@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class InventorySystem : MonoBehaviour
@@ -17,12 +18,14 @@ public class InventorySystem : MonoBehaviour
 
     [Header("Player Hand")]
     [SerializeField] Transform playerHand;
+    [SerializeField] KeyCode dropKey = KeyCode.G;
     [SerializeField] float throwingForce = 5;
 
     [Header("UI")]
     [SerializeField] GameObject playerInventoryPanel;
     [SerializeField][Range(0,1)] float normalOpacity = .6f;
     [SerializeField][Range(0, 1)] float selectedOpacity = .8f;
+    public UnityEvent<bool> OnInventoryToggle;
 
     int selectedIndex = 0;
 
@@ -60,15 +63,23 @@ public class InventorySystem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            ToggleInventoryPanel(playerInventoryPanel.activeInHierarchy);
+            ToggleInventoryPanel(!playerInventoryPanel.activeInHierarchy);
         }
+
+        //StartDrag
+        //UpdateDragPosition
+        //EndDrag
+
         HandleHotbarSelection();
         HandleItemDropping();
     }
 
     void ToggleInventoryPanel(bool toggle)
     {
-        playerInventoryPanel.SetActive(!toggle);
+        playerInventoryPanel.SetActive(toggle);
+        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = toggle;
+        OnInventoryToggle?.Invoke(!toggle);
     }
 
     public bool AddItem(ItemData item, int amount = 1)
@@ -93,6 +104,7 @@ public class InventorySystem : MonoBehaviour
         Debug.Log($"Inventory is full! Could not add {remaining} of {item.DisplayName}");
         return false;
     }
+
     #region Adding item to Inventory
     bool TryAddItemToSelectedSlot(ItemData item, int amount, out int remaining)
     {
@@ -108,7 +120,6 @@ public class InventorySystem : MonoBehaviour
 
         return (remaining <= 0) ? true : false;
     }
-
     bool TryFillExistingSlots(ItemData item, int amount, out int remaining)
     {
         remaining = amount;
@@ -123,7 +134,6 @@ public class InventorySystem : MonoBehaviour
         }
         return false;
     }
-
     bool TryFillEmptySlots(ItemData item, int amount, out int remaining)
     {
         remaining = amount;
@@ -138,7 +148,6 @@ public class InventorySystem : MonoBehaviour
         }
         return false;
     }
-
     void IncreaseAountInSlot(int amount, ItemSlot slot, out int remaining)
     {
         remaining = amount;
@@ -152,7 +161,6 @@ public class InventorySystem : MonoBehaviour
             remaining -= amountToAdd;
         }
     }
-
     void AddAmountToSlot(ItemData itemToAdd, int amount, ItemSlot slot, out int remaining)
     {
         remaining = amount;
@@ -160,7 +168,6 @@ public class InventorySystem : MonoBehaviour
         slot.SetItem(itemToAdd, amountToPlace);
         remaining -= amountToPlace;
     }
-
     #endregion
 
     void HandleHotbarSelection()
@@ -188,7 +195,7 @@ public class InventorySystem : MonoBehaviour
 
         //item opacity + item in hand
         UpdateSelectedSlot();
-        SetItemInHand();
+        EquipHandItem();
     }
 
     void UpdateSelectedSlot()
@@ -204,7 +211,7 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    void SetItemInHand()
+    void EquipHandItem()
     {
         ItemSlot selectedSlot = hotbarSlots[selectedIndex];
         foreach (Transform child in playerHand)
@@ -215,22 +222,25 @@ public class InventorySystem : MonoBehaviour
 
     void HandleItemDropping()
     {
-        if(!Input.GetKeyDown(KeyCode.G))
+        if(!Input.GetKeyDown(dropKey))
             return;
         ItemSlot selectedSlot = hotbarSlots[selectedIndex];
         if (!selectedSlot.HasItem())
             return;
 
         ItemData itemData = selectedSlot.GetItem();
-        // Remove hand item prefab
-        GameObject handPrefab = playerHand.GetChild(0).gameObject;
-        Destroy(handPrefab);
+        if (!itemData.WorldPrefab)
+            return;
 
         // Create and throw world item prefab
-        GameObject droppedItemGo = Instantiate(itemData.WorldPrefab, playerHand.position, playerHand.rotation);
-        droppedItemGo.GetComponent<Rigidbody>().AddForce(playerHand.forward * throwingForce, ForceMode.Impulse);
+        GameObject droppedItemGO = Instantiate(itemData.WorldPrefab, playerHand.position, playerHand.rotation);
+        droppedItemGO.GetComponent<Rigidbody>().AddForce(playerHand.forward * throwingForce, ForceMode.Impulse);
+        droppedItemGO.GetComponent<ItemScript>().amount = selectedSlot.GetAmount();
 
         selectedSlot.ClearSlot();
+
+        // Remove hand item prefab
+        EquipHandItem();
     }
 
 }

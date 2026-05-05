@@ -4,8 +4,12 @@ using UnityEngine;
 public class ItemScript : MonoBehaviour, IPickable
 {
     Interactable interactable;
-    public ItemData itemSO;
     public event Action OnPickUp;
+
+
+    public ItemData itemSO;
+    [Min(1)] public int amount = 1;
+
     private void Awake()
     {
         interactable = GetComponent<Interactable>();
@@ -14,7 +18,7 @@ public class ItemScript : MonoBehaviour, IPickable
 
     public void PickUp()
     {
-        if (!InventorySystem.Instance.AddItem(itemSO))
+        if (!InventorySystem.Instance.AddItem(itemSO, amount))
             return;
         OnPickUp?.Invoke();
         Debug.Log($"You've picked up '{gameObject.name}'!");
