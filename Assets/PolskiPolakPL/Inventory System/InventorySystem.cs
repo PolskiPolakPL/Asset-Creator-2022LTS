@@ -215,8 +215,6 @@ public class InventorySystem : MonoBehaviour
     void EndDrag()
     {
         ItemSlot hovered = GetHoveredSlot();
-        if (!hovered)
-            return;
         HandleDrop(draggedSlot, hovered);
         dragIcon.enabled = false;
         draggedSlot = null;
@@ -235,22 +233,23 @@ public class InventorySystem : MonoBehaviour
 
     void HandleDrop(ItemSlot from, ItemSlot target)
     {
-        if(target == from) return;
+        if (!target)
+        {
+            DropItem(from.GetItem(),from.GetAmount());
+            from.ClearSlot();
+            return;
+        }
+
+        if(target == from)
+            return;
 
         // Stack Items
         if (TryMergeItems(from, target))
             return;
 
         //Swap Items
-        if (target.HasItem())
-        {
-            ItemData tempItem = target.GetItem();
-            int tempAmount = target.GetAmount();
-
-            target.SetItem(from.GetItem(), from.GetAmount());
-            from.SetItem(tempItem, tempAmount);
+        if (TrySwapItems(from, target))
             return;
-        }
 
         // Move Item
         target.SetItem(from.GetItem(),from.GetAmount());
@@ -274,6 +273,20 @@ public class InventorySystem : MonoBehaviour
         if (from.GetAmount() <= 0)
             from.ClearSlot();
         return true;
+    }
+
+    bool TrySwapItems(ItemSlot from, ItemSlot target)
+    {
+        if (target.HasItem())
+        {
+            ItemData tempItem = target.GetItem();
+            int tempAmount = target.GetAmount();
+
+            target.SetItem(from.GetItem(), from.GetAmount());
+            from.SetItem(tempItem, tempAmount);
+            return true;
+        }
+        return false;
     }
 
     #endregion
@@ -341,12 +354,15 @@ public class InventorySystem : MonoBehaviour
         {
             // Drop all items
             DropItem(selectedItem, selectedSlot.GetAmount());
+            // clear selected slot
+            selectedSlot.ClearSlot();
             // Remove hand item prefab
             EquipHandItem();
             return;
         }
         // drop one item
         DropItem(selectedItem);
+        selectedSlot.RemoveAmount(1);
     }
 
     void DropItem(ItemData item, int dropAmount = 1)
@@ -356,8 +372,6 @@ public class InventorySystem : MonoBehaviour
         droppedItemGO.GetComponent<Rigidbody>().AddForce(playerHand.forward * throwingForce, ForceMode.Impulse);
         // Set dropped amount to match
         droppedItemGO.GetComponent<ItemScript>().amount = dropAmount;
-        // remove amount from slot
-        selectedSlot.RemoveAmount(dropAmount);
     }
 
 }
