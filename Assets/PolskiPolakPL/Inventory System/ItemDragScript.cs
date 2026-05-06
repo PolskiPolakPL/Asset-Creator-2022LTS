@@ -1,0 +1,125 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ItemDragScript : MonoBehaviour
+{
+    [SerializeField] RawImage dragIcon;
+    ItemSlot draggedSlot;
+    bool isDragging;
+
+    public void HandleItemDrag()
+    {
+        //StartDrag
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            StartDrag();
+        }
+        //UpdateDragPosition
+        if (isDragging)
+            UpdateDragPosition();
+        //EndDrag
+        if (Input.GetKeyUp(KeyCode.Mouse0) && isDragging)
+        {
+            EndDrag();
+        }
+    }
+
+    void StartDrag()
+    {
+        ItemSlot hoveredSlot = GetHoveredSlot();
+
+        if (!hoveredSlot || !hoveredSlot.HasItem())
+            return;
+
+        draggedSlot = hoveredSlot;
+        isDragging = true;
+
+        //Show drag item
+        dragIcon.texture = draggedSlot.GetItem().ImageTexture;
+        dragIcon.uvRect = draggedSlot.GetItem().UVRect;
+        dragIcon.color = new Color(1, 1, 1, 0.5f);
+        dragIcon.enabled = true;
+    }
+
+    void UpdateDragPosition()
+    {
+        dragIcon.transform.position = Input.mousePosition;
+    }
+
+    void EndDrag()
+    {
+        ItemSlot hovered = GetHoveredSlot();
+        HandleDrop(draggedSlot, hovered);
+        dragIcon.enabled = false;
+        draggedSlot = null;
+        isDragging = false;
+    }
+
+    public ItemSlot GetHoveredSlot()
+    {
+        foreach (ItemSlot slot in InventorySystem.Instance.playerInventorySlots)
+        {
+            if (slot.hovering)
+                return slot;
+        }
+        return null;
+    }
+
+    void HandleDrop(ItemSlot originSlot, ItemSlot targetSlot)
+    {
+        if (!targetSlot)
+        {
+            InventorySystem.Instance.DropItem(originSlot.GetItem(), originSlot.GetAmount());
+            originSlot.ClearSlot();
+            return;
+        }
+
+        if (targetSlot == originSlot)
+            return;
+
+        // Stack Items
+        if (TryMergeItems(originSlot, targetSlot))
+            return;
+
+        //Swap Items
+        if (TrySwapItems(originSlot, targetSlot))
+            return;
+
+        // Move Item
+        targetSlot.SetItem(originSlot.GetItem(), originSlot.GetAmount());
+        originSlot.ClearSlot();
+    }
+
+    bool TryMergeItems(ItemSlot originSlot, ItemSlot targetSlot)
+    {
+        if (!targetSlot.HasItem() || targetSlot.GetItem() != originSlot.GetItem())
+            return false;
+        int max = targetSlot.GetItem().StackSize;
+        int space = max - targetSlot.GetAmount();
+
+        if (space <= 0)
+            return false;
+
+        int move = Mathf.Min(space, originSlot.GetAmount());
+        targetSlot.SetItem(targetSlot.GetItem(), targetSlot.GetAmount() + move);
+        originSlot.SetItem(originSlot.GetItem(), originSlot.GetAmount() - move);
+
+        if (originSlot.GetAmount() <= 0)
+            originSlot.ClearSlot();
+        return true;
+    }
+
+    bool TrySwapItems(ItemSlot originSlot, ItemSlot targetSlot)
+    {
+        if (targetSlot.HasItem())
+        {
+            ItemData tempItem = targetSlot.GetItem();
+            int tempAmount = targetSlot.GetAmount();
+
+            targetSlot.SetItem(originSlot.GetItem(), originSlot.GetAmount());
+            originSlot.SetItem(tempItem, tempAmount);
+            return true;
+        }
+        return false;
+    }
+}

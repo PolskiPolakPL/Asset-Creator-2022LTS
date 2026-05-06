@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -16,7 +15,7 @@ public class InventorySystem : MonoBehaviour
     // Slots Lists
     List<ItemSlot> hotbarSlots = new List<ItemSlot>();
     List<ItemSlot> backpackSlots = new List<ItemSlot>();
-    List<ItemSlot> playerInventorySlots = new List<ItemSlot>();
+    public List<ItemSlot> playerInventorySlots { get; private set; } = new List<ItemSlot>();
 
     [Header("Player Hand")]
     [SerializeField] Transform playerHand;
@@ -24,15 +23,6 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] float throwingForce = 5;
 
     [Header("- - - - - - - - - - = = = = = = UI = = = = = = - - - - - - - - - -")]
-    [Header("Inventory Panel")]
-    [SerializeField] GameObject playerInventoryPanel;
-    public UnityEvent<bool> OnInventoryToggle;
-
-    [Header("Item Drag")]
-    [SerializeField] RawImage dragIcon;
-    ItemSlot draggedSlot;
-    bool isDragging;
-
     [Header("Selected Slot BG")]
     [SerializeField][Range(0,1)] float normalOpacity = .6f;
     [SerializeField][Range(0, 1)] float selectedOpacity = .8f;
@@ -40,10 +30,14 @@ public class InventorySystem : MonoBehaviour
     ItemSlot selectedSlot;
 
     [Header("Item Description Panel")]
-    [SerializeField] GameObject descriptionPanelGO;
-    [SerializeField] RawImage descriptionImage;
-    [SerializeField] TMP_Text descrNameTextField;
-    [SerializeField] TMP_Text descriptionTextField;
+    [SerializeField] DescriptionPanelScript descrPanelScr;
+
+    [Header("Item Drag")]
+    [SerializeField] ItemDragScript itemDragScr;
+
+    [Header("Inventory Panel")]
+    [SerializeField] GameObject playerInventoryPanel;
+    public UnityEvent<bool> OnInventoryToggle;
 
 
     private void Awake()
@@ -81,9 +75,12 @@ public class InventorySystem : MonoBehaviour
         {
             ToggleInventoryPanel(!playerInventoryPanel.activeInHierarchy);
         }
-
-        UpdateDescriptionPanel();
-        HandleDragInput();
+        if (itemDragScr)
+        {
+            itemDragScr.HandleItemDrag();
+            if(descrPanelScr)
+                descrPanelScr.HandleDescriptionPanel(itemDragScr.GetHoveredSlot());
+        }
 
         HandleHotbarSelection();
         HandleItemDropping();
@@ -183,126 +180,6 @@ public class InventorySystem : MonoBehaviour
     }
     #endregion
 
-    void HandleDragInput()
-    {
-        //StartDrag
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            StartDrag();
-        }
-        //UpdateDragPosition
-        if(isDragging)
-            UpdateDragPosition();
-        //EndDrag
-        if (Input.GetKeyUp(KeyCode.Mouse0) && isDragging)
-        {
-            EndDrag();
-        }
-    }
-
-    #region Dragging Items
-
-    void StartDrag()
-    {
-        ItemSlot hoveredSlot = GetHoveredSlot();
-
-        if (!hoveredSlot || !hoveredSlot.HasItem())
-            return;
-
-        draggedSlot = hoveredSlot;
-        isDragging = true;
-
-        //Show drag item
-        dragIcon.texture = draggedSlot.GetItem().ImageTexture;
-        dragIcon.uvRect = draggedSlot.GetItem().UVRect;
-        dragIcon.color = new Color(1, 1, 1, 0.5f);
-        dragIcon.enabled = true;
-    }
-
-    void UpdateDragPosition()
-    {
-        dragIcon.transform.position = Input.mousePosition;
-    }
-
-    void EndDrag()
-    {
-        ItemSlot hovered = GetHoveredSlot();
-        HandleDrop(draggedSlot, hovered);
-        dragIcon.enabled = false;
-        draggedSlot = null;
-        isDragging = false;
-    }
-
-    ItemSlot GetHoveredSlot()
-    {
-        foreach(ItemSlot slot in playerInventorySlots)
-        {
-            if(slot.hovering)
-                return slot;
-        }
-        return null;
-    }
-
-    void HandleDrop(ItemSlot from, ItemSlot target)
-    {
-        if (!target)
-        {
-            DropItem(from.GetItem(),from.GetAmount());
-            from.ClearSlot();
-            return;
-        }
-
-        if(target == from)
-            return;
-
-        // Stack Items
-        if (TryMergeItems(from, target))
-            return;
-
-        //Swap Items
-        if (TrySwapItems(from, target))
-            return;
-
-        // Move Item
-        target.SetItem(from.GetItem(),from.GetAmount());
-        from.ClearSlot();
-    }
-
-    bool TryMergeItems(ItemSlot from, ItemSlot target)
-    {
-        if (!target.HasItem() || target.GetItem() != from.GetItem())
-            return false;
-        int max = target.GetItem().StackSize;
-        int space = max - target.GetAmount();
-
-        if (space <= 0)
-            return false;
-
-        int move = Mathf.Min(space, from.GetAmount());
-        target.SetItem(target.GetItem(), target.GetAmount() + move);
-        from.SetItem(from.GetItem(), from.GetAmount() - move);
-
-        if (from.GetAmount() <= 0)
-            from.ClearSlot();
-        return true;
-    }
-
-    bool TrySwapItems(ItemSlot from, ItemSlot target)
-    {
-        if (target.HasItem())
-        {
-            ItemData tempItem = target.GetItem();
-            int tempAmount = target.GetAmount();
-
-            target.SetItem(from.GetItem(), from.GetAmount());
-            from.SetItem(tempItem, tempAmount);
-            return true;
-        }
-        return false;
-    }
-
-    #endregion
-
     void HandleHotbarSelection()
     {
         // scroll down
@@ -377,42 +254,13 @@ public class InventorySystem : MonoBehaviour
         selectedSlot.RemoveAmount(1);
     }
 
-    void DropItem(ItemData item, int dropAmount = 1)
+    public void DropItem(ItemData item, int dropAmount = 1)
     {
         // Create and throw world item prefab
         GameObject droppedItemGO = Instantiate(item.WorldPrefab, playerHand.position, playerHand.rotation);
         droppedItemGO.GetComponent<Rigidbody>().AddForce(playerHand.forward * throwingForce, ForceMode.Impulse);
         // Set dropped amount to match
         droppedItemGO.GetComponent<ItemScript>().amount = dropAmount;
-    }
-
-    void UpdateDescriptionPanel()
-    {
-        if (!descriptionPanelGO)
-            return;
-
-        ItemSlot hoveredSlot = GetHoveredSlot();
-        if (!hoveredSlot)
-        {
-            descriptionPanelGO.SetActive(false);
-            return;
-        }
-
-        ItemData item = hoveredSlot.GetItem();
-        if (!item)
-        {
-            descriptionPanelGO.SetActive(false);
-            return;
-        }
-        // set image
-        descriptionImage.texture = item.ImageTexture;
-        descriptionImage.uvRect = item.UVRect;
-        // set name
-        descrNameTextField.text = item.DisplayName;
-        // set description
-        descriptionTextField.text = item.Description;
-
-        descriptionPanelGO.SetActive(true);
     }
 
 }
