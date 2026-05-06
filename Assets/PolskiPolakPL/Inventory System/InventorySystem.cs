@@ -39,6 +39,11 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] GameObject playerInventoryPanel;
     public UnityEvent<bool> OnInventoryToggle;
 
+    //CRAFTING
+    [SerializeField] List<CraftingRecipe> allRecipes = new List<CraftingRecipe>();
+    [SerializeField] Transform recipesContainer;
+    [SerializeField] GameObject craftingBtnPrefab;
+
 
     private void Awake()
     {
@@ -48,6 +53,7 @@ public class InventorySystem : MonoBehaviour
             Instance = this;
 
         InitializeLists();
+        PopulateCraftingContainer();
     }
 
     void InitializeLists()
@@ -98,19 +104,28 @@ public class InventorySystem : MonoBehaviour
     {
         //Try putting item in selected slot
         if(TryAddItemToSelectedSlot(item, amount, out int remaining))
+        {
+            PopulateCraftingContainer();
             return true;
+        }
 
         amount = remaining;
 
         //Try putting item in any slot with the same item
         if(TryFillExistingSlots(item, amount, out remaining))
+        {
+            PopulateCraftingContainer();
             return true;
+        }
 
         amount = remaining;
 
         // Add item to empty Slot
         if(TryFillEmptySlots(item, amount, out remaining))
+        {
+            PopulateCraftingContainer();
             return true;
+        }
 
         //Inventory full
         Debug.Log($"Inventory is full! Could not add {remaining} of {item.DisplayName}");
@@ -138,6 +153,7 @@ public class InventorySystem : MonoBehaviour
             if (slot.HasItem() && slot.GetItem() == item)
             {
                 IncreaseAountInSlot(amount, slot, out remaining);
+                amount = remaining;
                 if (remaining <= 0)
                     return true;
             }
@@ -152,6 +168,7 @@ public class InventorySystem : MonoBehaviour
             if (!slot.HasItem())
             {
                 AddAmountToSlot(item, amount, slot, out remaining);
+                amount = remaining;
                 if (remaining <= 0)
                     return true;
             }
@@ -252,6 +269,7 @@ public class InventorySystem : MonoBehaviour
         // drop one item
         DropItem(selectedItem);
         selectedSlot.RemoveAmount(1);
+        PopulateCraftingContainer();
     }
 
     public void DropItem(ItemData item, int dropAmount = 1)
@@ -263,4 +281,77 @@ public class InventorySystem : MonoBehaviour
         droppedItemGO.GetComponent<ItemScript>().amount = dropAmount;
     }
 
+    //CRAFTING
+    void PopulateCraftingContainer()
+    {
+        foreach(Transform child in recipesContainer)
+            Destroy(child.gameObject);
+
+        foreach(CraftingRecipe recipe in allRecipes)
+        {
+            GameObject btnGO = Instantiate(craftingBtnPrefab, recipesContainer);
+            RawImage image = btnGO.GetComponentInChildren<RawImage>();
+
+            image.texture = recipe.result.ImageTexture;
+            image.uvRect = recipe.result.UVRect;
+
+            Button btn = btnGO.GetComponent<Button>();
+
+            btn.interactable = CanCraft(recipe);
+            btn.onClick.RemoveAllListeners();
+            btn.onClick.AddListener(() => Craft(recipe));
+        }
+
+    }
+
+    void Craft(CraftingRecipe recipe)
+    {
+        if (!CanCraft(recipe))
+            return;
+
+        ConsumeIngredients(recipe);
+        AddItem(recipe.result, recipe.resultAmount);
+
+        PopulateCraftingContainer();
+    }
+
+    bool CanCraft(CraftingRecipe recipe)
+    {
+        int totalFound;
+        foreach (CraftingIngredient ingredient in recipe.ingredients)
+        {
+            totalFound = 0;
+            foreach (ItemSlot slot in playerInventorySlots)
+            {
+                if(!slot.HasItem() || slot.GetItem() != ingredient.item)
+                    continue;
+
+                totalFound += slot.GetAmount();
+            }
+            if (totalFound < ingredient.amount)
+                return false;
+        }
+            return true;
+    }
+
+    void ConsumeIngredients(CraftingRecipe recipe)
+    {
+        int remaning, take;
+        foreach(CraftingIngredient ingredient in recipe.ingredients)
+        {
+            remaning = ingredient.amount;
+
+            foreach(ItemSlot slot in playerInventorySlots)
+            {
+                if(!slot.HasItem()) continue;
+                if(slot.GetItem() != ingredient.item) continue;
+
+                take = Mathf.Min(slot.GetAmount(), remaning);
+                slot.RemoveAmount(take);
+
+                remaning -= take;
+                if(remaning<=0) break;
+            }
+        }
+    }
 }
