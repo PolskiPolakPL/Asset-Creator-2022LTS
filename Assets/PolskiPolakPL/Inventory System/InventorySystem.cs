@@ -325,7 +325,7 @@ public class InventorySystem : MonoBehaviour
         Image bgImage;
         foreach (ItemSlot slot in hotbarSlots)
         {
-            bgImage = slot.GetComponent<Image>();
+            bgImage = slot.bgImage;
             bgImage.color = (slot == selectedSlot) ? new Color(0, 0, 0, selectedOpacity) : new Color(0, 0, 0, normalOpacity);
         }
     }

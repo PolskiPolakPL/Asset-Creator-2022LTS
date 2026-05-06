@@ -13,6 +13,8 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     int itemAmount;
 
     // UI Elements
+    [field: Header("UI Elements")]
+    [field: SerializeField] public Image bgImage {  get; private set; }
     [SerializeField] RawImage itemRawImage;
     [SerializeField] TMP_Text amountTextField;
 
