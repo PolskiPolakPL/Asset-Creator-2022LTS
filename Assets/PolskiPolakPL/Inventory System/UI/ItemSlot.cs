@@ -32,7 +32,7 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         heldItem = item;
         itemAmount = amount;
-        itemRawImage.texture = item.imageArray;
+        itemRawImage.texture = item.ImageTexture;
         itemRawImage.uvRect = item.UVRect;
         UpdateSlot();
     }

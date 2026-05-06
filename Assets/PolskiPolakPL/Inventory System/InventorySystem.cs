@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -22,17 +23,27 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] KeyCode dropKey = KeyCode.G;
     [SerializeField] float throwingForce = 5;
 
-    [Header("UI")]
+    [Header("- - - - - - - - - - = = = = = = UI = = = = = = - - - - - - - - - -")]
+    [Header("Inventory Panel")]
     [SerializeField] GameObject playerInventoryPanel;
-    [SerializeField] RawImage dragIcon;
-    [SerializeField][Range(0,1)] float normalOpacity = .6f;
-    [SerializeField][Range(0, 1)] float selectedOpacity = .8f;
     public UnityEvent<bool> OnInventoryToggle;
 
-    int selectedIndex = 0;
-    ItemSlot selectedSlot;
+    [Header("Item Drag")]
+    [SerializeField] RawImage dragIcon;
     ItemSlot draggedSlot;
     bool isDragging;
+
+    [Header("Selected Slot BG")]
+    [SerializeField][Range(0,1)] float normalOpacity = .6f;
+    [SerializeField][Range(0, 1)] float selectedOpacity = .8f;
+    int selectedIndex = 0;
+    ItemSlot selectedSlot;
+
+    [Header("Item Description Panel")]
+    [SerializeField] GameObject descriptionPanelGO;
+    [SerializeField] RawImage descriptionImage;
+    [SerializeField] TMP_Text descrNameTextField;
+    [SerializeField] TMP_Text descriptionTextField;
 
 
     private void Awake()
@@ -71,6 +82,7 @@ public class InventorySystem : MonoBehaviour
             ToggleInventoryPanel(!playerInventoryPanel.activeInHierarchy);
         }
 
+        UpdateDescriptionPanel();
         HandleDragInput();
 
         HandleHotbarSelection();
@@ -201,7 +213,7 @@ public class InventorySystem : MonoBehaviour
         isDragging = true;
 
         //Show drag item
-        dragIcon.texture = draggedSlot.GetItem().imageArray;
+        dragIcon.texture = draggedSlot.GetItem().ImageTexture;
         dragIcon.uvRect = draggedSlot.GetItem().UVRect;
         dragIcon.color = new Color(1, 1, 1, 0.5f);
         dragIcon.enabled = true;
@@ -372,6 +384,35 @@ public class InventorySystem : MonoBehaviour
         droppedItemGO.GetComponent<Rigidbody>().AddForce(playerHand.forward * throwingForce, ForceMode.Impulse);
         // Set dropped amount to match
         droppedItemGO.GetComponent<ItemScript>().amount = dropAmount;
+    }
+
+    void UpdateDescriptionPanel()
+    {
+        if (!descriptionPanelGO)
+            return;
+
+        ItemSlot hoveredSlot = GetHoveredSlot();
+        if (!hoveredSlot)
+        {
+            descriptionPanelGO.SetActive(false);
+            return;
+        }
+
+        ItemData item = hoveredSlot.GetItem();
+        if (!item)
+        {
+            descriptionPanelGO.SetActive(false);
+            return;
+        }
+        // set image
+        descriptionImage.texture = item.ImageTexture;
+        descriptionImage.uvRect = item.UVRect;
+        // set name
+        descrNameTextField.text = item.DisplayName;
+        // set description
+        descriptionTextField.text = item.Description;
+
+        descriptionPanelGO.SetActive(true);
     }
 
 }

@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c441338480d11824fb1c2357e55b07f6, type: 3}
   m_Name: Green Cube Data
   m_EditorClassIdentifier: 
-  ID: 1
+  ID: green_cube
   DisplayName: Green Cube
+  Description: A green cube. "Green like a grass" - gross. I don't touch those.
   WorldPrefab: {fileID: 5612997135575571203, guid: 156e3f709e2b45047b34464e040610b6, type: 3}
   HandPrefab: {fileID: 4445975317762913257, guid: d02f2fda27326a94392b13149b5c5b87, type: 3}
-  imageArray: {fileID: 2800000, guid: cd61b1d1c4e969041acb0ebd44198afa, type: 3}
+  ImageTexture: {fileID: 2800000, guid: cd61b1d1c4e969041acb0ebd44198afa, type: 3}
   UVRect:
     serializedVersion: 2
     x: 0.1
