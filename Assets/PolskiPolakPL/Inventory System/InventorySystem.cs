@@ -103,49 +103,46 @@ public class InventorySystem : MonoBehaviour
     public bool AddItem(ItemData item, int amount = 1)
     {
         //Try putting item in selected slot
-        if(TryAddToSelectedSlot(item, amount, out int remaining))
+        if(TryAddToSelectedSlot(item, amount, out int remainingAmount))
         {
             PopulateCraftingContainer();
             return true;
         }
-
         //Try putting item in any slot with the same item
-        if(TryFillItemSlots(item, remaining, out remaining))
+        if(TryFillItemSlots(item, remainingAmount, out remainingAmount))
         {
             PopulateCraftingContainer();
             return true;
         }
-
         // Add item to empty Slot
-        if(TryFillEmptySlots(item, remaining, out remaining))
+        if(TryFillEmptySlots(item, remainingAmount, out remainingAmount))
         {
             PopulateCraftingContainer();
             return true;
         }
-
         //Inventory full
-        Debug.Log($"Inventory is full! Could not add {remaining} of {item.DisplayName}");
+        Debug.Log($"Inventory is full! Could not add {remainingAmount} of {item.DisplayName}");
         return false;
     }
 
     #region Adding item to Inventory
-    bool TryAddToSelectedSlot(ItemData item, int amount, out int remaining)
+    bool TryAddToSelectedSlot(ItemData item, int amount, out int remainder)
     {
-        // define starting value
-        remaining = amount;
+        // define remainder
+        remainder = amount;
 
         if (!selectedSlot.HasItem()) // EMPTY SLOT
-            remaining = FillEmptySlot(item, amount, selectedSlot);
+            remainder = FillEmptySlot(item, amount, selectedSlot);
 
         else if (selectedSlot.GetItem() == item) // SLOT HAS CORRECT ITEM
-            remaining = AddAmountToSlot(amount, selectedSlot);
+            remainder = AddAmountToSlot(amount, selectedSlot);
 
-        return (remaining <= 0) ? true : false;
+        return (remainder <= 0) ? true : false;
     }
-    bool TryFillItemSlots(ItemData item, int amount, out int remaining)
+    bool TryFillItemSlots(ItemData item, int amount, out int remainder)
     {
-        // define starting value
-        remaining = amount;
+        // define remainder
+        remainder = amount;
 
         foreach (ItemSlot slot in playerInventorySlots)
         {
@@ -153,32 +150,32 @@ public class InventorySystem : MonoBehaviour
             if (slot.HasItem() && slot.GetItem() == item)
             {
                 // Fill that Item Slot
-                remaining = AddAmountToSlot(remaining, slot);
+                remainder = AddAmountToSlot(remainder, slot);
 
-                if (remaining <= 0)
+                if (remainder <= 0)
                     return true;
             }
         }
-        // if Remaining left (is above 0)
+        // if remainder is above 0
         return false;
     }
-    bool TryFillEmptySlots(ItemData item, int amount, out int remaining)
+    bool TryFillEmptySlots(ItemData item, int amount, out int remainder)
     {
-        // define starting value
-        remaining = amount;
+        // define remainder
+        remainder = amount;
 
         foreach (ItemSlot slot in playerInventorySlots)
         {
             if (!slot.HasItem()) // IF Slot IS EMPTY
             {
                 // Fill Empty Slot
-                remaining = FillEmptySlot(item, remaining, slot);
+                remainder = FillEmptySlot(item, remainder, slot);
 
-                if (remaining <= 0)
+                if (remainder <= 0)
                     return true;
             }
         }
-        // if Remaining left (is above 0)
+        // if remainder is above 0
         return false;
     }
 
