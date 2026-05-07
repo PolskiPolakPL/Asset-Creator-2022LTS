@@ -52,6 +52,12 @@ public class ItemDragScript : MonoBehaviour
         draggedSlot = null;
     }
 
+    public void Abort()
+    {
+        dragIcon.enabled = false;
+        draggedSlot = null;
+    }
+
     bool IsDragging()
     {
         return draggedSlot;

@@ -80,6 +80,8 @@ public class InventorySystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             ToggleInventoryPanel(!playerInventoryPanel.activeInHierarchy);
+            if (itemDragScr)
+                itemDragScr.Abort();
         }
         if (itemDragScr)
         {
