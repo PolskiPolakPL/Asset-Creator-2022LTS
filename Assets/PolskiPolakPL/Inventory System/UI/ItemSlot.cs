@@ -18,6 +18,17 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] RawImage itemRawImage;
     [SerializeField] TMP_Text amountTextField;
 
+    #region Debugging
+
+    Color bgColor;
+    [SerializeField] Color hoveringColor;
+    private void Awake()
+    {
+        bgColor = bgImage.color;
+    }
+
+    #endregion
+
     public ItemData GetItem()
     {
         return heldItem;
@@ -87,10 +98,18 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         hovering = true;
+        bgImage.color = hoveringColor;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         hovering = false;
+        bgImage.color = bgColor;
+    }
+
+    private void OnDisable()
+    {
+        hovering = false;
+        bgImage.color = bgColor;
     }
 }

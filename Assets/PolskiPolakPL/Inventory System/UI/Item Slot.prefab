@@ -242,6 +242,7 @@ MonoBehaviour:
   <bgImage>k__BackingField: {fileID: 3739705747998104060}
   itemRawImage: {fileID: 7605089297709724180}
   amountTextField: {fileID: 8668673606765685315}
+  hoveringColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.39215687}
 --- !u!1 &7589255762429379818
 GameObject:
   m_ObjectHideFlags: 0

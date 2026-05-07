@@ -5,7 +5,6 @@ public class ItemDragScript : MonoBehaviour
 {
     [SerializeField] RawImage dragIcon;
     public ItemSlot draggedSlot {  get; private set; }
-    bool isDragging;
 
     public void HandleItemDrag()
     {
@@ -15,10 +14,10 @@ public class ItemDragScript : MonoBehaviour
             StartDrag();
         }
         //UpdateDragPosition
-        if (isDragging)
+        if (IsDragging())
             UpdateDragPosition();
         //EndDrag
-        if (Input.GetKeyUp(KeyCode.Mouse0) && isDragging)
+        if (Input.GetKeyUp(KeyCode.Mouse0) && IsDragging())
         {
             EndDrag();
         }
@@ -32,7 +31,6 @@ public class ItemDragScript : MonoBehaviour
             return;
 
         draggedSlot = hoveredSlot;
-        isDragging = true;
 
         //Show drag item
         dragIcon.texture = draggedSlot.GetItem().ImageTexture;
@@ -52,7 +50,11 @@ public class ItemDragScript : MonoBehaviour
         HandleDrop(draggedSlot, hovered);
         dragIcon.enabled = false;
         draggedSlot = null;
-        isDragging = false;
+    }
+
+    bool IsDragging()
+    {
+        return draggedSlot;
     }
 
     public ItemSlot GetHoveredSlot()
