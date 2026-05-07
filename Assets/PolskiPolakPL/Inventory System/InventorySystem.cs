@@ -246,12 +246,21 @@ public class InventorySystem : MonoBehaviour
 
     void HandleItemDropping()
     {
+        // NOT pressed a Key
         if(!Input.GetKeyDown(dropKey))
             return;
+
+        // Slot has NOT item
         if (!selectedSlot.HasItem())
             return;
 
+        // Slot is busy being dragged
+        if (selectedSlot == itemDragScr.draggedSlot)
+            return;
+
         ItemData selectedItem = selectedSlot.GetItem();
+
+        // Item has NOT worldPrefab (isn't droppable)
         if (!selectedItem.WorldPrefab)
             return;
 

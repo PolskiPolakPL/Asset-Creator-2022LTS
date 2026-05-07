@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class ItemDragScript : MonoBehaviour
 {
     [SerializeField] RawImage dragIcon;
-    ItemSlot draggedSlot;
+    public ItemSlot draggedSlot {  get; private set; }
     bool isDragging;
 
     public void HandleItemDrag()
