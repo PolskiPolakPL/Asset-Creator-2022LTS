@@ -103,25 +103,21 @@ public class InventorySystem : MonoBehaviour
     public bool AddItem(ItemData item, int amount = 1)
     {
         //Try putting item in selected slot
-        if(TryAddItemToSelectedSlot(item, amount, out int remaining))
+        if(TryAddToSelectedSlot(item, amount, out int remaining))
         {
             PopulateCraftingContainer();
             return true;
         }
-
-        amount = remaining;
 
         //Try putting item in any slot with the same item
-        if(TryFillExistingSlots(item, amount, out remaining))
+        if(TryFillItemSlots(item, remaining, out remaining))
         {
             PopulateCraftingContainer();
             return true;
         }
 
-        amount = remaining;
-
         // Add item to empty Slot
-        if(TryFillEmptySlots(item, amount, out remaining))
+        if(TryFillEmptySlots(item, remaining, out remaining))
         {
             PopulateCraftingContainer();
             return true;
@@ -133,67 +129,89 @@ public class InventorySystem : MonoBehaviour
     }
 
     #region Adding item to Inventory
-    bool TryAddItemToSelectedSlot(ItemData item, int amount, out int remaining)
+    bool TryAddToSelectedSlot(ItemData item, int amount, out int remaining)
     {
+        // define starting value
         remaining = amount;
 
-        if (!selectedSlot.HasItem())
-            AddAmountToSlot(item, amount, selectedSlot, out remaining);
+        if (!selectedSlot.HasItem()) // EMPTY SLOT
+            remaining = FillEmptySlot(item, amount, selectedSlot);
 
-        else if (selectedSlot.GetItem() == item)
-            IncreaseAountInSlot(amount, selectedSlot, out remaining);
+        else if (selectedSlot.GetItem() == item) // SLOT HAS CORRECT ITEM
+            remaining = AddAmountToSlot(amount, selectedSlot);
 
         return (remaining <= 0) ? true : false;
     }
-    bool TryFillExistingSlots(ItemData item, int amount, out int remaining)
+    bool TryFillItemSlots(ItemData item, int amount, out int remaining)
     {
+        // define starting value
         remaining = amount;
+
         foreach (ItemSlot slot in playerInventorySlots)
         {
+            // IF Slot HAS CORRECT Item
             if (slot.HasItem() && slot.GetItem() == item)
             {
-                IncreaseAountInSlot(amount, slot, out remaining);
-                amount = remaining;
+                // Fill that Item Slot
+                remaining = AddAmountToSlot(remaining, slot);
+
                 if (remaining <= 0)
                     return true;
             }
         }
+        // if Remaining left (is above 0)
         return false;
     }
     bool TryFillEmptySlots(ItemData item, int amount, out int remaining)
     {
+        // define starting value
         remaining = amount;
+
         foreach (ItemSlot slot in playerInventorySlots)
         {
-            if (!slot.HasItem())
+            if (!slot.HasItem()) // IF Slot IS EMPTY
             {
-                AddAmountToSlot(item, amount, slot, out remaining);
-                amount = remaining;
+                // Fill Empty Slot
+                remaining = FillEmptySlot(item, remaining, slot);
+
                 if (remaining <= 0)
                     return true;
             }
         }
+        // if Remaining left (is above 0)
         return false;
     }
-    void IncreaseAountInSlot(int amount, ItemSlot slot, out int remaining)
-    {
-        remaining = amount;
-        int currentAmount = slot.GetAmount();
-        int maxStack = slot.GetItem().StackSize;
-        if (currentAmount < maxStack)
-        {
-            int amountToAdd = Mathf.Min(maxStack - currentAmount, remaining);
 
-            slot.SetItem(slot.GetItem(), currentAmount + amountToAdd);
-            remaining -= amountToAdd;
-        }
-    }
-    void AddAmountToSlot(ItemData itemToAdd, int amount, ItemSlot slot, out int remaining)
+    int AddAmountToSlot(int amount, ItemSlot slot)
     {
-        remaining = amount;
-        int amountToPlace = Mathf.Min(itemToAdd.StackSize, amount);
-        slot.SetItem(itemToAdd, amountToPlace);
-        remaining -= amountToPlace;
+        // define starting value
+        int remainingAmount = amount;
+
+        // define how much Slot has and its max capacity
+        int currentSlotAmount = slot.GetAmount();
+        int maxStackSize = slot.GetItem().StackSize;
+        // IF Slot HAS "room for more"
+        int freeSpace = maxStackSize - currentSlotAmount;
+        if (freeSpace > 0)
+        {
+            // add as much as you can
+            int addAmount = Mathf.Min(freeSpace, amount);
+            slot.AddAmount(addAmount);
+
+            // update remaining
+            remainingAmount -= addAmount;
+        }
+        return remainingAmount;
+    }
+    int FillEmptySlot(ItemData item, int amount, ItemSlot slot)
+    {
+
+        // add new Item (as much as you can)
+        int fillAmount = Mathf.Min(item.StackSize, amount);
+        slot.SetItem(item, fillAmount);
+
+        // return remaining
+        return amount - fillAmount;
     }
     #endregion
 
