@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,6 +22,10 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] Transform playerHand;
     [SerializeField] KeyCode dropKey = KeyCode.G;
     [SerializeField] float throwingForce = 5;
+
+    //events
+    public event Action<ItemData, int> OnItemPickedUp;
+    public event Action<ItemData, int> OnItemDropped;
 
     [Header("- - - - - - - - - - = = = = = = UI = = = = = = - - - - - - - - - -")]
     [Header("Selected Slot BG")]
@@ -53,6 +58,7 @@ public class InventorySystem : MonoBehaviour
             Instance = this;
 
         InitializeLists();
+
         PopulateCraftingContainer();
     }
 
@@ -107,21 +113,29 @@ public class InventorySystem : MonoBehaviour
         //Try putting item in selected slot
         if(TryAddToSelectedSlot(item, amount, out int remainingAmount))
         {
+            OnItemPickedUp?.Invoke(item, amount - remainingAmount);
             PopulateCraftingContainer();
             return true;
         }
+
+        amount = remainingAmount;
         //Try putting item in any slot with the same item
-        if(TryFillItemSlots(item, remainingAmount, out remainingAmount))
+        if(TryFillItemSlots(item, amount, out remainingAmount))
         {
+            OnItemPickedUp?.Invoke(item, amount - remainingAmount);
             PopulateCraftingContainer();
             return true;
         }
+
+        amount = remainingAmount;
         // Add item to empty Slot
-        if(TryFillEmptySlots(item, remainingAmount, out remainingAmount))
+        if (TryFillEmptySlots(item, amount, out remainingAmount))
         {
+            OnItemPickedUp?.Invoke(item, amount - remainingAmount);
             PopulateCraftingContainer();
             return true;
         }
+
         //Inventory full
         Debug.Log($"Inventory is full! Could not add {remainingAmount} of {item.DisplayName}");
         return false;
@@ -305,6 +319,8 @@ public class InventorySystem : MonoBehaviour
         droppedItemGO.GetComponent<Rigidbody>().AddForce(playerHand.forward * throwingForce, ForceMode.Impulse);
         // Set dropped amount to match
         droppedItemGO.GetComponent<ItemScript>().amount = dropAmount;
+        //trigger event
+        OnItemDropped?.Invoke(item, dropAmount);
     }
 
     //CRAFTING
