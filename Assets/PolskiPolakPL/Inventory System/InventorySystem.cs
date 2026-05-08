@@ -298,7 +298,7 @@ public class InventorySystem : MonoBehaviour
             return;
 
         
-        if (!Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift))
         {
             // Drop all items
             DropItem(selectedItem, selectedSlot.GetAmount());
@@ -306,11 +306,13 @@ public class InventorySystem : MonoBehaviour
             selectedSlot.ClearSlot();
             // Remove hand item prefab
             EquipHandItem();
-            return;
         }
-        // drop one item
-        DropItem(selectedItem);
-        selectedSlot.RemoveAmount(1);
+        else
+        {
+            // drop one item
+            DropItem(selectedItem);
+            selectedSlot.RemoveAmount(1);
+        }
         PopulateCraftingContainer();
     }
 
