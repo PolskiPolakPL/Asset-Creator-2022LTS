@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -25,8 +24,8 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] float throwingForce = 5;
 
     //events
-    public event Action<ItemData, int> OnItemPickedUp;
-    public event Action<ItemData, int> OnItemDropped;
+    public event Action<ItemData, int> OnItemAdded;
+    public event Action<ItemData, int> OnItemRemoved;
 
     [Header("- - - - - - - - - - = = = = = = UI = = = = = = - - - - - - - - - -")]
     [Header("Selected Slot BG")]
@@ -45,12 +44,6 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] GameObject playerInventoryPanel;
     public UnityEvent<bool> OnInventoryToggle;
 
-    //CRAFTING
-    [SerializeField] List<CraftingRecipe> allRecipes = new List<CraftingRecipe>();
-    [SerializeField] Transform recipesContainer;
-    [SerializeField] GameObject craftingBtnPrefab;
-    [SerializeField] GameObject ingredientUIPrefab;
-
 
     private void Awake()
     {
@@ -61,7 +54,6 @@ public class InventorySystem : MonoBehaviour
 
         InitializeLists();
 
-        PopulateCraftingContainer();
     }
 
     void InitializeLists()
@@ -115,8 +107,7 @@ public class InventorySystem : MonoBehaviour
         //Try putting item in selected slot
         if(TryAddToSelectedSlot(item, amount, out int remainingAmount))
         {
-            OnItemPickedUp?.Invoke(item, amount - remainingAmount);
-            PopulateCraftingContainer();
+            OnItemAdded?.Invoke(item, amount - remainingAmount);
             return true;
         }
 
@@ -124,8 +115,7 @@ public class InventorySystem : MonoBehaviour
         //Try putting item in any slot with the same item
         if(TryFillItemSlots(item, amount, out remainingAmount))
         {
-            OnItemPickedUp?.Invoke(item, amount - remainingAmount);
-            PopulateCraftingContainer();
+            OnItemAdded?.Invoke(item, amount - remainingAmount);
             return true;
         }
 
@@ -133,8 +123,7 @@ public class InventorySystem : MonoBehaviour
         // Add item to empty Slot
         if (TryFillEmptySlots(item, amount, out remainingAmount))
         {
-            OnItemPickedUp?.Invoke(item, amount - remainingAmount);
-            PopulateCraftingContainer();
+            OnItemAdded?.Invoke(item, amount - remainingAmount);
             return true;
         }
 
@@ -313,7 +302,6 @@ public class InventorySystem : MonoBehaviour
             DropItem(selectedItem);
             selectedSlot.RemoveAmount(1);
         }
-        PopulateCraftingContainer();
     }
 
     public void DropItem(ItemData item, int dropAmount = 1)
@@ -324,91 +312,6 @@ public class InventorySystem : MonoBehaviour
         // Set dropped amount to match
         droppedItemGO.GetComponent<ItemScript>().amount = dropAmount;
         //trigger event
-        OnItemDropped?.Invoke(item, dropAmount);
-    }
-
-    //CRAFTING
-    void PopulateCraftingContainer()
-    {
-        foreach(Transform child in recipesContainer)
-            Destroy(child.gameObject);
-
-        foreach(CraftingRecipe recipe in allRecipes)
-        {
-            GameObject btnGO = Instantiate(craftingBtnPrefab, recipesContainer);
-            RawImage resultImage = btnGO.transform.GetChild(2).GetComponent<RawImage>();
-
-            resultImage.texture = recipe.result.ImageTexture;
-            resultImage.uvRect = recipe.result.UVRect;
-
-            resultImage.gameObject.GetComponentInChildren<TMP_Text>().text = recipe.resultAmount.ToString();
-
-            Button btn = btnGO.GetComponent<Button>();
-
-            btn.interactable = CanCraft(recipe);
-            btn.onClick.RemoveAllListeners();
-            btn.onClick.AddListener(() => Craft(recipe));
-
-            foreach(CraftingIngredient ingredient in recipe.ingredients)
-            {
-                GameObject ingredientUI = Instantiate(ingredientUIPrefab, btnGO.transform.GetChild(0));
-                RawImage ingredientImage = ingredientUI.GetComponent<RawImage>();
-                ingredientImage.texture = ingredient.item.ImageTexture;
-                ingredientImage.uvRect = ingredient.item.UVRect;
-                ingredientUI.GetComponentInChildren<TMP_Text>().text = ingredient.amount.ToString();
-            }
-        }
-
-    }
-
-    void Craft(CraftingRecipe recipe)
-    {
-        if (!CanCraft(recipe))
-            return;
-
-        ConsumeIngredients(recipe);
-        AddItem(recipe.result, recipe.resultAmount);
-
-        PopulateCraftingContainer();
-    }
-
-    bool CanCraft(CraftingRecipe recipe)
-    {
-        int totalFound;
-        foreach (CraftingIngredient ingredient in recipe.ingredients)
-        {
-            totalFound = 0;
-            foreach (ItemSlot slot in playerInventorySlots)
-            {
-                if(!slot.HasItem() || slot.GetItem() != ingredient.item)
-                    continue;
-
-                totalFound += slot.GetAmount();
-            }
-            if (totalFound < ingredient.amount)
-                return false;
-        }
-            return true;
-    }
-
-    void ConsumeIngredients(CraftingRecipe recipe)
-    {
-        int remaning, take;
-        foreach(CraftingIngredient ingredient in recipe.ingredients)
-        {
-            remaning = ingredient.amount;
-
-            foreach(ItemSlot slot in playerInventorySlots)
-            {
-                if(!slot.HasItem()) continue;
-                if(slot.GetItem() != ingredient.item) continue;
-
-                take = Mathf.Min(slot.GetAmount(), remaning);
-                slot.RemoveAmount(take);
-
-                remaning -= take;
-                if(remaning<=0) break;
-            }
-        }
+        OnItemRemoved?.Invoke(item, dropAmount);
     }
 }

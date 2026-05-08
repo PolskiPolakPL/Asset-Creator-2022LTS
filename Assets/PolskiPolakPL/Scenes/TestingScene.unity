@@ -2207,14 +2207,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  allRecipes:
-  - {fileID: 11400000, guid: 1e833df7075e80846a4f4f348408071c, type: 2}
-  - {fileID: 11400000, guid: 710eefc7813713d4aaf53f35f4786c0a, type: 2}
-  - {fileID: 11400000, guid: 67c6c63717265454f9d6bd7285013e1a, type: 2}
-  - {fileID: 11400000, guid: ecb10fab0ee1e4244a7aeda9b78d1e02, type: 2}
-  recipesContainer: {fileID: 8116518914560881967}
-  craftingBtnPrefab: {fileID: 1950340464290139847, guid: 26b5d7e7c168cc14c90590259e99db96, type: 3}
-  ingredientUIPrefab: {fileID: 6227513930108240757, guid: b2ab2dec648640b4aa90d3e8a5a56e19, type: 3}
 --- !u!114 &637137985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11202,6 +11194,7 @@ GameObject:
   - component: {fileID: 8270507784687704200}
   - component: {fileID: 3267897943081514089}
   - component: {fileID: 7736687431147613587}
+  - component: {fileID: 8270507784687704201}
   m_Layer: 5
   m_Name: Crafting Panel
   m_TagString: Untagged
@@ -17219,6 +17212,26 @@ RectTransform:
   m_AnchoredPosition: {x: -80, y: -80}
   m_SizeDelta: {x: 400, y: 600}
   m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &8270507784687704201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4094633849252445488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 447f302f769139942b759b2364d2346d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allRecipes:
+  - {fileID: 11400000, guid: 1e833df7075e80846a4f4f348408071c, type: 2}
+  - {fileID: 11400000, guid: 710eefc7813713d4aaf53f35f4786c0a, type: 2}
+  - {fileID: 11400000, guid: 67c6c63717265454f9d6bd7285013e1a, type: 2}
+  - {fileID: 11400000, guid: ecb10fab0ee1e4244a7aeda9b78d1e02, type: 2}
+  recipesContainer: {fileID: 8116518914560881967}
+  craftingBtnPrefab: {fileID: 1950340464290139847, guid: 26b5d7e7c168cc14c90590259e99db96, type: 3}
+  ingredientUIPrefab: {fileID: 6227513930108240757, guid: b2ab2dec648640b4aa90d3e8a5a56e19, type: 3}
 --- !u!4 &8280381584585299322
 Transform:
   m_ObjectHideFlags: 0
