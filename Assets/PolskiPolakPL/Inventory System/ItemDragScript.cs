@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,13 @@ public class ItemDragScript : MonoBehaviour
 {
     [SerializeField] RawImage dragIcon;
     public ItemSlot draggedSlot {  get; private set; }
+
+    InventorySystem inventorySys;
+
+    private void Start()
+    {
+        inventorySys = InventorySystem.Instance;
+    }
 
     public void HandleItemDrag()
     {
@@ -65,11 +73,18 @@ public class ItemDragScript : MonoBehaviour
 
     public ItemSlot GetHoveredSlot()
     {
-        foreach (ItemSlot slot in InventorySystem.Instance.playerInventorySlots)
+        List<ItemSlot> allSlots = new List<ItemSlot>();
+
+        allSlots.AddRange(inventorySys.playerInventorySlots);
+        allSlots.AddRange(inventorySys.chestUISlots);
+
+
+        foreach (ItemSlot slot in allSlots)
         {
             if (slot.hovering)
                 return slot;
         }
+
         return null;
     }
 
@@ -77,7 +92,7 @@ public class ItemDragScript : MonoBehaviour
     {
         if (!targetSlot)
         {
-            InventorySystem.Instance.DropItem(originSlot.GetItem(), originSlot.GetAmount());
+            inventorySys.DropItem(originSlot.GetItem(), originSlot.GetAmount());
             originSlot.ClearSlot();
             return;
         }

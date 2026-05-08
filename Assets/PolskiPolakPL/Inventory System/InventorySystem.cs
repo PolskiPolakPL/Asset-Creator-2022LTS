@@ -16,6 +16,7 @@ public class InventorySystem : MonoBehaviour
     // Slots Lists
     List<ItemSlot> hotbarSlots = new List<ItemSlot>();
     List<ItemSlot> backpackSlots = new List<ItemSlot>();
+    public List<ItemSlot> chestUISlots { get; private set; } = new List<ItemSlot>();
     public List<ItemSlot> playerInventorySlots { get; private set; } = new List<ItemSlot>();
 
     [Header("Player Hand")]
@@ -43,6 +44,9 @@ public class InventorySystem : MonoBehaviour
     [Header("Inventory Panel")]
     [SerializeField] GameObject playerInventoryPanel;
     public UnityEvent<bool> OnInventoryToggle;
+
+    [Header("Item Chest Panel")]
+    public GameObject chestPanel;
 
 
     private void Awake()
@@ -73,6 +77,11 @@ public class InventorySystem : MonoBehaviour
             backpackSlots.AddRange(backpackSlotsParent.GetComponentsInChildren<ItemSlot>());
             playerInventorySlots.AddRange(backpackSlots);
         }
+        if (chestPanel)
+        {
+            chestUISlots.AddRange(chestPanel.GetComponentsInChildren<ItemSlot>());
+            chestPanel.SetActive(false);
+        }
     }
 
     private void Update()
@@ -94,12 +103,19 @@ public class InventorySystem : MonoBehaviour
         HandleItemDropping();
     }
 
-    void ToggleInventoryPanel(bool toggle)
+    public void ToggleInventoryPanel(bool toggle)
     {
         playerInventoryPanel.SetActive(toggle);
         Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = toggle;
         OnInventoryToggle?.Invoke(!toggle);
+        if (toggle)
+            return;
+        StorageChestScript[] storageChests = FindObjectsByType<StorageChestScript>(FindObjectsSortMode.None);
+        foreach (StorageChestScript chest in storageChests)
+        {
+            chest.Close();
+        }
     }
 
     public bool AddItem(ItemData item, int amount = 1)
