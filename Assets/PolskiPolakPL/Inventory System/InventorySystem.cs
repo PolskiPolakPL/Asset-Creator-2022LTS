@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -48,6 +49,7 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] List<CraftingRecipe> allRecipes = new List<CraftingRecipe>();
     [SerializeField] Transform recipesContainer;
     [SerializeField] GameObject craftingBtnPrefab;
+    [SerializeField] GameObject ingredientUIPrefab;
 
 
     private void Awake()
@@ -332,16 +334,27 @@ public class InventorySystem : MonoBehaviour
         foreach(CraftingRecipe recipe in allRecipes)
         {
             GameObject btnGO = Instantiate(craftingBtnPrefab, recipesContainer);
-            RawImage image = btnGO.GetComponentInChildren<RawImage>();
+            RawImage resultImage = btnGO.transform.GetChild(2).GetComponent<RawImage>();
 
-            image.texture = recipe.result.ImageTexture;
-            image.uvRect = recipe.result.UVRect;
+            resultImage.texture = recipe.result.ImageTexture;
+            resultImage.uvRect = recipe.result.UVRect;
+
+            resultImage.gameObject.GetComponentInChildren<TMP_Text>().text = recipe.resultAmount.ToString();
 
             Button btn = btnGO.GetComponent<Button>();
 
             btn.interactable = CanCraft(recipe);
             btn.onClick.RemoveAllListeners();
             btn.onClick.AddListener(() => Craft(recipe));
+
+            foreach(CraftingIngredient ingredient in recipe.ingredients)
+            {
+                GameObject ingredientUI = Instantiate(ingredientUIPrefab, btnGO.transform.GetChild(0));
+                RawImage ingredientImage = ingredientUI.GetComponent<RawImage>();
+                ingredientImage.texture = ingredient.item.ImageTexture;
+                ingredientImage.uvRect = ingredient.item.UVRect;
+                ingredientUI.GetComponentInChildren<TMP_Text>().text = ingredient.amount.ToString();
+            }
         }
 
     }

@@ -2214,6 +2214,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ecb10fab0ee1e4244a7aeda9b78d1e02, type: 2}
   recipesContainer: {fileID: 8116518914560881967}
   craftingBtnPrefab: {fileID: 1950340464290139847, guid: 26b5d7e7c168cc14c90590259e99db96, type: 3}
+  ingredientUIPrefab: {fileID: 6227513930108240757, guid: b2ab2dec648640b4aa90d3e8a5a56e19, type: 3}
 --- !u!114 &637137985
 MonoBehaviour:
   m_ObjectHideFlags: 0
