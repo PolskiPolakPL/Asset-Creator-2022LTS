@@ -314,4 +314,11 @@ public class InventorySystem : MonoBehaviour
         //trigger event
         OnItemRemoved?.Invoke(item, dropAmount);
     }
+
+    public void ConsumeSelectedItem(int amount = 1)
+    {
+        if(!selectedSlot.HasItem())
+            return;
+        selectedSlot.RemoveAmount(amount);
+    }
 }
