@@ -14,8 +14,7 @@ public class StorageChestScript : MonoBehaviour
     [SerializeField] ChestItem[] storedItems;
 
     static GameObject chestPanel;
-    static ItemSlot[] chestSlots;
-    static int maxChestSize;
+    static ItemSlot[] chestUISlots;
     int chestSize;
 
     bool isOpen;
@@ -30,20 +29,15 @@ public class StorageChestScript : MonoBehaviour
         if (!chestPanel)
         {
             chestPanel = InventorySystem.Instance.chestPanel;
-            chestSlots = chestPanel.GetComponentsInChildren<ItemSlot>(true);
+            chestUISlots = chestPanel.GetComponentsInChildren<ItemSlot>(true);
+            foreach (ItemSlot slot in chestUISlots)
+            {
+                slot.gameObject.SetActive(false);
+            }
         }
-            maxChestSize = chestSlots.Length;
-            chestSize = Mathf.Min(storedItems.Length, maxChestSize);
-        foreach (ItemSlot slot in chestSlots)
-        {
-            slot.gameObject.SetActive(false);
-        }
-            chestPanel.SetActive(false);
 
-        for(int i = 0; i < chestSize; i++)
-        {
-            storedItems[i] = new ChestItem();
-        }
+        chestSize = Mathf.Min(storedItems.Length, chestUISlots.Length);
+        chestPanel.SetActive(false);
     }
 
     void OpenCloseChest()
@@ -60,16 +54,7 @@ public class StorageChestScript : MonoBehaviour
         interactable.message = "Close";
         chestPanel.SetActive(true);
 
-        ChestItem storedItem;
-        for(int i = 0;  i < chestSize; i++)
-        {
-            storedItem = storedItems[i];
-            if (storedItem.Item)
-                chestSlots[i].SetItem(storedItem.Item, storedItem.amount);
-            else
-                chestSlots[i].ClearSlot();
-            chestSlots[i].gameObject.SetActive(true);
-        }
+        GetItemsFromChest();
         InventorySystem.Instance.ToggleInventoryPanel(isOpen);
     }
 
@@ -77,25 +62,44 @@ public class StorageChestScript : MonoBehaviour
     {
         if (!isOpen) return;
 
-        for(int i = 0; i < chestSize; i++)
+        StoreItemsInChest();
+
+        isOpen = false;
+        interactable.message = "Open";
+        chestPanel.SetActive(false);
+        InventorySystem.Instance.ToggleInventoryPanel(false);
+    }
+
+    void StoreItemsInChest()
+    {
+        for (int i = 0; i < chestSize; i++)
         {
-            if (chestSlots[i].HasItem())
+            if (chestUISlots[i].HasItem())
             {
-                storedItems[i].Item = chestSlots[i].GetItem();
-                storedItems[i].amount = chestSlots[i].GetAmount();
+                storedItems[i].Item = chestUISlots[i].GetItem();
+                storedItems[i].amount = chestUISlots[i].GetAmount();
             }
             else
             {
                 storedItems[i].Item = null;
                 storedItems[i].amount = 0;
             }
-            chestSlots[i].gameObject.SetActive(false);
+            chestUISlots[i].gameObject.SetActive(false);
         }
+    }
 
-        isOpen = false;
-        interactable.message = "Open";
-        chestPanel.SetActive(false);
-        InventorySystem.Instance.ToggleInventoryPanel(false);
+    void GetItemsFromChest()
+    {
+        ChestItem storedItem;
+        for (int i = 0; i < chestSize; i++)
+        {
+            storedItem = storedItems[i];
+            if (storedItem.Item)
+                chestUISlots[i].SetItem(storedItem.Item, storedItem.amount);
+            else
+                chestUISlots[i].ClearSlot();
+            chestUISlots[i].gameObject.SetActive(true);
+        }
     }
 
     private void OnDestroy()
