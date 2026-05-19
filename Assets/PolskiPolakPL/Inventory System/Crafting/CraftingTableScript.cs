@@ -14,6 +14,10 @@ public class CraftingTableScript : MonoBehaviour
         interactable.OnInteraction += OpenCloseCrafting;
     }
 
+    private void Start()
+    {
+        InventoryUIManager.Instance.OnHideInventoryPanel.AddListener(Close);
+    }
 
     void OpenCloseCrafting()
     {
@@ -21,24 +25,28 @@ public class CraftingTableScript : MonoBehaviour
             Close();
         else
             Open();
+        InventoryUIManager.Instance.ToggleInventoryPanel(isOpen);
     }
 
     void Close()
     {
-        InventorySystem.Instance.ToggleInventoryPanel(false);
-        craftingPanel.SetActive(false);
+        if (!isOpen)
+            return;
         isOpen = false;
+        interactable.message = "Open crafting";
+        craftingPanel.SetActive(false);
     }
 
     void Open()
     {
         isOpen = true;
+        interactable.message = "Close crafting";
         craftingPanel.SetActive(true);
-        InventorySystem.Instance.ToggleInventoryPanel(true);
     }
 
     private void OnDestroy()
     {
         interactable.OnInteraction -= OpenCloseCrafting;
+        InventoryUIManager.Instance.OnHideInventoryPanel.RemoveListener(Close);
     }
 }

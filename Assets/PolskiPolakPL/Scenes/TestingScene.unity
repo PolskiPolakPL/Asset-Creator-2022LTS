@@ -1802,7 +1802,6 @@ GameObject:
   m_Component:
   - component: {fileID: 419987961}
   - component: {fileID: 419987962}
-  - component: {fileID: 419987963}
   m_Layer: 0
   m_Name: HUD Manager
   m_TagString: Untagged
@@ -1838,27 +1837,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionMessage: {fileID: 247511267}
---- !u!114 &419987963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 419987960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 186c192cbb3e4fd4db4b345c3b7d1de7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  normalOpacity: 0.6
-  selectedOpacity: 0.8
-  descrPanelScr: {fileID: 0}
-  itemDragScr: {fileID: 0}
-  playerInventoryPanel: {fileID: 0}
-  OnInventoryToggle:
-    m_PersistentCalls:
-      m_Calls: []
-  chestPanel: {fileID: 0}
 --- !u!1001 &423138833
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2155,9 +2133,9 @@ GameObject:
   - component: {fileID: 489745843}
   - component: {fileID: 489745842}
   - component: {fileID: 489745841}
-  - component: {fileID: 489745840}
   - component: {fileID: 489745839}
   - component: {fileID: 489745838}
+  - component: {fileID: 489745844}
   m_Layer: 0
   m_Name: Item Chest (1)
   m_TagString: Untagged
@@ -2211,59 +2189,6 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!114 &489745840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 489745836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61584c4ffc969b24d977aec38d97d440, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  storedItems:
-  - Item: {fileID: 11400000, guid: 54cf57437ed859242a93303a47809479, type: 2}
-    amount: 1
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 11400000, guid: 54cf57437ed859242a93303a47809479, type: 2}
-    amount: 1
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 11400000, guid: 54cf57437ed859242a93303a47809479, type: 2}
-    amount: 1
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
 --- !u!65 &489745841
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2335,6 +2260,59 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 489745836}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &489745844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489745836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43082a1c0f1775c4c87dafc66eafeba6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storedItems:
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
 --- !u!224 &499115571 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6021134848996021, guid: ea0dceff44756134d8bd1a704e306c48, type: 3}
@@ -2689,9 +2667,9 @@ GameObject:
   - component: {fileID: 555314046}
   - component: {fileID: 555314045}
   - component: {fileID: 555314044}
-  - component: {fileID: 555314043}
   - component: {fileID: 555314042}
   - component: {fileID: 555314041}
+  - component: {fileID: 555314047}
   m_Layer: 0
   m_Name: Item Chest (2)
   m_TagString: Untagged
@@ -2745,7 +2723,78 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!114 &555314043
+--- !u!65 &555314044
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555314039}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &555314045
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555314039}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: d5ca7f9c52bdd1c4ab9b837ea64d1ca1, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &555314046
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555314039}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &555314047
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2754,7 +2803,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 555314039}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61584c4ffc969b24d977aec38d97d440, type: 3}
+  m_Script: {fileID: 11500000, guid: 43082a1c0f1775c4c87dafc66eafeba6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   storedItems:
@@ -2838,77 +2887,6 @@ MonoBehaviour:
     amount: 0
   - Item: {fileID: 0}
     amount: 0
---- !u!65 &555314044
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 555314039}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &555314045
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 555314039}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: d5ca7f9c52bdd1c4ab9b837ea64d1ca1, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &555314046
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 555314039}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &556628895
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3325,6 +3303,7 @@ GameObject:
   - component: {fileID: 637137983}
   - component: {fileID: 637137984}
   - component: {fileID: 637137985}
+  - component: {fileID: 637137986}
   m_Layer: 0
   m_Name: Inventory System
   m_TagString: Untagged
@@ -3365,36 +3344,7 @@ MonoBehaviour:
   playerHand: {fileID: 1412400592}
   dropKey: 113
   throwingForce: 5
-  descrPanelScr: {fileID: 2039868240}
   itemDragScr: {fileID: 637137985}
-  playerInventoryPanel: {fileID: 1524245755}
-  OnInventoryToggle:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 960009797}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 960009798}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   chestPanel: {fileID: 1607560278}
 --- !u!114 &637137985
 MonoBehaviour:
@@ -3409,6 +3359,78 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragIcon: {fileID: 1981443768}
+--- !u!114 &637137986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637137982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 186c192cbb3e4fd4db4b345c3b7d1de7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalOpacity: 0.6
+  selectedOpacity: 0.8
+  itemDragScr: {fileID: 637137985}
+  descrPanelScr: {fileID: 2039868240}
+  <ChestUIPanel>k__BackingField: {fileID: 1607560278}
+  playerInventoryPanel: {fileID: 1524245755}
+  OnShowInventoryPanel:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 960009798}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 960009797}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnHideInventoryPanel:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 960009798}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 960009797}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1 &640166656
 GameObject:
   m_ObjectHideFlags: 0
@@ -3425,7 +3447,7 @@ GameObject:
   - component: {fileID: 640166659}
   - component: {fileID: 640166658}
   m_Layer: 0
-  m_Name: Item Chest (3)Crafting Table
+  m_Name: Crafting Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3472,7 +3494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25560f2ef01ab3840858582c2a242d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  message: Open Chest
+  message: Open crafting
 --- !u!114 &640166660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8859,9 +8881,9 @@ GameObject:
   - component: {fileID: 1890831057}
   - component: {fileID: 1890831056}
   - component: {fileID: 1890831055}
-  - component: {fileID: 1890831054}
   - component: {fileID: 1890831059}
   - component: {fileID: 1890831058}
+  - component: {fileID: 1890831060}
   m_Layer: 0
   m_Name: Item Chest
   m_TagString: Untagged
@@ -8884,39 +8906,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1613958597}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1890831054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1890831052}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61584c4ffc969b24d977aec38d97d440, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  storedItems:
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 11400000, guid: 87fc265a52136d742b472f7fcf69f83e, type: 2}
-    amount: 10
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
-  - Item: {fileID: 0}
-    amount: 0
 --- !u!65 &1890831055
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9019,6 +9008,39 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &1890831060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890831052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43082a1c0f1775c4c87dafc66eafeba6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storedItems:
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
+  - Item: {fileID: 0}
+    amount: 0
 --- !u!224 &1903730418 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6021134848996021, guid: ea0dceff44756134d8bd1a704e306c48, type: 3}
@@ -15562,7 +15584,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &4118030438498341152
 GameObject:
   m_ObjectHideFlags: 0

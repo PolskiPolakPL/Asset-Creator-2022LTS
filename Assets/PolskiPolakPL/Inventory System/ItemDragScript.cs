@@ -12,6 +12,7 @@ public class ItemDragScript : MonoBehaviour
     private void Start()
     {
         inventorySys = InventorySystem.Instance;
+        InventoryUIManager.Instance.OnHideInventoryPanel.AddListener(Abort);
     }
 
     public void HandleItemDrag()
@@ -76,7 +77,7 @@ public class ItemDragScript : MonoBehaviour
         List<ItemSlot> allSlots = new List<ItemSlot>();
 
         allSlots.AddRange(inventorySys.playerInventorySlots);
-        allSlots.AddRange(inventorySys.chestUISlots);
+        allSlots.AddRange(ItemChestScript.ChestUISlots);
 
 
         foreach (ItemSlot slot in allSlots)
@@ -144,5 +145,10 @@ public class ItemDragScript : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    private void OnDestroy()
+    {
+        InventoryUIManager.Instance.OnHideInventoryPanel.RemoveListener(Abort);
     }
 }

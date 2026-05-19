@@ -16,7 +16,6 @@ public class InventorySystem : MonoBehaviour
     // Slots Lists
     public List<ItemSlot> hotbarSlots { get; private set; } = new List<ItemSlot>();
     public List<ItemSlot> backpackSlots { get; private set; } = new List<ItemSlot>();
-    public List<ItemSlot> chestUISlots { get; private set; } = new List<ItemSlot>();
     public List<ItemSlot> playerInventorySlots { get; private set; } = new List<ItemSlot>();
 
     [Header("Player Hand")]
@@ -28,19 +27,14 @@ public class InventorySystem : MonoBehaviour
     public event Action<ItemData, int> OnItemAdded;
     public event Action<ItemData, int> OnItemRemoved;
 
-    [Header("- - - - - - - - - - = = = = = = UI = = = = = = - - - - - - - - - -")]
     int selectedIndex = 0;
-    ItemSlot selectedSlot;
+    public ItemSlot selectedSlot {  get; private set; }
 
-    [Header("Item Description Panel")]
-    [SerializeField] DescriptionPanelScript descrPanelScr;
-
+    [Header("- - - - - - - - - - = = = = = = UI = = = = = = - - - - - - - - - -")]
     [Header("Item Drag")]
     [SerializeField] ItemDragScript itemDragScr;
 
     [Header("Inventory Panel")]
-    [SerializeField] GameObject playerInventoryPanel;
-    public UnityEvent<bool> OnInventoryToggle;
 
     [Header("Item Chest Panel")]
     public GameObject chestPanel;
@@ -76,43 +70,14 @@ public class InventorySystem : MonoBehaviour
         }
         if (chestPanel)
         {
-            chestUISlots.AddRange(chestPanel.GetComponentsInChildren<ItemSlot>());
             chestPanel.SetActive(false);
         }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            ToggleInventoryPanel(!playerInventoryPanel.activeInHierarchy);
-            if (itemDragScr)
-                itemDragScr.Abort();
-        }
-        if (itemDragScr)
-        {
-            itemDragScr.HandleItemDrag();
-            if(descrPanelScr)
-                descrPanelScr.HandleDescriptionPanel(itemDragScr.GetHoveredSlot());
-        }
-
         HandleHotbarSelection();
         HandleItemDropping();
-    }
-
-    public void ToggleInventoryPanel(bool toggle)
-    {
-        playerInventoryPanel.SetActive(toggle);
-        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
-        Cursor.visible = toggle;
-        OnInventoryToggle?.Invoke(!toggle);
-        if (toggle)
-            return;
-        StorageChestScript[] storageChests = FindObjectsByType<StorageChestScript>(FindObjectsSortMode.None);
-        foreach (StorageChestScript chest in storageChests)
-        {
-            chest.Close();
-        }
     }
 
     public bool AddItem(ItemData item, int amount = 1)
@@ -257,7 +222,6 @@ public class InventorySystem : MonoBehaviour
 
         //item opacity + item in hand
         selectedSlot = hotbarSlots[selectedIndex];
-        InventoryUIManager.Instance.UpdateSelectedSlot(selectedSlot);
         EquipHandItem();
     }
 
