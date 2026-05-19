@@ -1802,6 +1802,7 @@ GameObject:
   m_Component:
   - component: {fileID: 419987961}
   - component: {fileID: 419987962}
+  - component: {fileID: 419987963}
   m_Layer: 0
   m_Name: HUD Manager
   m_TagString: Untagged
@@ -1837,6 +1838,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionMessage: {fileID: 247511267}
+--- !u!114 &419987963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419987960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 186c192cbb3e4fd4db4b345c3b7d1de7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalOpacity: 0.6
+  selectedOpacity: 0.8
+  descrPanelScr: {fileID: 0}
+  itemDragScr: {fileID: 0}
+  playerInventoryPanel: {fileID: 0}
+  OnInventoryToggle:
+    m_PersistentCalls:
+      m_Calls: []
+  chestPanel: {fileID: 0}
 --- !u!1001 &423138833
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3343,8 +3365,6 @@ MonoBehaviour:
   playerHand: {fileID: 1412400592}
   dropKey: 113
   throwingForce: 5
-  normalOpacity: 0.6
-  selectedOpacity: 0.8
   descrPanelScr: {fileID: 2039868240}
   itemDragScr: {fileID: 637137985}
   playerInventoryPanel: {fileID: 1524245755}

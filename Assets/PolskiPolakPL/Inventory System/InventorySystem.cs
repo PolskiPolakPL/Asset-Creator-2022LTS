@@ -14,8 +14,8 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] Transform backpackSlotsParent;
 
     // Slots Lists
-    List<ItemSlot> hotbarSlots = new List<ItemSlot>();
-    List<ItemSlot> backpackSlots = new List<ItemSlot>();
+    public List<ItemSlot> hotbarSlots { get; private set; } = new List<ItemSlot>();
+    public List<ItemSlot> backpackSlots { get; private set; } = new List<ItemSlot>();
     public List<ItemSlot> chestUISlots { get; private set; } = new List<ItemSlot>();
     public List<ItemSlot> playerInventorySlots { get; private set; } = new List<ItemSlot>();
 
@@ -29,9 +29,6 @@ public class InventorySystem : MonoBehaviour
     public event Action<ItemData, int> OnItemRemoved;
 
     [Header("- - - - - - - - - - = = = = = = UI = = = = = = - - - - - - - - - -")]
-    [Header("Selected Slot BG")]
-    [SerializeField][Range(0,1)] float normalOpacity = .6f;
-    [SerializeField][Range(0, 1)] float selectedOpacity = .8f;
     int selectedIndex = 0;
     ItemSlot selectedSlot;
 
@@ -259,19 +256,9 @@ public class InventorySystem : MonoBehaviour
         }
 
         //item opacity + item in hand
-        UpdateSelectedSlot();
-        EquipHandItem();
-    }
-
-    void UpdateSelectedSlot()
-    {
         selectedSlot = hotbarSlots[selectedIndex];
-        Image bgImage;
-        foreach (ItemSlot slot in hotbarSlots)
-        {
-            bgImage = slot.bgImage;
-            bgImage.color = (slot == selectedSlot) ? new Color(0, 0, 0, selectedOpacity) : new Color(0, 0, 0, normalOpacity);
-        }
+        InventoryUIManager.Instance.UpdateSelectedSlot(selectedSlot);
+        EquipHandItem();
     }
 
     void EquipHandItem()
