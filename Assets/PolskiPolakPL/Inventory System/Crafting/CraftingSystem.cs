@@ -3,30 +3,40 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CraftingScript : MonoBehaviour
+public class CraftingSystem : MonoBehaviour
 {
 
     //CRAFTING
-    [SerializeField] List<CraftingRecipe> allRecipes = new List<CraftingRecipe>();
     [SerializeField] Transform recipesContainer;
     [SerializeField] GameObject craftingBtnPrefab;
     [SerializeField] GameObject ingredientUIPrefab;
 
     InventorySystem inventorySystem;
 
+    public static CraftingSystem Instance { get; private set; }
+    private void Awake()
+    {
+        if (Instance && Instance != this)
+            Destroy(gameObject);
+        else
+            Instance = this;
+    }
+
     private void Start()
     {
         inventorySystem = InventorySystem.Instance;
-        PopulateCraftingContainer();
     }
 
     //CRAFTING
-    void PopulateCraftingContainer()
+    public void RepopulateCraftingContainer(List<CraftingRecipe> recipeList)
     {
         foreach (Transform child in recipesContainer)
+        {
+            child.GetComponentInChildren<Button>().onClick.RemoveAllListeners();
             Destroy(child.gameObject);
+        }
 
-        foreach (CraftingRecipe recipe in allRecipes)
+        foreach (CraftingRecipe recipe in recipeList)
         {
             GameObject btnGO = Instantiate(craftingBtnPrefab, recipesContainer);
             RawImage resultImage = btnGO.transform.GetChild(2).GetComponent<RawImage>();
@@ -60,8 +70,6 @@ public class CraftingScript : MonoBehaviour
 
         ConsumeIngredients(recipe);
         inventorySystem.AddItem(recipe.result, recipe.resultAmount);
-
-        PopulateCraftingContainer();
     }
     bool CanCraft(CraftingRecipe recipe)
     {

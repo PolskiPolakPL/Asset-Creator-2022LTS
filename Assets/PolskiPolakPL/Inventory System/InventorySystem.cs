@@ -32,7 +32,7 @@ public class InventorySystem : MonoBehaviour
 
     [Header("- - - - - - - - - - = = = = = = UI = = = = = = - - - - - - - - - -")]
     [Header("Item Drag")]
-    [SerializeField] ItemDragScript itemDragScr;
+    [SerializeField] MoveItemScript itemDragScr;
 
     [Header("Inventory Panel")]
 

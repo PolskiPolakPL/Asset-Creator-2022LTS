@@ -1,21 +1,26 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CraftingTableScript : MonoBehaviour
 {
     [SerializeField] Interactable interactable;
-    [SerializeField] CraftingScript craftingScr;
+    CraftingSystem craftingSys;
+    [field: SerializeField] public List<CraftingRecipe> craftingRecipes { get; private set;} = new List<CraftingRecipe>();
     static GameObject craftingPanel;
     bool isOpen = false;
     private void Awake()
     {
         interactable = GetComponent<Interactable>();
-        if(!craftingPanel)
-            craftingPanel = craftingScr.gameObject;
         interactable.OnInteraction += OpenCloseCrafting;
     }
 
     private void Start()
     {
+        if(!craftingSys)
+            craftingSys = CraftingSystem.Instance;
+
+        if(!craftingPanel)
+            craftingPanel = InventoryUIManager.Instance.CraftingUIPanel;
         InventoryUIManager.Instance.OnHideInventoryPanel.AddListener(Close);
     }
 
@@ -41,6 +46,7 @@ public class CraftingTableScript : MonoBehaviour
     {
         isOpen = true;
         interactable.message = "Close crafting";
+        craftingSys.RepopulateCraftingContainer(craftingRecipes);
         craftingPanel.SetActive(true);
     }
 

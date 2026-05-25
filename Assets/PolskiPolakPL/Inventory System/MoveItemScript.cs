@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemDragScript : MonoBehaviour
+public class MoveItemScript : MonoBehaviour
 {
     [SerializeField] RawImage dragIcon;
     public ItemSlot draggedSlot {  get; private set; }

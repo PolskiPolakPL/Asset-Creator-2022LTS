@@ -3302,7 +3302,7 @@ GameObject:
   m_Component:
   - component: {fileID: 637137983}
   - component: {fileID: 637137984}
-  - component: {fileID: 637137985}
+  - component: {fileID: 637137987}
   - component: {fileID: 637137986}
   m_Layer: 0
   m_Name: Inventory System
@@ -3324,6 +3324,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1919210957}
   - {fileID: 9123572738783910419}
   m_Father: {fileID: 912183751}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3344,21 +3345,8 @@ MonoBehaviour:
   playerHand: {fileID: 1412400592}
   dropKey: 113
   throwingForce: 5
-  itemDragScr: {fileID: 637137985}
+  itemDragScr: {fileID: 637137987}
   chestPanel: {fileID: 1607560278}
---- !u!114 &637137985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 637137982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9db8c422ff2f0a4d9aad4b353dbadf8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dragIcon: {fileID: 1981443768}
 --- !u!114 &637137986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3373,10 +3361,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalOpacity: 0.6
   selectedOpacity: 0.8
-  itemDragScr: {fileID: 637137985}
+  itemDragScr: {fileID: 637137987}
+  playerInventoryPanel: {fileID: 1524245755}
   descrPanelScr: {fileID: 2039868240}
   <ChestUIPanel>k__BackingField: {fileID: 1607560278}
-  playerInventoryPanel: {fileID: 1524245755}
+  <CraftingUIPanel>k__BackingField: {fileID: 4094633849252445488}
   OnShowInventoryPanel:
     m_PersistentCalls:
       m_Calls:
@@ -3431,6 +3420,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+--- !u!114 &637137987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637137982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aea47799282a07d4b84d4bc7a661d9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dragIcon: {fileID: 1981443768}
 --- !u!1 &640166656
 GameObject:
   m_ObjectHideFlags: 0
@@ -3481,7 +3483,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: {fileID: 640166659}
-  craftingScr: {fileID: 8270507784687704201}
+  <craftingRecipes>k__BackingField:
+  - {fileID: 11400000, guid: 67c6c63717265454f9d6bd7285013e1a, type: 2}
+  - {fileID: 11400000, guid: ecb10fab0ee1e4244a7aeda9b78d1e02, type: 2}
 --- !u!114 &640166659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4796,6 +4800,163 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9036553722079232153, guid: 9a9419e8da7475e499c936aa0b1aeca5, type: 3}
   m_PrefabInstance: {fileID: 142437986}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &859795777
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 859795778}
+  - component: {fileID: 859795784}
+  - component: {fileID: 859795783}
+  - component: {fileID: 859795782}
+  - component: {fileID: 859795781}
+  - component: {fileID: 859795780}
+  - component: {fileID: 859795779}
+  m_Layer: 0
+  m_Name: Crafting Table (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &859795778
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859795777}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.975, y: 0.5, z: -7.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1613958597}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &859795779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859795777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0008e1822f095c94c9182dd1a545245f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactable: {fileID: 859795780}
+  <craftingRecipes>k__BackingField:
+  - {fileID: 11400000, guid: 67c6c63717265454f9d6bd7285013e1a, type: 2}
+  - {fileID: 11400000, guid: ecb10fab0ee1e4244a7aeda9b78d1e02, type: 2}
+  - {fileID: 11400000, guid: 1e833df7075e80846a4f4f348408071c, type: 2}
+  - {fileID: 11400000, guid: 710eefc7813713d4aaf53f35f4786c0a, type: 2}
+--- !u!114 &859795780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859795777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25560f2ef01ab3840858582c2a242d5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: Open crafting
+--- !u!114 &859795781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859795777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!65 &859795782
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859795777}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &859795783
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859795777}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: d5ca7f9c52bdd1c4ab9b837ea64d1ca1, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &859795784
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859795777}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &873782856
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8057,6 +8218,7 @@ Transform:
   - {fileID: 489745837}
   - {fileID: 555314040}
   - {fileID: 640166657}
+  - {fileID: 859795778}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1622588051 stripped
@@ -9056,6 +9218,53 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6021134848996021, guid: ea0dceff44756134d8bd1a704e306c48, type: 3}
   m_PrefabInstance: {fileID: 268792180}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1919210956
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1919210957}
+  - component: {fileID: 1919210958}
+  m_Layer: 0
+  m_Name: Crafting System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1919210957
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919210956}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 637137983}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1919210958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919210956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 447f302f769139942b759b2364d2346d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recipesContainer: {fileID: 8116518914560881967}
+  craftingBtnPrefab: {fileID: 1950340464290139847, guid: 26b5d7e7c168cc14c90590259e99db96, type: 3}
+  ingredientUIPrefab: {fileID: 6227513930108240757, guid: b2ab2dec648640b4aa90d3e8a5a56e19, type: 3}
 --- !u!4 &1944127761 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6118808478217338052, guid: 641518589e424e349991c888de526521, type: 3}
@@ -15577,7 +15786,6 @@ GameObject:
   - component: {fileID: 8270507784687704200}
   - component: {fileID: 3267897943081514089}
   - component: {fileID: 7736687431147613587}
-  - component: {fileID: 8270507784687704201}
   m_Layer: 5
   m_Name: Crafting Panel
   m_TagString: Untagged
@@ -21595,26 +21803,6 @@ RectTransform:
   m_AnchoredPosition: {x: -80, y: -80}
   m_SizeDelta: {x: 400, y: 600}
   m_Pivot: {x: 1, y: 0.5}
---- !u!114 &8270507784687704201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4094633849252445488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 447f302f769139942b759b2364d2346d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allRecipes:
-  - {fileID: 11400000, guid: 1e833df7075e80846a4f4f348408071c, type: 2}
-  - {fileID: 11400000, guid: 710eefc7813713d4aaf53f35f4786c0a, type: 2}
-  - {fileID: 11400000, guid: 67c6c63717265454f9d6bd7285013e1a, type: 2}
-  - {fileID: 11400000, guid: ecb10fab0ee1e4244a7aeda9b78d1e02, type: 2}
-  recipesContainer: {fileID: 8116518914560881967}
-  craftingBtnPrefab: {fileID: 1950340464290139847, guid: 26b5d7e7c168cc14c90590259e99db96, type: 3}
-  ingredientUIPrefab: {fileID: 6227513930108240757, guid: b2ab2dec648640b4aa90d3e8a5a56e19, type: 3}
 --- !u!4 &8280381584585299322
 Transform:
   m_ObjectHideFlags: 0

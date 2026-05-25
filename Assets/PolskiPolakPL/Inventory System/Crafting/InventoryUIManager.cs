@@ -10,12 +10,13 @@ public class InventoryUIManager : MonoBehaviour
     [Range(0, 1)] public float selectedOpacity = .8f;
 
     [Header("Item Drag")]
-    [SerializeField] ItemDragScript itemDragScr;
+    [SerializeField] MoveItemScript itemDragScr;
 
     [Header("Inventory UI Panels")]
+    [SerializeField] GameObject playerInventoryPanel;
     [SerializeField] DescriptionPanelScript descrPanelScr;
     [field: SerializeField] public GameObject ChestUIPanel { get; private set; }
-    [SerializeField] GameObject playerInventoryPanel;
+    [field: SerializeField] public GameObject CraftingUIPanel { get; private set; }
 
     public UnityEvent OnShowInventoryPanel;
     public UnityEvent OnHideInventoryPanel;
