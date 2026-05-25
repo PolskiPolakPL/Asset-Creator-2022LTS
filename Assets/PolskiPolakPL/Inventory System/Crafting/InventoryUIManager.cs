@@ -9,9 +9,6 @@ public class InventoryUIManager : MonoBehaviour
     [Range(0, 1)] public float normalOpacity = .6f;
     [Range(0, 1)] public float selectedOpacity = .8f;
 
-    [Header("Item Drag")]
-    [SerializeField] MoveItemScript itemDragScr;
-
     [Header("Inventory UI Panels")]
     [SerializeField] GameObject playerInventoryPanel;
     [SerializeField] DescriptionPanelScript descrPanelScr;
@@ -23,6 +20,8 @@ public class InventoryUIManager : MonoBehaviour
 
 
     InventorySystem inventory;
+    bool canMoveItems;
+
 
     public static InventoryUIManager Instance { get; private set; }
     private void Awake()
@@ -36,6 +35,11 @@ public class InventoryUIManager : MonoBehaviour
     private void Start()
     {
         inventory = InventorySystem.Instance;
+        if (ChestUIPanel)
+        {
+            ChestUIPanel.SetActive(false);
+        }
+        canMoveItems = inventory.moveItemScr != null;
     }
 
     private void Update()
@@ -45,11 +49,11 @@ public class InventoryUIManager : MonoBehaviour
             ToggleInventoryPanel(!playerInventoryPanel.activeInHierarchy);
         }
 
-        if (itemDragScr)
+        if (canMoveItems)
         {
-            itemDragScr.HandleItemDrag();
+            inventory.moveItemScr.HandleItemDrag();
             if (descrPanelScr)
-                descrPanelScr.HandleDescriptionPanel(itemDragScr.GetHoveredSlot());
+                descrPanelScr.HandleDescriptionPanel(inventory.moveItemScr.GetHoveredSlot());
         }
 
         UpdateSelectedSlot(inventory.selectedSlot);

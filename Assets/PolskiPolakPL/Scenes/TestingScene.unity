@@ -3345,8 +3345,7 @@ MonoBehaviour:
   playerHand: {fileID: 1412400592}
   dropKey: 113
   throwingForce: 5
-  itemDragScr: {fileID: 637137987}
-  chestPanel: {fileID: 1607560278}
+  <moveItemScr>k__BackingField: {fileID: 637137987}
 --- !u!114 &637137986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3361,7 +3360,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalOpacity: 0.6
   selectedOpacity: 0.8
-  itemDragScr: {fileID: 637137987}
   playerInventoryPanel: {fileID: 1524245755}
   descrPanelScr: {fileID: 2039868240}
   <ChestUIPanel>k__BackingField: {fileID: 1607560278}

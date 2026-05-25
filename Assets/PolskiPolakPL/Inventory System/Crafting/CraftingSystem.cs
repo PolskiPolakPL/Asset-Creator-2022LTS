@@ -13,6 +13,7 @@ public class CraftingSystem : MonoBehaviour
 
     InventorySystem inventorySystem;
 
+    // Singleton Instance
     public static CraftingSystem Instance { get; private set; }
     private void Awake()
     {

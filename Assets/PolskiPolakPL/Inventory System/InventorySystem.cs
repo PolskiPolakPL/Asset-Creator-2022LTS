@@ -29,15 +29,7 @@ public class InventorySystem : MonoBehaviour
 
     int selectedIndex = 0;
     public ItemSlot selectedSlot {  get; private set; }
-
-    [Header("- - - - - - - - - - = = = = = = UI = = = = = = - - - - - - - - - -")]
-    [Header("Item Drag")]
-    [SerializeField] MoveItemScript itemDragScr;
-
-    [Header("Inventory Panel")]
-
-    [Header("Item Chest Panel")]
-    public GameObject chestPanel;
+    [field: SerializeField] public MoveItemScript moveItemScr { get; private set; }
 
 
     private void Awake()
@@ -67,10 +59,6 @@ public class InventorySystem : MonoBehaviour
         {
             backpackSlots.AddRange(backpackSlotsParent.GetComponentsInChildren<ItemSlot>());
             playerInventorySlots.AddRange(backpackSlots);
-        }
-        if (chestPanel)
-        {
-            chestPanel.SetActive(false);
         }
     }
 
@@ -244,7 +232,7 @@ public class InventorySystem : MonoBehaviour
             return;
 
         // Slot is busy being dragged
-        if (selectedSlot == itemDragScr.draggedSlot)
+        if (selectedSlot == moveItemScr.draggedSlot)
             return;
 
         ItemData selectedItem = selectedSlot.GetItem();
