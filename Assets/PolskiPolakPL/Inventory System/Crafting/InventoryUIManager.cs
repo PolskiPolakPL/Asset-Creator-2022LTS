@@ -56,10 +56,10 @@ public class InventoryUIManager : MonoBehaviour
                 descrPanelScr.HandleDescriptionPanel(inventory.moveItemScr.GetHoveredSlot());
         }
 
-        UpdateSelectedSlot(inventory.selectedSlot);
+        UpdateSlotBG(inventory.selectedSlot);
     }
 
-    public void UpdateSelectedSlot(ItemSlot selectedSlot)
+    public void UpdateSlotBG(ItemSlot selectedSlot)
     {
         Image bgImage;
         foreach (ItemSlot slot in inventory.hotbarSlots)
@@ -73,6 +73,7 @@ public class InventoryUIManager : MonoBehaviour
     {
         // Handle Inventory Panel
         playerInventoryPanel.SetActive(toggle);
+        inventory.IsHotbarActive = !toggle;
 
         // Handle Cursor
         Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 public class InventorySystem : MonoBehaviour
 {
@@ -27,6 +25,7 @@ public class InventorySystem : MonoBehaviour
     public event Action<ItemData, int> OnItemAdded;
     public event Action<ItemData, int> OnItemRemoved;
 
+    public bool IsHotbarActive = true;
     int selectedIndex = 0;
     public ItemSlot selectedSlot {  get; private set; }
     [field: SerializeField] public MoveItemScript moveItemScr { get; private set; }
@@ -187,6 +186,11 @@ public class InventorySystem : MonoBehaviour
 
     void HandleHotbarSelection()
     {
+        if (!IsHotbarActive)
+        {
+            EquipHandItem();
+            return;
+        }
         // scroll down
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
@@ -232,7 +236,7 @@ public class InventorySystem : MonoBehaviour
             return;
 
         // Slot is busy being dragged
-        if (selectedSlot == moveItemScr.draggedSlot)
+        if (moveItemScr && selectedSlot == moveItemScr.draggedSlot)
             return;
 
         ItemData selectedItem = selectedSlot.GetItem();
