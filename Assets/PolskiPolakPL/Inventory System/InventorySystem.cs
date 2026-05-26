@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class InventorySystem : MonoBehaviour
 {
-    // Singleton Instance
-    public static InventorySystem Instance {  get; private set; }
-
     [Header("Slots Parents")]
     [SerializeField] Transform hotbarSlotsParent;
     [SerializeField] Transform backpackSlotsParent;
@@ -30,7 +27,8 @@ public class InventorySystem : MonoBehaviour
     public ItemSlot selectedSlot {  get; private set; }
     [field: SerializeField] public MoveItemScript moveItemScr { get; private set; }
 
-
+    // Singleton Instance
+    public static InventorySystem Instance {  get; private set; }
     private void Awake()
     {
         if(Instance && Instance!=this)

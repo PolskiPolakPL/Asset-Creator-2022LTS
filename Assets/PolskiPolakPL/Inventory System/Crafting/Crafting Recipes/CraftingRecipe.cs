@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class CraftingIngredient
+public record CraftingIngredient
 {
     public ItemData item;
     public int amount = 1;

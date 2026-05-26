@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class ChestItem
+public record StoredItem
 {
     public ItemData Item;
     public int amount;
@@ -11,7 +11,7 @@ public class ItemStorageScript : MonoBehaviour
 {
     Interactable interactable;
 
-    [SerializeField] ChestItem[] storedItems;
+    [SerializeField] StoredItem[] storedItems;
 
     GameObject ChestUIPanel;
     public static ItemSlot[] ChestUISlots { get; private set; }
@@ -88,7 +88,7 @@ public class ItemStorageScript : MonoBehaviour
 
     void ReadChest()
     {
-        ChestItem storedItem;
+        StoredItem storedItem;
         for (int i = 0; i < chestSize; i++)
         {
             storedItem = storedItems[i];
