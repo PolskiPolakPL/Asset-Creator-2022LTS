@@ -77,7 +77,7 @@ public class MoveItemScript : MonoBehaviour
         List<ItemSlot> allSlots = new List<ItemSlot>();
 
         allSlots.AddRange(inventorySys.playerInventorySlots);
-        allSlots.AddRange(ItemChestScript.ChestUISlots);
+        allSlots.AddRange(ItemStorageScript.ChestUISlots);
 
 
         foreach (ItemSlot slot in allSlots)

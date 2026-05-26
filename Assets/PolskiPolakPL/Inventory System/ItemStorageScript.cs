@@ -7,7 +7,7 @@ public class ChestItem
     public int amount;
 }
 
-public class ItemChestScript : MonoBehaviour
+public class ItemStorageScript : MonoBehaviour
 {
     Interactable interactable;
 
@@ -53,10 +53,9 @@ public class ItemChestScript : MonoBehaviour
     void Open()
     {
         isOpen = true;
-        interactable.message = "Close chest";
-        ChestUIPanel.SetActive(true);
-
         ReadChest();
+        ChestUIPanel.SetActive(true);
+        interactable.message = "Close chest";
     }
 
     public void Close()
@@ -64,10 +63,9 @@ public class ItemChestScript : MonoBehaviour
         if (!isOpen) return;
 
         WriteChest();
-
-        isOpen = false;
-        interactable.message = "Open chest";
         ChestUIPanel.SetActive(false);
+        interactable.message = "Open chest";
+        isOpen = false;
     }
 
     void WriteChest()
