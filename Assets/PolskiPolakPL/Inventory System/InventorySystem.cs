@@ -107,7 +107,12 @@ public class InventorySystem : MonoBehaviour
         else if (selectedSlot.GetItem() == item) // SLOT HAS CORRECT ITEM
             remainder = AddAmountToSlot(amount, selectedSlot);
 
-        return (remainder <= 0) ? true : false;
+        if(remainder <= 0)
+        {
+            EquipHandItem();
+            return true;
+        }
+        return false;
     }
     bool TryFillItemSlots(ItemData item, int amount, out int remainder)
     {
@@ -211,8 +216,11 @@ public class InventorySystem : MonoBehaviour
         }
 
         //item opacity + item in hand
-        selectedSlot = hotbarSlots[selectedIndex];
-        EquipHandItem();
+        if(selectedSlot != hotbarSlots[selectedIndex])
+        {
+            selectedSlot = hotbarSlots[selectedIndex];
+            EquipHandItem();
+        }
     }
 
     void EquipHandItem()
@@ -250,8 +258,6 @@ public class InventorySystem : MonoBehaviour
             DropItem(selectedItem, selectedSlot.GetAmount());
             // clear selected slot
             selectedSlot.ClearSlot();
-            // Remove hand item prefab
-            EquipHandItem();
         }
         else
         {
@@ -259,6 +265,7 @@ public class InventorySystem : MonoBehaviour
             DropItem(selectedItem);
             selectedSlot.RemoveAmount(1);
         }
+        EquipHandItem();
     }
 
     public void DropItem(ItemData item, int dropAmount = 1)
