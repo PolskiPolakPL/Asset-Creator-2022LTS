@@ -7,21 +7,16 @@ public class CameraScript : MonoBehaviour
     [SerializeField] float radialDistance = 20f;
 
     [Header("Camera Movement")]
-    [SerializeField] float movementSpeed = 10;
-    [SerializeField] float movementMultiplayer = 2;
+    [SerializeField] float baseSpeed = 10;
+    [SerializeField] float fastSpeed = 20;
     [SerializeField] float rotationSpeed = 2;
-    [SerializeField] float movementTime = .05f;
-    [SerializeField] bool freezeOnRotation = false;
     [Header("Camera Zoom")]
     [SerializeField] float minZoomDistance = 3;
     [SerializeField] float maxZoomDistance = 20;
     [SerializeField] float zoomAmount = 5;
     [Header("Camera Border")]
     [SerializeField] bool isBorderActive = false;
-    [SerializeField] int left = 1;
-    [SerializeField] int right = 1;
-    [SerializeField] int top = 1;
-    [SerializeField] int bottom = 1;
+    [SerializeField] int margin = 1;
 
     Vector3 newPosition;
     Vector3 startPosition;
@@ -37,15 +32,36 @@ public class CameraScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        HandleRigMovement();
+
+        HandleCameraRotation();
         cam.transform.position = getNewCameraPosition();
         cam.transform.LookAt(transform.position);
 
-        // moving camera
-        if (!(Input.GetMouseButton(2) && freezeOnRotation)) // check if not rotating camera with MMB (optional)
+        // changing distance (zoom)
+        if (Input.mouseScrollDelta.y != 0)
         {
-            MoveCamera();
+            radialDistance = Mathf.Clamp(radialDistance - Input.mouseScrollDelta.y * zoomAmount, minZoomDistance, maxZoomDistance);
         }
 
+        //porót do pozycji startowej
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            newPosition = startPosition;
+        }
+    }
+
+    private Vector3 getNewCameraPosition()
+    {
+        float h = radialDistance * Mathf.Sin(polarAngle * Mathf.Deg2Rad);
+        float x = Mathf.Sqrt(Mathf.Pow(radialDistance, 2) - Mathf.Pow(h, 2));
+
+        return transform.position - transform.forward * x + Vector3.up * h;
+    }
+
+    void HandleCameraRotation()
+    {
         // rotating camera
         if (Input.GetMouseButtonDown(2))
         {
@@ -69,63 +85,57 @@ public class CameraScript : MonoBehaviour
 
         if (Input.GetMouseButtonUp(2))
         {
-            Cursor.lockState = CursorLockMode.Confined;
-        }
-
-        // changing distance (zoom)
-        if (Input.mouseScrollDelta.y != 0)
-        {
-            radialDistance = Mathf.Clamp(radialDistance - Input.mouseScrollDelta.y * zoomAmount, minZoomDistance, maxZoomDistance);
-        }
-
-        //porót do pozycji startowej
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            newPosition = startPosition;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 
-    private Vector3 getNewCameraPosition()
-    {
-        float h = radialDistance * Mathf.Sin(polarAngle * Mathf.Deg2Rad);
-        float x = Mathf.Sqrt(Mathf.Pow(radialDistance, 2) - Mathf.Pow(h, 2));
-
-        return transform.position - transform.forward * x + Vector3.up * h;
-    }
-
-    private void MoveCamera()
+    private void HandleRigMovement()
     {
         Vector3 mousePosition = Input.mousePosition;
-        float multiplayedSpeed;
-        if (Input.GetKey(KeyCode.LeftShift))
+        float speed = (Input.GetKey(KeyCode.LeftShift)) ? fastSpeed : baseSpeed;
+        speed *= Time.deltaTime;
+
+            // up edge detected
+        if (IsCursorUp(mousePosition) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
-            multiplayedSpeed = movementSpeed * movementMultiplayer * Time.deltaTime;
+            newPosition += (transform.forward * speed);
         }
-        else
+            // down edge detected
+        if (IsCursorDown(mousePosition) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
         {
-            multiplayedSpeed = movementSpeed * Time.deltaTime;
+            newPosition += (transform.forward * -speed);
+        }
+            // left edge detected
+        if (IsCursorLeft(mousePosition) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            newPosition += (transform.right * -speed);
+        }
+            // right edge detected
+        if (IsCursorRight(mousePosition) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            newPosition += (transform.right * speed);
         }
 
-        if ((mousePosition.y >= Screen.height - top && isBorderActive) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) // up edge detected
-        {
-            newPosition += (transform.forward * multiplayedSpeed);
-        }
+        transform.position = Vector3.Lerp(transform.position, newPosition, 0.01f);
+    }
 
-        if ((mousePosition.y <= bottom && isBorderActive) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) // down edge detected
-        {
-            newPosition += (transform.forward * -multiplayedSpeed);
-        }
+    bool IsCursorUp(Vector3 mousePosition)
+    {
+        return isBorderActive && mousePosition.y >= Screen.height - margin;
+    }
 
-        if ((mousePosition.x <= left && isBorderActive) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) // left edge detected
-        {
-            newPosition += (transform.right * -multiplayedSpeed);
-        }
+    bool IsCursorDown(Vector3 mousePosition)
+    {
+        return isBorderActive && mousePosition.y <= margin;
+    }
 
-        if ((mousePosition.x >= Screen.width - right && isBorderActive) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) // right edge detected
-        {
-            newPosition += (transform.right * multiplayedSpeed);
-        }
+    bool IsCursorLeft(Vector3 mousePosition)
+    {
+        return isBorderActive && mousePosition.x <= margin;
+    }
 
-        transform.position = Vector3.Lerp(transform.position, newPosition, movementTime);
+    bool IsCursorRight(Vector3 mousePosition)
+    {
+        return isBorderActive && mousePosition.x >= Screen.width - margin;
     }
 }
