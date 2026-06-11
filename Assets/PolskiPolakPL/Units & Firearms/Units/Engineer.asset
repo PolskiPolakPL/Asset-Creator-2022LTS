@@ -9,12 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c629804d012efd45bcea71c729befe2, type: 3}
-  m_Name: Conscripts
+  m_Script: {fileID: 11500000, guid: 0e9e27fb12aca044c82f4ebe4c75f6f0, type: 3}
+  m_Name: Engineer
   m_EditorClassIdentifier: 
-  SquadSize: 7
-  HP: 100
+  MaxHealth: 100
   MovementSpeed: 3.2
   Sight: 20
   ReactionTime: 1.1
-  AimTime: 0.5

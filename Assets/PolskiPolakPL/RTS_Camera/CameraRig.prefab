@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2831418926991665620}
+  - component: {fileID: 1751898643355179620}
   - component: {fileID: 2831418926991665579}
   - component: {fileID: 2831418926991665578}
   m_Layer: 0
@@ -25,14 +26,35 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2831418926991665623}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2831418927087984322}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1751898643355179620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2831418926991665623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc2ee2350a51e4e419e6cf77d8f096b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rig: {fileID: 2831418927087984322}
+  rotationSpeed: 2
+  initialPitch: 45
+  minPitch: 10
+  maxPitch: 89
+  zoomDistance: 20
+  minZoomDistance: 5
+  maxZoomDistance: 40
+  zoomSpeed: 5
 --- !u!20 &2831418926991665579
 Camera:
   m_ObjectHideFlags: 0
@@ -101,10 +123,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2831418927087984322}
-  - component: {fileID: 2831418927087984323}
+  - component: {fileID: 1877590781579505595}
   m_Layer: 0
   m_Name: CameraRig
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,6 +138,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2831418927087984333}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.773, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -123,9 +146,8 @@ Transform:
   m_Children:
   - {fileID: 2831418926991665620}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2831418927087984323
+--- !u!114 &1877590781579505595
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,22 +156,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2831418927087984333}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f8b40968df830a44a361e63bd0da8fe, type: 3}
+  m_Script: {fileID: 11500000, guid: 85b40de80c67ea7458bf79ee39bde2b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 2831418926991665579}
-  polarAngle: 45
-  radialDistance: 20
-  movementSpeed: 0.1
-  movementMultiplayer: 2
-  rotationSpeed: 2
-  movementTime: 5
-  freezeOnRotation: 0
-  minZoomDistance: 3
-  maxZoomDistance: 20
-  zoomAmount: 5
-  isBorderActive: 1
-  left: 1
-  right: 1
-  top: 1
-  bottom: 1
+  baseSpeed: 10
+  fastSpeed: 20
+  smoothTime: 10
+  borderScrolling: 1
+  margin: 5

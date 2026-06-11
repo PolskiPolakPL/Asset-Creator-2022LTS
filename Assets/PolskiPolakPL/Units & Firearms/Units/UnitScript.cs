@@ -10,15 +10,9 @@ public class UnitScript : MonoBehaviour, IDamageable
 
     }
 
-    SquadData GetSquadData(Transform target)
+    UnitData GetUnitData()
     {
-        SquadScript squadScript;
-        if (!target.TryGetComponent(out squadScript))
-        {
-            Debug.LogWarning($"squad data not found in {target.name}");
-            return null;
-        }
-        return squadScript.SquadData;
+        return unitData;
     }
     public void TakeDamage(float amount)
     {

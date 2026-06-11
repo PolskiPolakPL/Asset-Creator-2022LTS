@@ -1,49 +1,72 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
 
 public class SquadScript : MonoBehaviour
 {
-    [SerializeField] SquadData squadData;
-    [SerializeField] GameObject unitPrefab;
-
-    public SquadData SquadData {get {return squadData;}}
-
-    [SerializeField] float squadUnitsOffset = 1;
+    [SerializeField] UnitData unitData;
+    [SerializeField] int maxSize;
+    [SerializeField] FormationTypes formationType;
+    public UnitScript[] Units { get; private set; }
     int currentSquadSize = 0;
-    float squadHealth = 0;
+    float maxHealth;
+    float currentHealth;
 
     private void Awake()
     {
-        InitiateNewSquad(squadData.SquadSize, squadUnitsOffset);
-        Debug.Log($"Squad Size: {currentSquadSize} \t | \t Squad Health: {squadHealth}");
+        Units = GetComponentsInChildren<UnitScript>();
+        maxHealth = unitData.MaxHealth * maxSize;
+        Debug.Log($"Squad Size: {currentSquadSize} \t | \t Squad Health: {maxHealth}");
+        ArrangeUnits();
     }
 
-    void InitiateNewSquad(int numberOfUnits, float unitsOffset)
+    void ArrangeUnits(float unitDistance = 1)
     {
-        GameObject newUnit;
-        //clearing children in transform
-        foreach (Transform child in transform)
-        {
-            Debug.LogWarning($"{child.name} was removed from {transform.name}");
-            Destroy(child.gameObject);
-        }
-
+        int i = 0;
+        List<Vector3> formationPos = SquadFormation.GetPositions(formationType, GetUnitCount(), unitDistance);
         //initializing new units
-        for (int i = 0; i < numberOfUnits; i++)
+        foreach(var unit in Units)
         {
-            newUnit = Instantiate(unitPrefab, transform);
-            squadHealth += newUnit.GetComponent<UnitScript>().health;
-            currentSquadSize++;
-            // unit placement
-            if (i > 0)
-            {
-                float angle = 2 * Mathf.PI * (i - 1) / (numberOfUnits - 1);
-                float x = Mathf.Cos(angle) * unitsOffset;
-                float z = Mathf.Sin(angle) * unitsOffset;
-                newUnit.transform.localPosition = new Vector3(x, 0, z);
-            }
-            else
-                newUnit.transform.localPosition = Vector3.zero;
+            unit.transform.localPosition = formationPos[i];
+            i++;
         }
+    }
+
+    public void UpdateSquadHealth()
+    {
+        float health = 0;
+        foreach(var unit in Units)
+        {
+            health += unit.health;
+        }
+        currentHealth = health;
+    }
+
+    public float GetSquadHealth()
+    {
+        UpdateSquadHealth();
+        return currentHealth;
+    }
+
+    public UnitData GetData()
+    {
+        return unitData;
+    }
+
+    public int GetUnitCount()
+    {
+        return Units.Length;
+    }
+
+    public bool AddUnit(UnitScript unitScr)
+    {
+        return false;
+    }
+
+    public bool RemoveUnit(UnitScript unitScr)
+    {
+        return false;
     }
 
 }
