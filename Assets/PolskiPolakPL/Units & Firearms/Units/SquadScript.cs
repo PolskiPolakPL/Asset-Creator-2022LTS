@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 
@@ -8,16 +7,37 @@ public class SquadScript : MonoBehaviour
     [SerializeField] UnitData unitData;
     [SerializeField] int maxSize;
     [SerializeField] FormationTypes formationType;
-    public UnitScript[] Units { get; private set; }
-    int currentSquadSize = 0;
+    [field: SerializeField] public List<UnitScript> Units { get; private set; } = new List<UnitScript>();
     float maxHealth;
     float currentHealth;
 
     private void Awake()
     {
-        Units = GetComponentsInChildren<UnitScript>();
+        SpawnUnits();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            string message = unitData.name + " Squad: ";
+            foreach (UnitScript unit in Units)
+            {
+                message += $" {unit.name}, ";
+            }
+            Debug.Log(message);
+        }
+    }
+
+    public void SpawnUnits()
+    {
+        GameObject unitGO;
+        for (int i = 0; i < maxSize; i++)
+        {
+            unitGO = Instantiate(unitData.unitPrefab, transform);
+            AddUnit(unitGO.GetComponent<UnitScript>());
+        }
         maxHealth = unitData.MaxHealth * maxSize;
-        Debug.Log($"Squad Size: {currentSquadSize} \t | \t Squad Health: {maxHealth}");
         ArrangeUnits();
     }
 
@@ -30,6 +50,17 @@ public class SquadScript : MonoBehaviour
         {
             unit.transform.localPosition = formationPos[i];
             i++;
+        }
+    }
+
+    public void Move(Vector3 position)
+    {
+        int unitCount = GetUnitCount();
+        List<Vector3> formationPos = SquadFormation.GetPositions(formationType, unitCount);
+
+        for (int i = 0; i < unitCount; i++)
+        {
+            Units[i].Move(position + formationPos[i]);
         }
     }
 
@@ -49,24 +80,29 @@ public class SquadScript : MonoBehaviour
         return currentHealth;
     }
 
-    public UnitData GetData()
+    public UnitData GetUnitData()
     {
         return unitData;
     }
 
     public int GetUnitCount()
     {
-        return Units.Length;
+        return Units.Count;
     }
 
-    public bool AddUnit(UnitScript unitScr)
+    public void AddUnit(UnitScript unitScr)
     {
-        return false;
+        if (GetUnitCount() >= maxSize)
+            return;
+        Units.Add(unitScr);
+        unitScr.SetSquad(this);
     }
 
-    public bool RemoveUnit(UnitScript unitScr)
+    public void RemoveUnit(UnitScript unitScr)
     {
-        return false;
+        if (Units.Contains(unitScr))
+            Units.Remove(unitScr);
+        unitScr.SetSquad(null);
     }
 
 }
