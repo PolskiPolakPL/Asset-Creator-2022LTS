@@ -1514,6 +1514,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1696254181}
+  - component: {fileID: 1696254182}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1538,6 +1539,19 @@ Transform:
   - {fileID: 802631490}
   m_Father: {fileID: 1613958597}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1696254182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696254180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aabc29f30d435d478d8e76a8c133fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedSquad: {fileID: 0}
 --- !u!1 &1703882637
 GameObject:
   m_ObjectHideFlags: 0
@@ -1585,10 +1599,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1931562215}
-  - component: {fileID: 1931562216}
-  - component: {fileID: 1931562219}
-  - component: {fileID: 1931562218}
-  - component: {fileID: 1931562217}
   m_Layer: 0
   m_Name: Barracks
   m_TagString: Untagged
@@ -1613,70 +1623,6 @@ Transform:
   - {fileID: 511824390}
   m_Father: {fileID: 1696254181}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1931562216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1931562214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25437adc398e35f419c63b6b5b7a57e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnKey: 99
-  squadPrefab: {fileID: 4759636914665379309, guid: d1737469c4c9f1649bc7fd9b656fdfbd, type: 3}
-  squadParent: {fileID: 802631490}
-  marker: {fileID: 511824390}
---- !u!114 &1931562217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1931562214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25437adc398e35f419c63b6b5b7a57e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnKey: 102
-  squadPrefab: {fileID: 3441060796200553429, guid: 06fd14c652603e44390d311c0621cff6, type: 3}
-  squadParent: {fileID: 802631490}
-  marker: {fileID: 511824390}
---- !u!114 &1931562218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1931562214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25437adc398e35f419c63b6b5b7a57e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnKey: 109
-  squadPrefab: {fileID: 6873746365344936489, guid: db2d8f9c202089c4f86748700f4c7de3, type: 3}
-  squadParent: {fileID: 802631490}
-  marker: {fileID: 511824390}
---- !u!114 &1931562219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1931562214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25437adc398e35f419c63b6b5b7a57e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnKey: 101
-  squadPrefab: {fileID: 9025738815256732012, guid: f31f9081ac4ecdd49be85d379f341f62, type: 3}
-  squadParent: {fileID: 802631490}
-  marker: {fileID: 511824390}
 --- !u!1 &1948522862
 GameObject:
   m_ObjectHideFlags: 0

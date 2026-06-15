@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public class UnitScript : MonoBehaviour, IDamageable
 {
     public float health;
-    [SerializeField] public UnitData data {  get; private set; }
+    [SerializeField] UnitData data;
     public NavMeshAgent agent {  get; private set; }
     SquadScript squad;
 

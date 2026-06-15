@@ -16,19 +16,6 @@ public class SquadScript : MonoBehaviour
         SpawnUnits();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            string message = unitData.name + " Squad: ";
-            foreach (UnitScript unit in Units)
-            {
-                message += $" {unit.name}, ";
-            }
-            Debug.Log(message);
-        }
-    }
-
     public void SpawnUnits()
     {
         GameObject unitGO;
