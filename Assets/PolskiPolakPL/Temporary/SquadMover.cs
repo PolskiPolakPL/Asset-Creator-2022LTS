@@ -4,6 +4,7 @@ using UnityEngine;
 public class SquadMover : MonoBehaviour
 {
     [SerializeField] SquadScript selectedSquad;
+    [SerializeField] UnitScript selectedUnit;
 
     Ray ray;
     private void Update()
@@ -15,6 +16,8 @@ public class SquadMover : MonoBehaviour
                 return;
             if (selectedSquad)
                 selectedSquad.Move(hit.point);
+            if(selectedUnit)
+                selectedUnit.Move(hit.point);
         }
     }
 }
