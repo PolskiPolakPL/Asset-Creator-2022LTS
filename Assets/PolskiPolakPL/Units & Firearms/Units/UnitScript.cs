@@ -1,40 +1,28 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 public class UnitScript : MonoBehaviour, IDamageable
 {
     public float health;
     [SerializeField] UnitData data;
-    public NavMeshAgent agent {  get; private set; }
-    [SerializeField] Transform GFXParent;
-    Animator animator;
+    [field: SerializeField] public UnitAIMovement aiMovement {  get; private set; }
+    [SerializeField] Animator animator;
     private int _animIDSpeed;
     private int _animIDMotionSpeed;
     SquadScript squad;
-    GameObject unitGFX;
 
     private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
-
-        unitGFX = Instantiate(data.GFXPrefab, GFXParent);
-        AssignAnimationIDs();
-
-        if(unitGFX.TryGetComponent<Animator>(out animator))
+        if (animator)
+        {
+            AssignAnimationIDs();
             animator.SetFloat(_animIDMotionSpeed, 1);
+        }
     }
-
-
 
     private void AssignAnimationIDs()
     {
         _animIDSpeed = Animator.StringToHash("Speed");
         _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
-    }
-
-    public void Move(Vector3 target)
-    {
-        agent.SetDestination(target);
     }
 
     private void Update()
@@ -45,8 +33,7 @@ public class UnitScript : MonoBehaviour, IDamageable
 
     void UpdateAnimations()
     {
-        float normalizedAgentSpeed = (agent.velocity.magnitude / agent.speed);
-        animator.SetFloat(_animIDSpeed, agent.velocity.magnitude);
+        animator.SetFloat(_animIDSpeed, aiMovement.GetCurrentSpeed());
     }
 
     public void SetSquad(SquadScript newSquad)

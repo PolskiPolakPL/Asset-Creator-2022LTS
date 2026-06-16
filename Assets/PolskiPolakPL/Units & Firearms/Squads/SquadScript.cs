@@ -47,7 +47,7 @@ public class SquadScript : MonoBehaviour
 
         for (int i = 0; i < unitCount; i++)
         {
-            Units[i].Move(position + formationPos[i]);
+            Units[i].aiMovement.Move(position + formationPos[i]);
         }
     }
 
