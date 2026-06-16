@@ -21,8 +21,8 @@ public class SquadScript : MonoBehaviour
         GameObject unitGO;
         for (int i = 0; i < maxSize; i++)
         {
-            unitGO = Instantiate(unitData.unitPrefab, transform);
-            AddUnit(unitGO.GetComponent<UnitScript>());
+            //unitGO = Instantiate(unitData.unitPrefab, transform);
+            //AddUnit(unitGO.GetComponent<UnitScript>());
         }
         maxHealth = unitData.MaxHealth * maxSize;
         ArrangeUnits();

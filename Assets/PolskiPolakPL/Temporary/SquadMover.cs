@@ -1,10 +1,11 @@
 
 using UnityEngine;
+using System.Collections.Generic;
 
 public class SquadMover : MonoBehaviour
 {
     [SerializeField] SquadScript selectedSquad;
-    [SerializeField] UnitScript selectedUnit;
+    [SerializeField] List<UnitScript> selectedUnits = new List<UnitScript>();
 
     Ray ray;
     private void Update()
@@ -16,8 +17,10 @@ public class SquadMover : MonoBehaviour
                 return;
             if (selectedSquad)
                 selectedSquad.Move(hit.point);
-            if(selectedUnit)
-                selectedUnit.Move(hit.point);
+            foreach(UnitScript unit in selectedUnits)
+            {
+                unit.Move(hit.point);
+            }
         }
     }
 }

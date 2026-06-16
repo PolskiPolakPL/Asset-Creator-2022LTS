@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e9e27fb12aca044c82f4ebe4c75f6f0, type: 3}
-  m_Name: Mortar
+  m_Name: Conscript
   m_EditorClassIdentifier: 
-  unitPrefab: {fileID: 4514630539198933445, guid: 616f045b6e8df794d9bb2d43689af8a6, type: 3}
   MaxHealth: 100
   MovementSpeed: 3.2
   Sight: 20
   ReactionTime: 1.1
+  GFXPrefab: {fileID: 7550210241662929387, guid: e741233b86044cc48a56cd721e4a0702, type: 3}

@@ -6,16 +6,21 @@ public class UnitScript : MonoBehaviour, IDamageable
     public float health;
     [SerializeField] UnitData data;
     public NavMeshAgent agent {  get; private set; }
-    [SerializeField] Animator animator;
+    [SerializeField] Transform GFXParent;
+    Animator animator;
     private int _animIDSpeed;
     private int _animIDMotionSpeed;
     SquadScript squad;
+    GameObject unitGFX;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+
+        unitGFX = Instantiate(data.GFXPrefab, GFXParent);
         AssignAnimationIDs();
-        if(animator)
+
+        if(unitGFX.TryGetComponent<Animator>(out animator))
             animator.SetFloat(_animIDMotionSpeed, 1);
     }
 
