@@ -12,121 +12,99 @@ namespace PolskiPolakPL.Utils
         /// </summary>
         public float RemaningSeconds { get; private set; }
 
-
-
         /// <summary>
         /// Time passed in seconds.
         /// </summary>
         public float SecondsPassed { get; private set; } = 0;
 
-
-
-        private bool isLooping = true;
-
-        /// <summary>
-        /// Public getter of 'isLooping' boolean.
-        /// </summary>
-        public bool IsLooping
-        {
-            get { return isLooping; }
-            set { isLooping = value; }
-        }
-
-
+        private bool looping = true;
 
         /// <summary>
         /// Timer Action event invoked at the end of counting time.
         /// </summary>
-        public event Action OnTimerEnd;
-
-
+        public event Action OnFinish;
 
         /// <summary>
         /// Timer Action event invoked every <c>Tick()</c>.
         /// </summary>
-        public event Action OnTimerTick;
-
-
+        public event Action OnTick;
 
         /// <summary>
         /// Timer Action event invoked whet it's duration is changed.
         /// </summary>
-        public event Action OnDurationChanged;
+        public event Action OnChangeTime;
 
+        public event Action OnReset;
 
-
-        private float duration;
-
-
+        private float time;
 
         /// <summary>
         /// Constructor for Timer class.
         /// </summary>
-        /// <param name="duration">Duration of the timer in seconds</param>
-        /// <param name="isLooping">Controlls if Timer is looping. Default = <c>true</c></param>
-        public Timer(float duration, bool isLooping = true)
+        /// <param name="time">Duration of the timer in seconds</param>
+        /// <param name="loop">Controlls if Timer is looping. Default = <c>true</c></param>
+        public Timer(float time, bool loop = true)
         {
-            this.duration = duration;
-            RemaningSeconds = duration;
-            this.isLooping = isLooping;
+            this.time = time;
+            RemaningSeconds = time;
+            looping = loop;
         }
-
 
         /// <summary>
         /// Changes base duration of the Timer.
         /// </summary>
-        /// <param name="newDuration">sets new duration</param>
-        /// <param name="resetCurrentTime">reserts remaning time back to the beginning. Default = <c>true</c></param>
-        public void ChangeDuration(float newDuration, bool resetCurrentTime = true)
+        /// <param name="time">sets new duration</param>
+        /// <param name="reset">reserts remaning time back to the beginning. Default = <c>true</c></param>
+        public void Set(float time, bool reset = true, bool invokeResetEvent = false)
         {
-            duration = newDuration;
-            if (resetCurrentTime)
-                RemaningSeconds = duration;
-            OnDurationChanged?.Invoke();
+            SetSilent(time, reset, invokeResetEvent);
+            OnChangeTime?.Invoke();
         }
 
-
-
-        /// <summary>
-        /// Changes base duration of the Timer. Doesn't invoke <c>OnDurationChanged</c> action.
-        /// </summary>
-        /// <param name="newDuration"></param>
-        /// <param name="resetCurrentTime"></param>
-        public void ChangeDurationWithoutNotify(float newDuration, bool resetCurrentTime = true)
+        public void SetSilent(float time, bool reset = true, bool invokeResetEvent = false)
         {
-            duration = newDuration;
-            if (resetCurrentTime)
-                RemaningSeconds = duration;
+            this.time = time;
+            if (reset)
+                Reset(invokeResetEvent);
         }
 
-
+        public void Reset(bool invokeEvent = true)
+        {
+            RemaningSeconds = time;
+            SecondsPassed = 0;
+            if(invokeEvent)
+                OnReset?.Invoke();
+        }
 
         /// <summary>
         /// Method used to move time one tick. Recommended use in <c>Update()</c> or <c>FixedUpdate()</c> methods.
         /// </summary>
         /// <param name="deltaTime">time difference between ticks</param>
         /// <param name="invokeEvent">Controlls if Timer invokes <c>OnTimerChanged</c> Action. Deafault = <c>false</c></param>
-        public void Tick(float deltaTime, bool invokeEvent = false)
+        public void Tick(float deltaTime, bool invokeEvent = true)
         {
             if(RemaningSeconds == 0)
             {
-                if (isLooping)
-                    RemaningSeconds = duration;
+                if (looping)
+                    Reset();
                 return;
             }
             RemaningSeconds -= deltaTime;
             SecondsPassed += deltaTime;
             if(invokeEvent)
-                OnTimerTick?.Invoke();
-            CheckForTimerEnd();
+                OnTick?.Invoke();
+            if(CheckForTimerEnd())
+            {
+                RemaningSeconds = 0;
+                OnFinish?.Invoke();
+            }
         }
 
-        private void CheckForTimerEnd()
+        private bool CheckForTimerEnd()
         {
             if(RemaningSeconds > 0)
-                return;
-            RemaningSeconds = 0;
-            OnTimerEnd?.Invoke();
+                return false;
+            return true;
         }
     }
 }
