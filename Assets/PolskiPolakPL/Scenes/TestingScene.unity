@@ -1800,7 +1800,7 @@ CharacterController:
   m_StepOffset: 0.4
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0.91, z: 0}
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!4 &2334267287897826502
 Transform:
   m_ObjectHideFlags: 0
@@ -2190,7 +2190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 2284148947359882594}
-  <isGrounded>k__BackingField: 0
+  <isGrounded>k__BackingField: 1
 --- !u!114 &6989722516025016018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2218,6 +2218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d3c64eb6881afb4fb915803b1349185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionKey: {fileID: 11400000, guid: 8daec8e2eda1b654e91f7a884713a310, type: 2}
   inputReader: {fileID: 2065037381}
   motor: {fileID: 6989722516025016017}
   movementMod: {fileID: 6989722516025016018}
@@ -2234,7 +2235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f3ccadfeaf77314e9430b97f377c8c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpHeight: 5
+  jumpHeight: 1
 --- !u!33 &7093562998957491700
 MeshFilter:
   m_ObjectHideFlags: 0
