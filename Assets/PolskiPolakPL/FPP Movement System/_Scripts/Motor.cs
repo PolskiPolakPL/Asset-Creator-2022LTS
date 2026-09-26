@@ -8,7 +8,6 @@ public class Motor : MonoBehaviour
     public void UpdateMotor()
     {
         //apply gravity and starting velocity
-        velocity = characterController.velocity;
         velocity += Physics.gravity * Time.deltaTime;
 
         //check grounded

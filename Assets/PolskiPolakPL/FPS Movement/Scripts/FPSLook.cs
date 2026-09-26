@@ -15,6 +15,11 @@ public class FPSLook : MonoBehaviour
             playerCamera = Camera.main;
     }
 
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     void Update()
     {
         Look();
