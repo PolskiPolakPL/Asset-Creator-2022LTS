@@ -3,19 +3,19 @@ public class Motor : MonoBehaviour
 {
     [SerializeField] CharacterController characterController;
     Vector3 velocity;
-    public bool isGrounded {  get; private set; }
+    [field: SerializeField] public bool isGrounded {  get; private set; }
 
     public void UpdateMotor()
     {
-        //apply gravity and starting velocity
-        velocity += Physics.gravity * Time.deltaTime;
+        
+    }
 
-        //check grounded
+    public void ApplyGravity()
+    {
         isGrounded = characterController.isGrounded;
         if (isGrounded)
-        {
-            velocity.y = Mathf.Max(velocity.y, 0);
-        }
+            velocity.y = 0;
+        velocity += Physics.gravity * Time.deltaTime;
     }
 
     public Vector3 GetVelocity()

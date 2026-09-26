@@ -1437,13 +1437,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1946828006}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.17364825, y: 0, z: 0, w: 0.9848078}
+  m_LocalRotation: {x: -0.21643952, y: 0, z: 0, w: 0.97629607}
   m_LocalPosition: {x: 3.59, y: 0, z: 5.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1613958597}
-  m_LocalEulerAnglesHint: {x: -20, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -25, y: 0, z: 0}
 --- !u!64 &1946828008
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1592,6 +1592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9004cf07bc5d3b4c9c9464fa6662b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumpKey: 32
 --- !u!1 &2098416830
 GameObject:
   m_ObjectHideFlags: 0
@@ -1795,7 +1796,7 @@ CharacterController:
   serializedVersion: 3
   m_Height: 1.8
   m_Radius: 0.35
-  m_SlopeLimit: 45
+  m_SlopeLimit: 30
   m_StepOffset: 0.4
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0
@@ -2108,6 +2109,10 @@ PrefabInstance:
       value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 7857268645044480185, guid: cf4c9a7175aad6c4686e69cad3d19249, type: 3}
+      propertyPath: m_SlopeLimit
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7857268645044480185, guid: cf4c9a7175aad6c4686e69cad3d19249, type: 3}
       propertyPath: m_StepOffset
       value: 0.4
       objectReference: {fileID: 0}
@@ -2146,6 +2151,7 @@ GameObject:
   - component: {fileID: 6989722516025016016}
   - component: {fileID: 6989722516025016019}
   - component: {fileID: 6989722516025016018}
+  - component: {fileID: 6989722516025016020}
   - component: {fileID: 6989722516025016017}
   - component: {fileID: 2284148947359882594}
   m_Layer: 0
@@ -2184,6 +2190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 2284148947359882594}
+  <isGrounded>k__BackingField: 0
 --- !u!114 &6989722516025016018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2214,6 +2221,20 @@ MonoBehaviour:
   inputReader: {fileID: 2065037381}
   motor: {fileID: 6989722516025016017}
   movementMod: {fileID: 6989722516025016018}
+  jumpMod: {fileID: 6989722516025016020}
+--- !u!114 &6989722516025016020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6956320550475953054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f3ccadfeaf77314e9430b97f377c8c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpHeight: 5
 --- !u!33 &7093562998957491700
 MeshFilter:
   m_ObjectHideFlags: 0

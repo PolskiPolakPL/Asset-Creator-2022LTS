@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c35d15b7459dd4a9dbdfda3fd8be13, type: 3}
+  m_Name: FPP Player Key Binds
+  m_EditorClassIdentifier: 
+  JumpKey: 32
+  SprintKey: 304
+  WalkKey: 308
+  CrouchKey: 306
+  ProneKey: 0
+  LeanLeftKey: 113
+  LeanRightKey: 101
+  InteractKey: 102
+  AltInteractKey: 0
+  AttackKey: 323
+  AimKey: 324
+  MeleeKey: 0
+  ThrowKey: 103
+  ReloadKey: 114
+  SwitchFireModeKey: 118
+  FlashlightKey: 102
+  InventoryKey: 9
+  MapKey: 109
+  PauseKey: 27
+  NightVisionKey: 110
