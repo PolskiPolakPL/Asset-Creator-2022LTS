@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FPSLook : MonoBehaviour
+public class FPPCameraController : MonoBehaviour
 {
 
     [SerializeField] Camera playerCamera;
@@ -9,10 +9,16 @@ public class FPSLook : MonoBehaviour
     public bool invertXAxis = false;
     private float xRotation = 0f;
 
+    Vector3 baseCamOffset;
+
+    [Header("Modules")]
+    [SerializeField] CrouchModule crouchMod;
+    [SerializeField] float crouchCamHeight = 1f;
     void Awake()
     {
         if(!playerCamera)
             playerCamera = Camera.main;
+        baseCamOffset = playerCamera.transform.localPosition;
     }
 
     private void Start()
@@ -23,6 +29,18 @@ public class FPSLook : MonoBehaviour
     void Update()
     {
         Look();
+        UpdateCameraHeight();
+    }
+
+    void UpdateCameraHeight()
+    {
+        if (!crouchMod)
+            return;
+
+        if (crouchMod.isCrouched)
+            playerCamera.transform.localPosition = new Vector3(baseCamOffset.x, crouchCamHeight, baseCamOffset.z);
+        else
+            playerCamera.transform.localPosition = baseCamOffset;
     }
 
     void Look()

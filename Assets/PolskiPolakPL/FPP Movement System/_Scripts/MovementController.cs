@@ -8,8 +8,15 @@ public class MovementController : MonoBehaviour
     [Header("Movement Modules")]
     [SerializeField] MovementModule movementMod;
     [SerializeField] JumpModule jumpMod;
+    [SerializeField] CrouchModule crouchMod;
 
     Vector3 inputVector;
+
+    private void Start()
+    {
+        if(crouchMod)
+            crouchMod.SetBaseHeight(motor.characterController.height);
+    }
 
     // Update is called once per frame
     void Update()
@@ -19,6 +26,7 @@ public class MovementController : MonoBehaviour
         //process modules
         ActMovementMod();
         ActJumpModule();
+        ActCrouchModule();
 
         motor.Move();
     }
@@ -40,5 +48,26 @@ public class MovementController : MonoBehaviour
         {
             jumpMod.Jump(motor);
         }
+    }
+
+    void ActCrouchModule()
+    {
+        if (!crouchMod)
+            return;
+
+        // Player holds Crouch button
+        if (InputReader.Held(actionKey.CrouchKey))
+        {
+            if(!crouchMod.isCrouched)
+                crouchMod.Crouch(motor);
+            return;
+        }
+
+        // else if player is standing
+        if (!crouchMod.isCrouched)
+            return;
+
+        if(crouchMod.TryStandUp(motor))
+            crouchMod.StandUp(motor);
     }
 }

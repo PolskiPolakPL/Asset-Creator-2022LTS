@@ -1,13 +1,13 @@
 using UnityEngine;
 public class Motor : MonoBehaviour
 {
-    [SerializeField] CharacterController characterController;
+    [field: SerializeField] public CharacterController characterController {  get; private set; }
     Vector3 velocity;
     [field: SerializeField] public bool isGrounded {  get; private set; }
 
     public void UpdateMotor()
     {
-        
+        //Tymczasowo puste
     }
 
     public void ApplyGravity()
