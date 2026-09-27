@@ -3,7 +3,6 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     [SerializeField] KeyBinds actionKey;
-    [SerializeField] InputReader inputReader;
     [SerializeField] Motor motor;
 
     [Header("Movement Modules")]
@@ -18,22 +17,26 @@ public class MovementController : MonoBehaviour
         motor.ApplyGravity();
 
         //process modules
-        ActMoveMod();
+        ActMovementMod();
         ActJumpModule();
 
         motor.Move();
     }
 
-    void ActMoveMod()
+    void ActMovementMod()
     {
+        if (!movementMod)
+            return;
         //move module
-        inputVector = inputReader.GetMovementDirection();
+        inputVector = InputReader.GetMovementDirection(transform);
         movementMod.ProcessMovement(inputVector, motor);
     }
 
     void ActJumpModule()
     {
-        if (jumpMod && inputReader.GetInputKey(actionKey.JumpKey,InputType.PRESS))
+        if (!jumpMod)
+            return;
+        if (InputReader.Pressed(actionKey.JumpKey))
         {
             jumpMod.Jump(motor);
         }

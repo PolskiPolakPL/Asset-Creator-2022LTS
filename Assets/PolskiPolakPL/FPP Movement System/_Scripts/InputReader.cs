@@ -1,59 +1,36 @@
 using UnityEngine;
 
-public class InputReader : MonoBehaviour
+public static class InputReader
 {
-    Vector3 inputVector;
+    static Vector3 inputVector;
 
-    [SerializeField] KeyCode jumpKey = KeyCode.Space;
-
-    public Vector3 GetMovementDirection()
+    public static Vector3 GetMovementDirection(Transform targetT)
     {
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveZ = Input.GetAxisRaw("Vertical");
 
-        inputVector = transform.right * moveX + transform.forward * moveZ;
+        inputVector = targetT.right * moveX + targetT.forward * moveZ;
 
         return inputVector.normalized;
     }
 
-    public bool GetJumpKeyDown()
+    public static bool Pressed(KeyCode keyCode)
     {
-        return Input.GetKeyDown(jumpKey);
+        return Input.GetKeyDown(keyCode);
     }
 
-    public bool GetInputKey(KeyCode keyCode, InputType inputType)
+    public static bool Released(KeyCode keyCode)
     {
-        switch (inputType)
-        {
-            case InputType.PRESS:
-                return Input.GetKeyDown(keyCode);
-
-            case InputType.RELEASE:
-                return Input.GetKeyUp(keyCode);
-
-            case InputType.HOLD:
-                return Input.GetKey(keyCode);
-
-            case InputType.DOUBLE_TAP:
-                return GetDoubleKeyDown(keyCode);
-
-            default:
-                return false;
-        }
+        return Input.GetKeyUp(keyCode);
     }
-    bool GetDoubleKeyDown(KeyCode keyCode)
+
+    public static bool Held(KeyCode keyCode)
+    {
+        return Input.GetKey(keyCode);
+    }
+
+    public static bool DoubleTapped(KeyCode keyCode)
     {
         return false;
     }
-}
-
-
-
-
-public enum InputType
-{
-    PRESS,
-    RELEASE,
-    HOLD,
-    DOUBLE_TAP
 }
