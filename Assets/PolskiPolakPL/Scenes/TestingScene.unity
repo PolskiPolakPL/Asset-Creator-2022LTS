@@ -2372,9 +2372,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89116386432cf4742a1e7c1d6ef0aee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
   accelerationTime: 0.1
   decelerationTime: 0.1
+  <baseSpeed>k__BackingField: 5
+  <sprintSpeed>k__BackingField: 8
+  <allowSprint>k__BackingField: 1
+  <walkSpeed>k__BackingField: 3
+  <allowWalk>k__BackingField: 1
 --- !u!114 &6989722516025016019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2418,6 +2422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crouchHeight: 0.8
+  <crouchlSpeed>k__BackingField: 3
 --- !u!33 &7093562998957491700
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -24,9 +24,9 @@ public class MovementController : MonoBehaviour
         motor.ApplyGravity();
 
         //process modules
-        ActMovementMod();
-        ActJumpModule();
         ActCrouchModule();
+        ActJumpModule();
+        ActMovementMod();
 
         motor.Move();
     }
@@ -37,7 +37,31 @@ public class MovementController : MonoBehaviour
             return;
         //move module
         inputVector = InputReader.GetMovementDirection(transform);
+        ProcessSpeed();
         movementMod.ProcessMovement(inputVector, motor);
+    }
+
+    void ProcessSpeed()
+    {
+        if (crouchMod && crouchMod.isCrouched)
+        {
+            movementMod.SetTargetSpeed(crouchMod.crouchSpeed);
+            return;
+        }
+
+        if(movementMod.allowWalk && InputReader.Held(actionKey.WalkKey))
+        {
+            movementMod.SetTargetSpeed(movementMod.walkSpeed);
+            return;
+        }
+
+        if (movementMod.allowSprint && InputReader.Held(actionKey.SprintKey))
+        {
+            movementMod.SetTargetSpeed(movementMod.sprintSpeed);
+            return;
+        }
+
+        movementMod.SetTargetSpeed(movementMod.baseSpeed);
     }
 
     void ActJumpModule()

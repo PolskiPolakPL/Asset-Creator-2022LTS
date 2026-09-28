@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JumpKey: 32
   SprintKey: 304
-  WalkKey: 308
-  CrouchKey: 306
+  WalkKey: 306
+  CrouchKey: 99
   ProneKey: 0
   LeanLeftKey: 113
   LeanRightKey: 101

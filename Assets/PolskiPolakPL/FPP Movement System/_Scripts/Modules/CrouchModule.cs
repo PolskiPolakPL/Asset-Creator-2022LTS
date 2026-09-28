@@ -3,6 +3,7 @@ using UnityEngine;
 public class CrouchModule : MonoBehaviour
 {
     [SerializeField] float crouchHeight = 0.8f;
+    [field: SerializeField] public float crouchSpeed { get; private set; } = 3;
     Vector3 crouchCenter;
 
     float baseHeight;
