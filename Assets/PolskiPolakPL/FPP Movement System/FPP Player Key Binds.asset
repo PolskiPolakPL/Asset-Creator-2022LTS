@@ -16,7 +16,7 @@ MonoBehaviour:
   SprintKey: 304
   WalkKey: 306
   CrouchKey: 99
-  ProneKey: 0
+  ProneKey: 120
   LeanLeftKey: 113
   LeanRightKey: 101
   InteractKey: 102

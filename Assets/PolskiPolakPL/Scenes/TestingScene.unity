@@ -1179,7 +1179,7 @@ GameObject:
   - component: {fileID: 1137620838}
   - component: {fileID: 1137620841}
   - component: {fileID: 1137620840}
-  - component: {fileID: 1137620839}
+  - component: {fileID: 1137620842}
   m_Layer: 0
   m_Name: Modules
   m_TagString: Untagged
@@ -1202,20 +1202,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1192576324}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1137620839
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1137620837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0a6ca6c19e261f4aacaa9eae4f97634, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  crouchHeight: 0.8
-  <crouchSpeed>k__BackingField: 2
 --- !u!114 &1137620840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1248,6 +1234,22 @@ MonoBehaviour:
   <allowSprint>k__BackingField: 1
   <walkSpeed>k__BackingField: 2
   <allowWalk>k__BackingField: 1
+--- !u!114 &1137620842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137620837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eed2f5d9133f51948b96e422b4ed5ad0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crouchHeight: 0.8
+  <crouchSpeed>k__BackingField: 2
+  proneHeight: 0.4
+  <proneSpeed>k__BackingField: 1
 --- !u!1 &1192576323
 GameObject:
   m_ObjectHideFlags: 0
@@ -1314,7 +1316,8 @@ MonoBehaviour:
   motor: {fileID: 1192576325}
   movementMod: {fileID: 1137620841}
   jumpMod: {fileID: 1137620840}
-  crouchMod: {fileID: 1137620839}
+  crouchMod: {fileID: 0}
+  crouchProneMod: {fileID: 1137620842}
 --- !u!114 &1192576327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1332,8 +1335,10 @@ MonoBehaviour:
   mouseSensitivity: 1
   invertYAxis: 0
   invertXAxis: 0
-  crouchMod: {fileID: 1137620839}
-  crouchCamHeight: 0.6
+  crouchMod: {fileID: 0}
+  crouchCamHeight: 0.8
+  crouchProneMod: {fileID: 1137620842}
+  proneCamHeight: 0.4
 --- !u!1 &1217410264
 GameObject:
   m_ObjectHideFlags: 0

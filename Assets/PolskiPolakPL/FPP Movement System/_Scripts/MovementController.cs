@@ -10,6 +10,8 @@ public class MovementController : MonoBehaviour
     [SerializeField] MovementModule movementMod;
     [SerializeField] JumpModule jumpMod;
     [SerializeField] CrouchModule crouchMod;
+    [Tooltip("An alternative for CrouchModule that also allows Prone mechanic. Do not mix with CrouchModule.")]
+    [SerializeField] CrouchProneModule crouchProneMod;
 
     Vector3 inputVector;
 
@@ -19,8 +21,9 @@ public class MovementController : MonoBehaviour
         motor.ApplyGravity();
 
         //process modules
-        ActCrouchModule();
         ActJumpModule();
+        ActCrouchModule();
+        ActCrouchProneMod();
         ActMovementMod();
 
         motor.Move();
@@ -42,6 +45,21 @@ public class MovementController : MonoBehaviour
         {
             movementMod.SetTargetSpeed(crouchMod.crouchSpeed);
             return;
+        }
+
+        if (crouchProneMod)
+        {
+            if(crouchProneMod.currentStance == PlayerStance.Crouch)
+            {
+                movementMod.SetTargetSpeed(crouchProneMod.crouchSpeed);
+                return;
+            }
+
+            if (crouchProneMod.currentStance == PlayerStance.Prone)
+            {
+                movementMod.SetTargetSpeed(crouchProneMod.proneSpeed);
+                return;
+            }
         }
 
         if(movementMod.allowWalk && InputReader.Held(actionKeys.WalkKey))
@@ -88,5 +106,27 @@ public class MovementController : MonoBehaviour
 
         if(crouchMod.CanStandUp(motor))
             crouchMod.StandUp(motor);
+    }
+
+
+    void ActCrouchProneMod()
+    {
+        if(!crouchProneMod) return;
+
+        if (InputReader.Pressed(actionKeys.ProneKey))
+        {
+            crouchProneMod.GetDown(motor);
+        }
+
+        if (InputReader.Pressed(actionKeys.CrouchKey))
+        {
+            crouchProneMod.GetUp(motor);
+        }
+
+        if (InputReader.Held(actionKeys.SprintKey))
+        {
+            if (crouchProneMod.CanGetUp(motor, motor.baseHeight))
+                crouchProneMod.StandUp(motor);
+        }
     }
 }
