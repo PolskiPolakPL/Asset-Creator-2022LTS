@@ -51,7 +51,7 @@ public class CrouchProneModule : MonoBehaviour
         Ray ray = new Ray(origin, Vector3.up);
 
         //delta H1(target height) - 1/2 H2(current height)
-        float range = targetHeight - motor.GetControllerHeight() / 2;
+        float range = targetHeight - (motor.GetControllerHeight()/2 + motor.GetControllerRadius());
 
         return !Physics.SphereCast(ray, motor.GetControllerRadius(), out RaycastHit hit, range);
     }
