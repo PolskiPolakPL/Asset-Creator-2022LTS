@@ -6,9 +6,6 @@ public class CrouchModule : MonoBehaviour
     [field: SerializeField] public float crouchSpeed { get; private set; } = 3;
     Vector3 crouchCenter;
 
-    float baseHeight;
-    Vector3 baseCenter;
-
     public float currentHeight { get; private set; }
 
     public bool isCrouched { get; private set; } = false;
@@ -17,41 +14,34 @@ public class CrouchModule : MonoBehaviour
     {
         crouchCenter = new Vector3(0, crouchHeight/2, 0);
     }
+
     public void Crouch(Motor motor)
     {
-        motor.characterController.height = crouchHeight;
-        motor.characterController.center = crouchCenter;
+        motor.SetControllerHeight(crouchHeight);
+        motor.SetControllerCenter(crouchCenter);
         isCrouched = true;
         currentHeight = crouchHeight;
     }
 
     public void StandUp(Motor motor)
     {
-        motor.characterController.height = baseHeight;
-        motor.characterController.center = baseCenter;
+        motor.SetControllerHeight(motor.baseHeight);
+        motor.SetControllerCenter(motor.baseCenter);
         isCrouched = false;
-        currentHeight = baseHeight;
+        currentHeight = motor.baseHeight;
     }
 
-    public bool TryStandUp(Motor motor)
+    public bool CanStandUp(Motor motor)
     {
-        CharacterController cc = motor.characterController;
 
         // local to global position
-        Vector3 origin = cc.transform.TransformPoint(cc.center);
+        Vector3 origin = motor.transform.TransformPoint(motor.GetControllerCenter());
 
         Ray ray = new Ray(origin, Vector3.up);
 
         //delta H1(base height) - 1/2 H2(crouch height)
-        float range = baseHeight - crouchHeight / 2;
+        float range = motor.baseHeight - crouchHeight / 2;
 
-        return !Physics.SphereCast(ray, cc.radius, out RaycastHit hit, range);
-    }
-
-    public void SetBaseHeight(float height)
-    {
-        baseHeight = height;
-        baseCenter = new Vector3(0, baseHeight/2, 0);
-        currentHeight = baseHeight;
+        return !Physics.SphereCast(ray, motor.baseRadius, out RaycastHit hit, range);
     }
 }

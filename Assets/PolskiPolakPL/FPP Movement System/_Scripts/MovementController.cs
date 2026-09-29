@@ -14,8 +14,7 @@ public class MovementController : MonoBehaviour
 
     private void Start()
     {
-        if(crouchMod)
-            crouchMod.SetBaseHeight(motor.characterController.height);
+        motor.SetBaseValues();
     }
 
     // Update is called once per frame
@@ -91,7 +90,7 @@ public class MovementController : MonoBehaviour
         if (!crouchMod.isCrouched)
             return;
 
-        if(crouchMod.TryStandUp(motor))
+        if(crouchMod.CanStandUp(motor))
             crouchMod.StandUp(motor);
     }
 }

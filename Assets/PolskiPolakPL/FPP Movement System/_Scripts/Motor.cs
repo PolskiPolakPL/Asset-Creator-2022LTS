@@ -1,9 +1,20 @@
 using UnityEngine;
 public class Motor : MonoBehaviour
 {
-    [field: SerializeField] public CharacterController characterController {  get; private set; }
+    [SerializeField] CharacterController characterController;
     Vector3 velocity;
-    [field: SerializeField] public bool isGrounded {  get; private set; }
+    [field: SerializeField] public bool isGrounded { get; private set; }
+
+    public float baseHeight { get; private set; }
+    public float baseRadius { get; private set; }
+    public Vector3 baseCenter { get; private set; }
+
+    public void SetBaseValues()
+    {
+        baseHeight = characterController.height;
+        baseRadius = characterController.radius;
+        baseCenter = characterController.center;
+    }
 
     public void UpdateMotor()
     {
@@ -27,6 +38,35 @@ public class Motor : MonoBehaviour
     {
         this.velocity += velocity;
     }
+
+    #region CahracterController Collider GETs & SETs
+    public float GetControllerHeight()
+    {
+        return characterController.height;
+    }
+    public void SetControllerHeight(float height)
+    {
+        characterController.height = height;
+    }
+
+    public float GetControllerRadius()
+    {
+        return characterController.radius;
+    }
+    public void SetControllerRadius(float radius)
+    {
+        characterController.radius = radius;
+    }
+
+    public Vector3 GetControllerCenter()
+    {
+        return characterController.center;
+    }
+    public void SetControllerCenter(Vector3 center)
+    {
+        characterController.center = center;
+    }
+    #endregion
 
     public void Move()
     {
