@@ -9,16 +9,15 @@ public class Motor : MonoBehaviour
     public float baseRadius { get; private set; }
     public Vector3 baseCenter { get; private set; }
 
-    public void SetBaseValues()
+    private void Awake()
+    {
+        SetBaseValues();
+    }
+    void SetBaseValues()
     {
         baseHeight = characterController.height;
         baseRadius = characterController.radius;
         baseCenter = characterController.center;
-    }
-
-    public void UpdateMotor()
-    {
-        //Tymczasowo puste
     }
 
     public void ApplyGravity()

@@ -6,8 +6,6 @@ public class CrouchModule : MonoBehaviour
     [field: SerializeField] public float crouchSpeed { get; private set; } = 3;
     Vector3 crouchCenter;
 
-    public float currentHeight { get; private set; }
-
     public bool isCrouched { get; private set; } = false;
 
     private void OnValidate()
@@ -20,7 +18,6 @@ public class CrouchModule : MonoBehaviour
         motor.SetControllerHeight(crouchHeight);
         motor.SetControllerCenter(crouchCenter);
         isCrouched = true;
-        currentHeight = crouchHeight;
     }
 
     public void StandUp(Motor motor)
@@ -28,7 +25,6 @@ public class CrouchModule : MonoBehaviour
         motor.SetControllerHeight(motor.baseHeight);
         motor.SetControllerCenter(motor.baseCenter);
         isCrouched = false;
-        currentHeight = motor.baseHeight;
     }
 
     public bool CanStandUp(Motor motor)

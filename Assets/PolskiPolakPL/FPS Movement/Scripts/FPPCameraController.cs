@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FPPCameraController : MonoBehaviour
 {
-
+    [SerializeField] Transform playerTransform;
     [SerializeField] Camera playerCamera;
     [SerializeField] float mouseSensitivity = 1f;
     public bool invertYAxis = false;
@@ -54,7 +54,7 @@ public class FPPCameraController : MonoBehaviour
             mouseY = -mouseY;
 
         // Rotate the player's body left and right
-        transform.Rotate(Vector3.up * mouseX);
+        playerTransform.Rotate(Vector3.up * mouseX);
 
         // Rotate the camera up and down (clamping to 90 degrees)
         xRotation -= mouseY;

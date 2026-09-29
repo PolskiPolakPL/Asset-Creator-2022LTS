@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
-    [SerializeField] KeyBinds actionKey;
+    [SerializeField] Transform playerTransform;
+    [SerializeField] KeyBinds actionKeys;
     [SerializeField] Motor motor;
 
     [Header("Movement Modules")]
@@ -11,11 +12,6 @@ public class MovementController : MonoBehaviour
     [SerializeField] CrouchModule crouchMod;
 
     Vector3 inputVector;
-
-    private void Start()
-    {
-        motor.SetBaseValues();
-    }
 
     // Update is called once per frame
     void Update()
@@ -35,7 +31,7 @@ public class MovementController : MonoBehaviour
         if (!movementMod)
             return;
         //move module
-        inputVector = InputReader.GetMovementDirection(transform);
+        inputVector = InputReader.GetMovementDirection(playerTransform);
         ProcessSpeed();
         movementMod.ProcessMovement(inputVector, motor);
     }
@@ -48,13 +44,13 @@ public class MovementController : MonoBehaviour
             return;
         }
 
-        if(movementMod.allowWalk && InputReader.Held(actionKey.WalkKey))
+        if(movementMod.allowWalk && InputReader.Held(actionKeys.WalkKey))
         {
             movementMod.SetTargetSpeed(movementMod.walkSpeed);
             return;
         }
 
-        if (movementMod.allowSprint && InputReader.Held(actionKey.SprintKey))
+        if (movementMod.allowSprint && InputReader.Held(actionKeys.SprintKey))
         {
             movementMod.SetTargetSpeed(movementMod.sprintSpeed);
             return;
@@ -67,7 +63,7 @@ public class MovementController : MonoBehaviour
     {
         if (!jumpMod)
             return;
-        if (InputReader.Pressed(actionKey.JumpKey))
+        if (InputReader.Pressed(actionKeys.JumpKey))
         {
             jumpMod.Jump(motor);
         }
@@ -79,7 +75,7 @@ public class MovementController : MonoBehaviour
             return;
 
         // Player holds Crouch button
-        if (InputReader.Held(actionKey.CrouchKey))
+        if (InputReader.Held(actionKeys.CrouchKey))
         {
             if(!crouchMod.isCrouched)
                 crouchMod.Crouch(motor);
