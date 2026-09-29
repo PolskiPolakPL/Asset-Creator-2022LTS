@@ -9,8 +9,6 @@ public class MovementController : MonoBehaviour
     [Header("Movement Modules")]
     [SerializeField] MovementModule movementMod;
     [SerializeField] JumpModule jumpMod;
-    [SerializeField] CrouchModule crouchMod;
-    [Tooltip("An alternative for CrouchModule that also allows Prone mechanic. Do not mix with CrouchModule.")]
     [SerializeField] CrouchProneModule crouchProneMod;
 
     Vector3 inputVector;
@@ -21,19 +19,20 @@ public class MovementController : MonoBehaviour
         motor.ApplyGravity();
 
         //process modules
-        ActJumpModule();
-        ActCrouchModule();
-        ActCrouchProneMod();
-        ActMovementMod();
+        if(jumpMod)
+            ActJumpModule();
+
+        if(crouchProneMod)
+            ActCrouchProneMod();
+
+        if(movementMod)
+            ActMovementMod();
 
         motor.Move();
     }
 
     void ActMovementMod()
     {
-        if (!movementMod)
-            return;
-        //move module
         inputVector = InputReader.GetMovementDirection(playerTransform);
         ProcessSpeed();
         movementMod.ProcessMovement(inputVector, motor);
@@ -41,11 +40,6 @@ public class MovementController : MonoBehaviour
 
     void ProcessSpeed()
     {
-        if (crouchMod && crouchMod.isCrouched)
-        {
-            movementMod.SetTargetSpeed(crouchMod.crouchSpeed);
-            return;
-        }
 
         if (crouchProneMod)
         {
@@ -79,51 +73,82 @@ public class MovementController : MonoBehaviour
 
     void ActJumpModule()
     {
-        if (!jumpMod)
-            return;
         if (InputReader.Pressed(actionKeys.JumpKey))
         {
             jumpMod.Jump(motor);
         }
     }
 
-    void ActCrouchModule()
+    void ActCrouchAlone()
     {
-        if (!crouchMod)
-            return;
 
         // Player holds Crouch button
         if (InputReader.Held(actionKeys.CrouchKey))
         {
-            if(!crouchMod.isCrouched)
-                crouchMod.Crouch(motor);
+            if (crouchProneMod.currentStance == PlayerStance.Standing)
+                crouchProneMod.Crouch(motor);
             return;
         }
 
-        // else if player is standing
-        if (!crouchMod.isCrouched)
+        if (crouchProneMod.currentStance == PlayerStance.Standing)
             return;
 
-        if(crouchMod.CanStandUp(motor))
-            crouchMod.StandUp(motor);
+        if (crouchProneMod.CanGetUp(motor,motor.baseHeight))
+            crouchProneMod.StandUp(motor);
     }
 
 
     void ActCrouchProneMod()
     {
-        if(!crouchProneMod) return;
+
+        if (!crouchProneMod.allowProne)
+        {
+            ActCrouchAlone();
+            return;
+        }
+
+        ActCrouchProneToggle();
+    }
+
+    void ActCrouchProneToggle()
+    {
+        if (InputReader.Pressed(actionKeys.CrouchKey))
+        {
+            //player crouching
+            if (crouchProneMod.currentStance.Equals(PlayerStance.Crouch))
+            {
+                if (crouchProneMod.CanGetUp(motor, motor.baseHeight))
+                    crouchProneMod.StandUp(motor);
+                return;
+            }
+
+            //player is prone
+            if (crouchProneMod.currentStance.Equals(PlayerStance.Prone))
+            {
+                if (crouchProneMod.CanGetUp(motor, crouchProneMod.crouchHeight))
+                    crouchProneMod.Crouch(motor);
+                return;
+            }
+
+            // player standing
+            crouchProneMod.Crouch(motor);
+        }
 
         if (InputReader.Pressed(actionKeys.ProneKey))
         {
-            crouchProneMod.GetDown(motor);
+            //player is NOT prone
+            if (crouchProneMod.currentStance != PlayerStance.Prone)
+            {
+                crouchProneMod.Prone(motor);
+                return;
+            }
+
+            // player IS prone
+            if (crouchProneMod.CanGetUp(motor, motor.baseHeight))
+                crouchProneMod.StandUp(motor);
         }
 
-        if (InputReader.Pressed(actionKeys.CrouchKey))
-        {
-            crouchProneMod.GetUp(motor);
-        }
-
-        if (InputReader.Held(actionKeys.SprintKey))
+        if (InputReader.Pressed(actionKeys.SprintKey))
         {
             if (crouchProneMod.CanGetUp(motor, motor.baseHeight))
                 crouchProneMod.StandUp(motor);

@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class CrouchProneModule : MonoBehaviour
 {
-    //crouch
-    [SerializeField] float crouchHeight = 0.8f;
+    [field: Header("Crouch")]
+    [field: SerializeField] public float crouchHeight { get; private set; } = 0.8f;
     [field: SerializeField] public float crouchSpeed { get; private set; } = 2;
     Vector3 crouchCenter;
 
-    //prone
-    [SerializeField] float proneHeight = 0.4f;
+    [field: Header("Prone")]
+    [field: SerializeField] public bool allowProne { get; private set; } = false;
+    [field: SerializeField] public float proneHeight { get; private set; } = 0.4f;
     [field: SerializeField] public float proneSpeed { get; private set; } = 1;
     Vector3 proneCenter;
 
@@ -39,37 +40,6 @@ public class CrouchProneModule : MonoBehaviour
         motor.SetControllerHeight(motor.baseHeight);
         motor.SetControllerCenter(motor.baseCenter);
         currentStance = PlayerStance.Standing;
-    }
-
-    public void GetDown(Motor motor)
-    {
-        if (currentStance == PlayerStance.Standing)
-        {
-            Crouch(motor);
-            return;
-        }
-
-        if(currentStance == PlayerStance.Crouch)
-        {
-            Prone(motor);
-            return;
-        }
-    }
-
-    public void GetUp(Motor motor)
-    {
-        if(currentStance == PlayerStance.Prone)
-        {
-            if (CanGetUp(motor, crouchHeight))
-                Crouch(motor);
-            return;
-        }
-
-        if(currentStance == PlayerStance.Crouch)
-        {
-            if(CanGetUp(motor, motor.baseHeight))
-                StandUp(motor);
-        }
     }
 
     public bool CanGetUp(Motor motor, float targetHeight)
