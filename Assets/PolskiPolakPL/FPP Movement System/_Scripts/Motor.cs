@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 public class Motor : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Motor : MonoBehaviour
     public float baseRadius { get; private set; }
     public Vector3 baseCenter { get; private set; }
 
+    public event Action OnLanded;
+
     private void Awake()
     {
         SetBaseValues();
@@ -19,10 +22,8 @@ public class Motor : MonoBehaviour
         baseRadius = characterController.radius;
         baseCenter = characterController.center;
     }
-
     public void ApplyGravity()
     {
-        isGrounded = characterController.isGrounded;
         if (isGrounded)
             velocity.y = 0;
         velocity += Physics.gravity * Time.deltaTime;
@@ -70,5 +71,17 @@ public class Motor : MonoBehaviour
     public void Move()
     {
         characterController.Move(velocity * Time.deltaTime);
+
+        if (isGrounded != characterController.isGrounded)
+        {
+            if (!isGrounded)
+                OnLanded?.Invoke();
+            isGrounded = characterController.isGrounded;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        OnLanded = null;
     }
 }

@@ -11,7 +11,27 @@ public class MovementController : MonoBehaviour
     [SerializeField] JumpModule jumpMod;
     [SerializeField] CrouchProneModule crouchProneMod;
 
+    [Header("VFX and SFX")]
+    [SerializeField] MovementAudio audioController;
+
     Vector3 inputVector;
+
+    private void Awake()
+    {
+        if (audioController)
+            SubscribeAudio();
+    }
+
+    void SubscribeAudio()
+    {
+        motor.OnLanded += audioController.PlayRandomLandingSound;
+
+        if (jumpMod)
+            jumpMod.OnJump += audioController.PlayRandomJumpSound;
+
+        if (crouchProneMod)
+            crouchProneMod.OnStanceChanged += audioController.PlayStanceChangeSound;
+    }
 
     // Update is called once per frame
     void Update()

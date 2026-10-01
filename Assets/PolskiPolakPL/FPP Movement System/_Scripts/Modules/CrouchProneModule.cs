@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CrouchProneModule : MonoBehaviour
@@ -13,6 +14,8 @@ public class CrouchProneModule : MonoBehaviour
     [field: SerializeField] public float proneSpeed { get; private set; } = 1;
     Vector3 proneCenter;
 
+    public event Action<PlayerStance> OnStanceChanged;
+
     public PlayerStance currentStance { get; private set; } = PlayerStance.Standing;
 
     private void Awake()
@@ -26,6 +29,7 @@ public class CrouchProneModule : MonoBehaviour
         motor.SetControllerHeight(proneHeight);
         motor.SetControllerCenter(proneCenter);
         currentStance = PlayerStance.Prone;
+        OnStanceChanged?.Invoke(currentStance);
     }
 
     public void Crouch(Motor motor)
@@ -33,6 +37,7 @@ public class CrouchProneModule : MonoBehaviour
         motor.SetControllerHeight(crouchHeight);
         motor.SetControllerCenter(crouchCenter);
         currentStance = PlayerStance.Crouch;
+        OnStanceChanged?.Invoke(currentStance);
     }
 
     public void StandUp(Motor motor)
@@ -40,6 +45,7 @@ public class CrouchProneModule : MonoBehaviour
         motor.SetControllerHeight(motor.baseHeight);
         motor.SetControllerCenter(motor.baseCenter);
         currentStance = PlayerStance.Standing;
+        OnStanceChanged?.Invoke(currentStance);
     }
 
     public bool CanGetUp(Motor motor, float targetHeight)
@@ -54,6 +60,11 @@ public class CrouchProneModule : MonoBehaviour
         float range = targetHeight - (motor.GetControllerHeight()/2 + motor.GetControllerRadius());
 
         return !Physics.SphereCast(ray, motor.GetControllerRadius(), out RaycastHit hit, range);
+    }
+
+    private void OnDestroy()
+    {
+        OnStanceChanged = null;
     }
 
 }
