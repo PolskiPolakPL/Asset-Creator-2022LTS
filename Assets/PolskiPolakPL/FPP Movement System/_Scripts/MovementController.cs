@@ -170,6 +170,8 @@ public class MovementController : MonoBehaviour
 
         if (InputReader.Pressed(actionKeys.SprintKey))
         {
+            if (crouchProneMod.currentStance == PlayerStance.Standing)
+                return;
             if (crouchProneMod.CanGetUp(motor, motor.baseHeight))
                 crouchProneMod.StandUp(motor);
         }
