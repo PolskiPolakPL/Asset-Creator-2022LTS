@@ -1312,11 +1312,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eed2f5d9133f51948b96e422b4ed5ad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <crouchHeight>k__BackingField: 0.8
+  <crouchHeight>k__BackingField: 1
   <crouchSpeed>k__BackingField: 2
-  <allowProne>k__BackingField: 1
+  <crouchCamHeight>k__BackingField: 1
+  <allowProne>k__BackingField: 0
   <proneHeight>k__BackingField: 0.4
   <proneSpeed>k__BackingField: 1
+  <proneCamHeight>k__BackingField: 0.4
 --- !u!1 &1192576323
 GameObject:
   m_ObjectHideFlags: 0
@@ -1331,7 +1333,7 @@ GameObject:
   - component: {fileID: 1192576328}
   - component: {fileID: 1192576325}
   m_Layer: 0
-  m_Name: FPP Movement
+  m_Name: FPP Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1384,8 +1386,7 @@ MonoBehaviour:
   motor: {fileID: 1192576325}
   movementMod: {fileID: 1137620841}
   jumpMod: {fileID: 1137620840}
-  crouchProneMod: {fileID: 1137620842}
-  audioController: {fileID: 1192576328}
+  crouchProneMod: {fileID: 0}
 --- !u!114 &1192576327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1403,9 +1404,7 @@ MonoBehaviour:
   mouseSensitivity: 1
   invertYAxis: 0
   invertXAxis: 0
-  crouchProneMod: {fileID: 1137620842}
-  crouchCamHeight: 0.8
-  proneCamHeight: 0.4
+  crouchProneMod: {fileID: 0}
 --- !u!114 &1192576328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1419,6 +1418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   source: {fileID: 6956320550475953055}
+  velocityThreshold: 0.1
   jumpSounds:
   - {fileID: 8300000, guid: 3888a1e1c52793144a6d07b8c508772e, type: 3}
   - {fileID: 8300000, guid: 5b26cf3cd5f6b914a80e6d3476caaf86, type: 3}

@@ -13,13 +13,12 @@ public class FPPCameraController : MonoBehaviour
 
     [Header("Modules")]
     [SerializeField] CrouchProneModule crouchProneMod;
-    [SerializeField] float crouchCamHeight = 1f;
-    [SerializeField] float proneCamHeight = 1f;
     void Awake()
     {
         if(!playerCamera)
             playerCamera = Camera.main;
         baseCamOffset = playerCamera.transform.localPosition;
+        crouchProneMod = GetComponentInChildren<CrouchProneModule>();
     }
 
     private void Start()
@@ -38,13 +37,13 @@ public class FPPCameraController : MonoBehaviour
     {
         if(crouchProneMod.currentStance == PlayerStance.Crouch)
         {
-            SetCameraHeight(crouchCamHeight);
+            SetCameraHeight(crouchProneMod.crouchCamHeight);
             return;
         }
 
         if(crouchProneMod.currentStance == PlayerStance.Prone)
         {
-            SetCameraHeight(proneCamHeight);
+            SetCameraHeight(crouchProneMod.proneCamHeight);
             return;
         }
 

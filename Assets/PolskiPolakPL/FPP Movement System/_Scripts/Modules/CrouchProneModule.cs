@@ -6,12 +6,14 @@ public class CrouchProneModule : MonoBehaviour
     [field: Header("Crouch")]
     [field: SerializeField] public float crouchHeight { get; private set; } = 0.8f;
     [field: SerializeField] public float crouchSpeed { get; private set; } = 2;
+    [field: SerializeField] public float crouchCamHeight { get; private set; } = 1f;
     Vector3 crouchCenter;
 
     [field: Header("Prone")]
     [field: SerializeField] public bool allowProne { get; private set; } = false;
     [field: SerializeField] public float proneHeight { get; private set; } = 0.4f;
     [field: SerializeField] public float proneSpeed { get; private set; } = 1;
+    [field: SerializeField] public  float proneCamHeight { get; private set; } = .4f;
     Vector3 proneCenter;
 
     public event Action<PlayerStance> OnStanceChanged;
