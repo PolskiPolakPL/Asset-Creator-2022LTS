@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MovementController : MonoBehaviour
+public class FPPMovementController : MonoBehaviour
 {
     [SerializeField] Transform playerTransform;
     [SerializeField] KeyBinds actionKeys;
@@ -11,26 +11,13 @@ public class MovementController : MonoBehaviour
     [SerializeField] JumpModule jumpMod;
     [SerializeField] CrouchProneModule crouchProneMod;
 
-    [Header("VFX and SFX")]
-    [SerializeField] MovementAudio audioController;
-
     Vector3 inputVector;
 
     private void Awake()
     {
-        if (audioController)
-            SubscribeAudio();
-    }
-
-    void SubscribeAudio()
-    {
-        motor.OnLanded += audioController.PlayRandomLandingSound;
-
-        if (jumpMod)
-            jumpMod.OnJump += audioController.PlayRandomJumpSound;
-
-        if (crouchProneMod)
-            crouchProneMod.OnStanceChanged += audioController.PlayStanceChangeSound;
+        movementMod = GetComponentInChildren<MovementModule>();
+        jumpMod = GetComponentInChildren<JumpModule>();
+        crouchProneMod = GetComponentInChildren<CrouchProneModule>();
     }
 
     // Update is called once per frame
