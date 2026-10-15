@@ -9,9 +9,10 @@ public class PlayerInteractionScript : MonoBehaviour
     [SerializeField] Transform cameraT;
     [SerializeField] float playerReach = 2;
     public KeyCode interactionKey = KeyCode.E;
+    public KeyCode altInteractionKey = KeyCode.F;
 
-    Interactable currentInteractable;
-    Interactable newInteractable;
+    InteractableObject currentInteractable;
+    InteractableObject newInteractable;
     RaycastHit hit;
     Ray ray;
     public Transform interactiontHitT {  get; private set; }
@@ -26,9 +27,18 @@ public class PlayerInteractionScript : MonoBehaviour
     void Update()
     {
         CheckInteraction();
-        if (Input.GetKeyDown(interactionKey) && currentInteractable)
+        if (!currentInteractable)
+            return;
+
+        if (Input.GetKeyDown(interactionKey))
         {
             currentInteractable.Interact();
+            return;
+        }
+
+        if (Input.GetKeyDown(altInteractionKey))
+        {
+            currentInteractable.AltInteract();
         }
     }
 
@@ -36,7 +46,7 @@ public class PlayerInteractionScript : MonoBehaviour
     {
         ray = new Ray(cameraT.position, cameraT.forward);
         Debug.DrawRay(cameraT.position, cameraT.forward * playerReach,Color.blue);
-        if (!Physics.Raycast(ray, out hit, playerReach) || !(hit.collider.TryGetComponent<Interactable>(out newInteractable)))
+        if (!Physics.Raycast(ray, out hit, playerReach) || !(hit.collider.TryGetComponent<InteractableObject>(out newInteractable)))
         {
             DisableCurrentInteractable();
             return;
@@ -56,22 +66,38 @@ public class PlayerInteractionScript : MonoBehaviour
 
     }
 
-    void SetNewCurrentInteractable(Interactable newInteractable)
+    void SetNewCurrentInteractable(InteractableObject newInteractable)
     {
         currentInteractable = newInteractable;
-        currentInteractable.EnableOutline();
-        if (InteractionUIManager.Instance)
-            InteractionUIManager.Instance.DisplayInteractionText($"[{interactionKey}] {currentInteractable.message}");
+        currentInteractable.Select();
 
+        if (!InteractionUIManager.Instance)
+            return;
+
+        DisplayInteractionMessage();
     }
+
     void DisableCurrentInteractable()
     {
         if (InteractionUIManager.Instance)
             InteractionUIManager.Instance.HideInteractionText();
         if (!currentInteractable)
             return;
-        currentInteractable.DisableOutline();
+        currentInteractable.Deselect();
         currentInteractable = null;
+    }
+
+    void DisplayInteractionMessage()
+    {
+        string message = "";
+
+        if (currentInteractable.message1 != "")
+            message += $"[{interactionKey}] {currentInteractable.message1}";
+
+        if(currentInteractable.message2 != "")
+            message += $"\n[{altInteractionKey}] {currentInteractable.message2}";
+
+        InteractionUIManager.Instance.DisplayInteractionText(message);
     }
 }
 

@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class PickableScript : MonoBehaviour
 {
-    Interactable interactable;
+    InteractableObject interactable;
     public Item itemSO;
     public event Action<Item> OnPickUp;
     private void Awake()
     {
-        interactable = GetComponent<Interactable>();
-        interactable.OnInteraction += PickUp;
+        interactable = GetComponent<InteractableObject>();
+        interactable.OnInteraction.AddListener(PickUp);
     }
 
     void PickUp()
@@ -20,6 +20,6 @@ public class PickableScript : MonoBehaviour
     private void OnDestroy()
     {
         Debug.Log($"You've picked up '{gameObject.name}'!");
-        interactable.OnInteraction -= PickUp;
+        interactable.OnInteraction.RemoveListener(PickUp);
     }
 }
