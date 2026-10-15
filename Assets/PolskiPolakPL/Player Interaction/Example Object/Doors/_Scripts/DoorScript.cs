@@ -1,88 +1,55 @@
 using UnityEngine;
-
-[RequireComponent(typeof(InteractableObject))]
-[RequireComponent(typeof(Animator))]
 public class DoorScript : MonoBehaviour
 {
-    Animator doorAnimator;
-    [SerializeField] bool isOpened = false;
-    [SerializeField] bool isLocked = false;
-    [SerializeField] bool allowUnlock = true;
+    [SerializeField] Animator doorAnimator;
+    [SerializeField] Collider doorCollider;
 
-    InteractableObject interactable;
-    Collider doorCollider;
+    [field: SerializeField] public bool isOpen { get; private set; } = false;
+    [field: SerializeField] public bool isLocked { get; private set; } = false;
 
-    private void Awake()
+    public bool TryLock(bool canLock = true)
     {
-        interactable = GetComponent<InteractableObject>();
-        doorAnimator = GetComponent<Animator>();
-        doorCollider = GetComponent<Collider>();
+        if(isOpen || !canLock)
+            return false;
 
-        interactable.OnInteraction.AddListener(DoInteraction);
-        interactable.OnAltInteraction.AddListener(DoAltInteraction);
-
-        if(isOpened)
-            interactable.message1 = "Close";
-        else
-            interactable.message1 = "Open";
-
-        if (isLocked)
-            interactable.message2 = "Unlock";
-        else
-            interactable.message2 = "Lock";
-    }
-
-    public void DoInteraction()
-    {
-        if (isOpened)
-            Close();
-        else if(!isLocked)
-            Open();
-    }
-
-    public void DoAltInteraction()
-    {
-        if(isLocked)
-            TryUnlock(allowUnlock);
-        else
-            TryLock();
-    }
-
-    void TryLock()
-    {
-        if (isOpened)
-            return;
         isLocked = true;
-        interactable.message2 = "Unlock";
+        return true;
+    }
+    public bool TryUnlock(bool canUnlock = true)
+    {
+        if(!canUnlock)
+            return false;
+
+        isLocked = false;
+        return true;
     }
 
-    void TryUnlock(bool canUnlock)
+    public bool TryOpen()
     {
-        if (!canUnlock)
-            return;
-        isLocked = false;
-        interactable.message2 = "Lock";
+        if (isLocked)
+            return false;
+
+        Open();
+        return true;
     }
+
 
     void Open()
     {
         doorAnimator.Play("OpenDoorAnimation");
-        isOpened = true;
-        interactable.message1 = "Close";
+        isOpen = true;
     }
-
-    void Close()
+    public void Close()
     {
         doorAnimator.Play("CloseDoorAnimation");
-        isOpened = false;
-        interactable.message1 = "Open";
+        isOpen = false;
     }
 
-    private void OnDestroy()
+    public void ForceOpen()
     {
-        interactable.OnInteraction.RemoveListener(DoInteraction);
-        interactable.OnAltInteraction.RemoveListener(DoAltInteraction);
+        Open();
     }
+
     void EnableCollider()
     {
         doorCollider.enabled = true;
