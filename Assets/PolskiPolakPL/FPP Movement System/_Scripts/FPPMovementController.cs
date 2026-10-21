@@ -11,8 +11,6 @@ public class FPPMovementController : MonoBehaviour
     [SerializeField] JumpModule jumpMod;
     [SerializeField] CrouchProneModule crouchProneMod;
 
-    Vector3 inputVector;
-
     private void Awake()
     {
         movementMod = GetComponentInChildren<MovementModule>();
@@ -40,9 +38,9 @@ public class FPPMovementController : MonoBehaviour
 
     void ActMovementMod()
     {
-        inputVector = InputReader.GetMovementDirection(playerTransform);
+        Vector3 inputDirection = InputReader.GetMovementDirection(playerTransform);
         ProcessSpeed();
-        movementMod.ProcessMovement(inputVector, motor);
+        movementMod.ProcessMovement(inputDirection, motor);
     }
 
     void ProcessSpeed()
@@ -63,13 +61,13 @@ public class FPPMovementController : MonoBehaviour
             }
         }
 
-        if(movementMod.allowWalk && InputReader.Held(actionKeys.WalkKey))
+        if(movementMod.enableWalk && InputReader.Held(actionKeys.WalkKey))
         {
             movementMod.SetTargetSpeed(movementMod.walkSpeed);
             return;
         }
 
-        if (movementMod.allowSprint && InputReader.Held(actionKeys.SprintKey))
+        if (movementMod.enableSprint && InputReader.Held(actionKeys.SprintKey))
         {
             movementMod.SetTargetSpeed(movementMod.sprintSpeed);
             return;

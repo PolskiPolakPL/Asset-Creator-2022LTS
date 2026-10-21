@@ -34,6 +34,16 @@ public class Motor : MonoBehaviour
         return velocity;
     }
 
+    public Vector3 GetHorizontalVelocity()
+    {
+        return new Vector3(velocity.x, 0, velocity.z);
+    }
+
+    public float GetVerticalVelocity()
+    {
+        return velocity.y;
+    }
+
     public void AddVelocity(Vector3 velocity)
     {
         this.velocity += velocity;
