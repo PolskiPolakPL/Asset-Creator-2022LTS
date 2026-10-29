@@ -39,41 +39,45 @@ public class FPPMovementController : MonoBehaviour
     void ActMovementMod()
     {
         Vector3 inputDirection = InputReader.GetMovementDirection(playerTransform);
-        ProcessSpeed();
-        movementMod.ProcessMovement(inputDirection, motor);
+        ProcessMovement(inputDirection);
     }
 
-    void ProcessSpeed()
+    void ProcessMovement(Vector3 direction)
     {
 
         if (crouchProneMod)
         {
+            // Player CROUCH
             if(crouchProneMod.currentStance == PlayerStance.Crouch)
             {
-                movementMod.SetTargetSpeed(crouchProneMod.crouchSpeed);
+                movementMod.Move(direction, motor, crouchProneMod.crouchSpeed);
                 return;
             }
 
+            // Player PRONE
             if (crouchProneMod.currentStance == PlayerStance.Prone)
             {
-                movementMod.SetTargetSpeed(crouchProneMod.proneSpeed);
+                movementMod.Move(direction, motor, crouchProneMod.proneSpeed);
                 return;
             }
         }
 
+        // Player WALK
         if(movementMod.enableWalk && InputReader.Held(actionKeys.WalkKey))
         {
-            movementMod.SetTargetSpeed(movementMod.walkSpeed);
+            movementMod.Walk(direction, motor);
             return;
         }
 
+        // Player SPRINT
         if (movementMod.enableSprint && InputReader.Held(actionKeys.SprintKey))
         {
-            movementMod.SetTargetSpeed(movementMod.sprintSpeed);
+            movementMod.Sprint(direction, motor);
             return;
         }
 
-        movementMod.SetTargetSpeed(movementMod.baseSpeed);
+        // Player RUN (default)
+        movementMod.Run(direction, motor);
     }
 
     void ActJumpModule()

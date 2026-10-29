@@ -29,6 +29,19 @@ public class Motor : MonoBehaviour
         velocity += Physics.gravity * Time.deltaTime;
     }
 
+    public bool CheckHorizontalMovement()
+    {
+        float horizontalSpeed = GetHorizontalSpeed();
+        if(horizontalSpeed >0)
+            return true;
+        return false;
+    }
+
+    public float GetHorizontalSpeed()
+    {
+        return Vector3.Distance(GetHorizontalVelocity(), Vector3.zero);
+    }
+
     public Vector3 GetVelocity()
     {
         return velocity;

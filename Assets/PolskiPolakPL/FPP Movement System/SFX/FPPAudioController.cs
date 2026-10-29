@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FPPAudioController : MonoBehaviour
@@ -8,24 +7,36 @@ public class FPPAudioController : MonoBehaviour
 
     [SerializeField] AudioClip[] jumpSounds;
     [SerializeField] AudioClip[] landingSounds;
+
+    // Motor & Modules
+    [Header("Modules")]
+    [SerializeField] Motor motor;
+    [SerializeField] MovementModule movementMod;
+    [SerializeField] JumpModule jumpMod;
+    [SerializeField] CrouchProneModule crouchProneMod;
+
+    [Header("Stance Sounds")]
     [SerializeField] AudioClip[] crouchingSounds;
     [SerializeField] AudioClip[] layingDownSounds;
     [SerializeField] AudioClip[] standingUpSounds;
 
-    // Motor & Modules
-    Motor motor;
-    MovementModule movementMod;
-    JumpModule jumpMod;
-    CrouchProneModule crouchProneMod;
+    [Header("Footsteps")]
+    [SerializeField] AudioSource footstepSpource;
+    [SerializeField] AudioClip footstepsAudioClip;
+    [SerializeField] AudioSrcSettings sprintSrcSettings;
+    [SerializeField] AudioSrcSettings runSrcSettings;
 
     private void Awake()
     {
-        motor = GetComponentInChildren<Motor>();
-        movementMod = GetComponentInChildren<MovementModule>();
-        jumpMod = GetComponentInChildren<JumpModule>();
-        crouchProneMod = GetComponentInChildren<CrouchProneModule>();
 
         SubscribeAudio();
+    }
+
+    private void Update()
+    {
+
+        PlayFootstepsAudio();
+
     }
 
     void SubscribeAudio()
@@ -64,6 +75,41 @@ public class FPPAudioController : MonoBehaviour
         PlayRandomClip(source, layingDownSounds);
     }
 
+    public void PlayFootstepsAudio()
+    {
+
+        // Play moving audio if the character is moving and on the ground.
+        float currentSpeed = motor.GetHorizontalSpeed();
+        if (currentSpeed < velocityThreshold || !motor.isGrounded)
+        {
+            footstepSpource.Stop();
+            return;
+        }
+
+        switch (movementMod.moveType)
+        {
+
+            case MoveType.RUN:
+                {
+                    SetAudioSrcSettings(footstepSpource, runSrcSettings);
+                }
+                break;
+
+            case MoveType.SPRINT:
+                {
+                    SetAudioSrcSettings(footstepSpource, sprintSrcSettings);
+                }
+                break;
+
+            default:
+                {
+                    footstepSpource.Stop();
+                    return;
+                }
+        }
+        PlayAudioClip(footstepSpource, footstepsAudioClip);
+    }
+
     void PlayRandomClip(AudioSource source, AudioClip[] soundList)
     {
         if(soundList==null || soundList.Length <= 0)
@@ -74,5 +120,24 @@ public class FPPAudioController : MonoBehaviour
 
         AudioClip randomClip = soundList[Random.Range(0, soundList.Length)];
         source.PlayOneShot(randomClip);
+    }
+
+    void SetAudioSrcSettings(AudioSource source, AudioSrcSettings audioSrcSettingsSO)
+    {
+        source.priority = audioSrcSettingsSO.Priority;
+        source.volume = audioSrcSettingsSO.Volume;
+        source.pitch = audioSrcSettingsSO.Pitch;
+        source.panStereo = audioSrcSettingsSO.StereoPan;
+        source.spatialBlend = audioSrcSettingsSO.SpatialBlend;
+        source.reverbZoneMix = audioSrcSettingsSO.ReverbZoneMix;
+    }
+
+    void PlayAudioClip(AudioSource source, AudioClip audioClip)
+    {
+        if (!source)
+            return;
+        if (source.isPlaying)
+            return;
+        source.PlayOneShot(audioClip);
     }
 }
